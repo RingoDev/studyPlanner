@@ -1,0 +1,640 @@
+{
+  "sections": [
+    {
+      "title": "Einführung in die Wirtschaftsinformatik",
+      "courses": [
+        {
+          "title": "Einführung in die Wirtschaftsinformatik",
+          "ects": 3,
+          "type": "VL"
+        },
+        {
+          "title": "Einführung in die Wirtschaftsinformatik",
+          "ects": 3,
+          "type": "UE"
+        }
+      ]
+    },
+    {
+      "title": "Grundlagen der Betriebswirtschaftslehre und des integrierten Managements",
+      "courses": [
+        {
+          "title": "Grundlagen der Betriebswirtschaftslehre",
+          "ects": 3,
+          "type": "VL"
+        }
+      ]
+    },
+    {
+      "title": "Grundlagen der Informatik",
+      "courses": [
+        {
+          "title": "Einführung in die Softwareentwicklung",
+          "ects": 3,
+          "type": "VL"
+        },
+        {
+          "title": "Einführung in die Softwareentwicklung",
+          "ects": 3,
+          "type": "UE"
+        }
+      ]
+    },
+    {
+      "title": "Algorithmen und Datenstrukturen",
+      "courses": [
+        {
+          "title": "Algorithmen und Datenstrukturen",
+          "ects": 3,
+          "type": "VL",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "SS"
+            }
+          ]
+        },
+        {
+          "title": "Algorithmen und Datenstrukturen",
+          "ects": 3,
+          "type": "UE",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "SS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Datenmodellierung",
+      "courses": [
+        {
+          "title": "Datenmodellierung",
+          "ects": 3,
+          "type": "VL",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "WS"
+            }
+          ]
+        },
+        {
+          "title": "Datenmodellierung",
+          "ects": 3,
+          "type": "UE",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "WS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Prozess- und Kommunikationsmodellierung",
+      "courses": [
+        {
+          "title": "Prozess- und Kommunikationsmodellierung",
+          "ects": 3,
+          "type": "VL",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "SS"
+            }
+          ]
+        },
+        {
+          "title": "Prozess- und Kommunikationsmodellierung",
+          "ects": 3,
+          "type": "UE",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "SS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Soziale und geschlechterspezifische Aspekte der IT",
+      "courses": [
+        {
+          "title": "Soziale Auswirkungen der IT",
+          "ects": 3,
+          "type": "KS",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "SS"
+            }
+          ]
+        },
+        {
+          "title": "Einführung in IKT, Gesellschaft, Gender und Diversity",
+          "ects": 3,
+          "type": "KS",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "WS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Unternehmensrechnung",
+      "courses": [
+        {
+          "title": "Grundlagen der Kostenrechnung",
+          "ects": 3,
+          "type": "KS"
+        },
+        {
+          "title": "Buchhaltung nach UGB",
+          "ects": 3,
+          "type": "KS"
+        }
+      ]
+    },
+    {
+      "title": "Leistungserstellung und -verwertung",
+      "courses": [
+        {
+          "title": "Einführung in Marketing",
+          "ects": 3,
+          "type": "VL"
+        },
+        {
+          "title": "Grundlagen des Supply Chain Management",
+          "ects": 3,
+          "type": "UE"
+        }
+      ]
+    },
+    {
+      "title": "Grundlagen des Rechts",
+      "courses": [
+        {
+          "title": "Privatrecht für Wirtschaftsinformatik",
+          "ects": 4.5,
+          "type": "KV",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "SS"
+            }
+          ]
+        },
+        {
+          "title": "Öffentliches Recht für Wirtschaftsinformatik",
+          "ects": 1.5,
+          "type": "KV"
+        }
+      ]
+    },
+    {
+      "title": "Einführung in Informatik und Betriebssysteme",
+      "courses": [
+        {
+          "title": "Betriebssysteme",
+          "ects": 3,
+          "type": "VL",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "SS"
+            }
+          ]
+        },
+        {
+          "title": "Einführung in die Informatik",
+          "ects": 3,
+          "type": "VL",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "WS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vertiefung Softwareentwicklung",
+      "courses": [
+        {
+          "title": "Softwareentwicklung 2",
+          "ects": 3,
+          "type": "Vl"
+        },
+        {
+          "title": "Softwareentwicklung 2",
+          "ects": 3,
+          "type": "UE"
+        }
+      ]
+    },
+    {
+      "title": "Fachsprache Englisch",
+      "courses": [
+        {
+          "title": "Kommunikative Fertigkeiten Englisch",
+          "ects": 3,
+          "type": "KS"
+        },
+        {
+          "title": "Fachsprache Englisch",
+          "ects": 3,
+          "type": "SE"
+        }
+      ]
+    },
+    {
+      "title": "Mathematik und Logik",
+      "courses": [
+        {
+          "title": "Mathematik und Logik",
+          "ects": 4.5,
+          "type": "VL",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "WS"
+            }
+          ]
+        },
+        {
+          "title": "Mathematik und Logik",
+          "ects": 1.5,
+          "type": "UE",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "WS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Formale Grundlagen",
+      "courses": [
+        {
+          "title": "Formale Grundlagen der Wirtschaftsinformatik",
+          "ects": 4.5,
+          "type": "VL",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "SS"
+            }
+          ]
+        },
+        {
+          "title": "Formale Grundlagen der Wirtschaftsinformatik",
+          "ects": 1.5,
+          "type": "UE",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "SS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Statistik",
+      "courses": [
+        {
+          "title": "Statistik",
+          "ects": 3,
+          "type": "KV",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "WS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "IT-Project Engineering & Management",
+      "courses": [
+        {
+          "title": "IT-Project Engineering & Management",
+          "ects": 3,
+          "type": "VL",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "WS"
+            }
+          ]
+        },
+        {
+          "title": "IT-Project Engineering & Management",
+          "ects": 3,
+          "type": "UE",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "WS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Informationsmanagement",
+      "courses": [
+        {
+          "title": "Informationsmanagement",
+          "ects": 3,
+          "type": "VL",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "SS"
+            }
+          ]
+        },
+        {
+          "title": "Informationsmanagement",
+          "ects": 3,
+          "type": "UE",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "SS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "IT-Projekt Wirtschaftsinformatik",
+      "courses": [
+        {
+          "title": "IT-Projekt Wirtschaftsinformatik",
+          "ects": 6,
+          "type": "PJ",
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "title": "Methoden und Konzepte des Software Engineering",
+      "courses": [
+        {
+          "title": "Software Engineering",
+          "ects": 3,
+          "type": "VL",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "WS"
+            }
+          ]
+        },
+        {
+          "title": "Software Engineering",
+          "ects": 3,
+          "type": "UE",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "WS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Anwendungen des Software Engineering",
+      "courses": [
+        {
+          "title": "Software Engineering",
+          "ects": 6,
+          "type": "PR",
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "title": "Ausgewählte Aspekte der Wirtschaftsinformatik",
+      "courses": [
+        {
+          "title": "Information Engineering",
+          "ects": 3,
+          "type": "PS",
+          "constraints": []
+        },
+        {
+          "title": "Software Engineering",
+          "ects": 3,
+          "type": "PS",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "SS"
+            }
+          ]
+        },
+        {
+          "title": "Data & Knowledge Engineering",
+          "ects": 3,
+          "type": "PS",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "WS"
+            }
+          ]
+        },
+        {
+          "title": "Communications Engineering",
+          "ects": 3,
+          "type": "PS",
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "title": "Methoden und Konzepte des Data & Knowledge Engineering",
+      "courses": [
+        {
+          "title": "Data & Knowledge Engineering",
+          "ects": 3,
+          "type": "VL",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "SS"
+            }
+          ]
+        },
+        {
+          "title": "Data & Knowledge Engineering",
+          "ects": 3,
+          "type": "UE",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "SS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Methoden und Konzepte des Communications Engineering",
+      "courses": [
+        {
+          "title": "Communications Engineering",
+          "ects": 3,
+          "type": "VL",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "WS"
+            }
+          ]
+        },
+        {
+          "title": "Communications Engineering",
+          "ects": 3,
+          "type": "UE",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "WS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Anwendungen des Communications Engineering",
+      "courses": [
+        {
+          "title": "Anwendungen des Communications Engineering",
+          "ects": 3,
+          "type": "SE",
+          "constraints": []
+        },
+        {
+          "title": "Communications Engineering",
+          "ects": 3,
+          "type": "KT",
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "title": "Anwendungen des Communications Engineering",
+      "courses": [
+        {
+          "title": "Anwendungen des Communications Engineering",
+          "ects": 3,
+          "type": "SE",
+          "constraints": []
+        },
+        {
+          "title": "Communications Engineering",
+          "ects": 3,
+          "type": "KT",
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "title": "Spezialisierungsfach Wirtschaftsinformatik (mit Bachelorarbeit)",
+      "courses": [
+        {
+          "title": "Spezielle Wirtschaftsinformatik - Theorie und Praxis, inklusive Bachelorarbeit",
+          "ects": 12,
+          "type": "PE",
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "title": "Wahlfach Wirtschaftsinformatik ODER Wirtschaftswissenschaften",
+      "courses": [
+        {
+          "title": "Strategische IT-Planung",
+          "ects": 6,
+          "type": "KV",
+          "constraints": []
+        },
+        {
+          "title": "Software Business",
+          "ects": 6,
+          "type": "KV",
+          "constraints": []
+        },
+        {
+          "title": "Data Warehousing",
+          "ects": 6,
+          "type": "VL+UE",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "WS"
+            }
+          ]
+        },
+        {
+          "title": "Data Mining",
+          "ects": 6,
+          "type": "VL+UE",
+          "constraints": [
+            {
+              "type": "semester",
+              "value": "SS"
+            }
+          ]
+        },
+        {
+          "title": "Business Engineering & Management",
+          "ects": 6,
+          "type": "VL+UE",
+          "constraints": []
+        },
+        {
+          "title": "Finanzierungs- und Steuermanagement",
+          "ects": 6,
+          "type": "*",
+          "constraints": []
+        },
+        {
+          "title": "Organisation, Veränderungs- und\nInnovationsmanagement",
+          "ects": 6,
+          "type": "*",
+          "constraints": []
+        },
+        {
+          "title": "Operations and Supply Chain\nManagement",
+          "ects": 6,
+          "type": "KS+IK",
+          "constraints": []
+        },
+        {
+          "title": "Einführung in die Mikroökonomie",
+          "ects": 6,
+          "type": "KS+IK",
+          "constraints": []
+        }
+      ]
+    }
+  ]
+}
