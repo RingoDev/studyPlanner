@@ -6,7 +6,8 @@
         {
           "title": "Einführung in die Wirtschaftsinformatik",
           "ects": 3,
-          "type": "VL"
+          "type": "VL",
+          "constraints": []
         },
         {
           "title": "Einführung in die Wirtschaftsinformatik",
@@ -519,23 +520,6 @@
               "value": "WS"
             }
           ]
-        }
-      ]
-    },
-    {
-      "title": "Anwendungen des Communications Engineering",
-      "courses": [
-        {
-          "title": "Anwendungen des Communications Engineering",
-          "ects": 3,
-          "type": "SE",
-          "constraints": []
-        },
-        {
-          "title": "Communications Engineering",
-          "ects": 3,
-          "type": "KT",
-          "constraints": []
         }
       ]
     },

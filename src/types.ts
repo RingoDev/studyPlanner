@@ -2,7 +2,7 @@ export default interface Course {
     title: string,
     ects: number,
     type: "VL" | "KS" | "KV" | "UE" | "PE" | "KT" | "SE" | string,
-    constraints: Constraint[]
+    constraints?: Constraint[]
 }
 
 interface Constraint {
