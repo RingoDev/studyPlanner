@@ -4,8 +4,7 @@
       "id": "0010001",
       "title": "Einführung in die Wirtschaftsinformatik",
       "ects": 3,
-      "type": "VL",
-      "constraints": []
+      "type": "VL"
     },
     {
       "id": "0010002",
@@ -35,97 +34,49 @@
       "id": "0040001",
       "title": "Algorithmen und Datenstrukturen",
       "ects": 3,
-      "type": "VL",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "SS"
-        }
-      ]
+      "type": "VL"
     },
     {
       "id": "0040002",
       "title": "Algorithmen und Datenstrukturen",
       "ects": 3,
-      "type": "UE",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "SS"
-        }
-      ]
+      "type": "UE"
     },
     {
       "id": "0050001",
       "title": "Datenmodellierung",
       "ects": 3,
-      "type": "VL",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "WS"
-        }
-      ]
+      "type": "VL"
     },
     {
       "id": "0050002",
       "title": "Datenmodellierung",
       "ects": 3,
-      "type": "UE",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "WS"
-        }
-      ]
+      "type": "UE"
     },
     {
       "id": "0060001",
       "title": "Prozess- und Kommunikationsmodellierung",
       "ects": 3,
-      "type": "VL",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "SS"
-        }
-      ]
+      "type": "VL"
     },
     {
       "id": "0060002",
       "title": "Prozess- und Kommunikationsmodellierung",
       "ects": 3,
-      "type": "UE",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "SS"
-        }
-      ]
+      "type": "UE"
     },
     {
       "id": "0070001",
       "title": "Soziale Auswirkungen der IT",
       "ects": 3,
-      "type": "KS",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "SS"
-        }
-      ]
+      "type": "KS"
     },
     {
       "id": "0070002",
       "title": "Einführung in IKT, Gesellschaft, Gender und Diversity",
       "ects": 3,
-      "type": "KS",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "WS"
-        }
-      ]
+      "type": "KS"
     },
     {
       "id": "0080001",
@@ -143,13 +94,7 @@
       "id": "0100001",
       "title": "Privatrecht für Wirtschaftsinformatik",
       "ects": 4.5,
-      "type": "KV",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "SS"
-        }
-      ]
+      "type": "KV"
     },
     {
       "id": "0100002",
@@ -173,25 +118,13 @@
       "id": "0110001",
       "title": "Betriebssysteme",
       "ects": 3,
-      "type": "VL",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "SS"
-        }
-      ]
+      "type": "VL"
     },
     {
       "id": "0110002",
       "title": "Einführung in die Informatik",
       "ects": 3,
-      "type": "VL",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "WS"
-        }
-      ]
+      "type": "VL"
     },
     {
       "id": "0120001",
@@ -221,419 +154,280 @@
       "id": "0140001",
       "title": "Mathematik und Logik",
       "ects": 4.5,
-      "type": "VL",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "WS"
-        }
-      ]
+      "type": "VL"
     },
     {
       "id": "0140002",
       "title": "Mathematik und Logik",
       "ects": 1.5,
-      "type": "UE",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "WS"
-        }
-      ]
+      "type": "UE"
     },
     {
       "id": "0150001",
       "title": "Formale Grundlagen der Wirtschaftsinformatik",
       "ects": 4.5,
-      "type": "VL",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "SS"
-        }
-      ]
+      "type": "VL"
     },
     {
       "id": "0150002",
       "title": "Formale Grundlagen der Wirtschaftsinformatik",
       "ects": 1.5,
-      "type": "UE",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "SS"
-        }
-      ]
+      "type": "UE"
+    },    {
+      "id": "0160001",
+      "title": "Statistik",
+      "ects": 3,
+      "type": "KV"
     },
     {
       "id": "0170001",
       "title": "IT-Project Engineering & Management",
       "ects": 3,
-      "type": "VL",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "WS"
-        }
-      ]
+      "type": "VL"
     },
     {
       "id": "0170002",
       "title": "IT-Project Engineering & Management",
       "ects": 3,
-      "type": "UE",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "WS"
-        }
-      ]
+      "type": "UE"
     },
-    {
-      "id": "0160001",
-      "title": "Statistik",
-      "ects": 3,
-      "type": "KV",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "WS"
-        }
-      ]
-    },
+
     {
       "id": "0180001",
       "title": "Informationsmanagement",
       "ects": 3,
-      "type": "VL",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "SS"
-        }
-      ]
+      "type": "VL"
     },
     {
       "id": "0180002",
       "title": "Informationsmanagement",
       "ects": 3,
-      "type": "UE",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "SS"
-        }
-      ]
+      "type": "UE"
     },
     {
       "id": "0190001",
       "title": "IT-Projekt Wirtschaftsinformatik",
       "ects": 6,
-      "type": "PJ",
-      "constraints": []
+      "type": "PJ"
     },
     {
       "id": "0200001",
       "title": "Software Engineering",
       "ects": 3,
-      "type": "VL",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "WS"
-        }
-      ]
+      "type": "VL"
     },
     {
       "id": "0200002",
       "title": "Software Engineering",
       "ects": 3,
-      "type": "UE",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "WS"
-        }
-      ]
+      "type": "UE"
     },
     {
       "id": "0210001",
       "title": "Software Engineering",
       "ects": 6,
-      "type": "PR",
-      "constraints": []
+      "type": "PR"
     },
     {
       "id": "0220001",
       "title": "Information Engineering",
       "ects": 3,
-      "type": "PS",
-      "constraints": []
+      "type": "PS"
     },
     {
       "id": "0220002",
       "title": "Software Engineering",
       "ects": 3,
-      "type": "PS",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "SS"
-        }
-      ]
+      "type": "PS"
     },
     {
       "id": "0220003",
       "title": "Data & Knowledge Engineering",
       "ects": 3,
-      "type": "PS",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "WS"
-        }
-      ]
+      "type": "PS"
     },
     {
       "id": "0220004",
       "title": "Communications Engineering",
       "ects": 3,
-      "type": "PS",
-      "constraints": []
+      "type": "PS"
     },
     {
       "id": "0230001",
       "title": "Data & Knowledge Engineering",
       "ects": 3,
-      "type": "VL",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "SS"
-        }
-      ]
+      "type": "VL"
     },
     {
       "id": "0230002",
       "title": "Data & Knowledge Engineering",
       "ects": 3,
-      "type": "UE",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "SS"
-        }
-      ]
+      "type": "UE"
     },
     {
       "id": "0240001",
       "title": "Communications Engineering",
       "ects": 3,
-      "type": "VL",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "WS"
-        }
-      ]
+      "type": "VL"
     },
     {
       "id": "0240002",
       "title": "Communications Engineering",
       "ects": 3,
-      "type": "UE",
-      "constraints": [
-        {
-          "type": "semester",
-          "value": "WS"
-        }
-      ]
+      "type": "UE"
     },
     {
       "id": "0250001",
       "title": "Anwendungen des Communications Engineering",
       "ects": 3,
-      "type": "SE",
-      "constraints": []
+      "type": "SE"
     },
     {
       "id": "0250002",
       "title": "Communications Engineering",
       "ects": 3,
-      "type": "KT",
-      "constraints": []
+      "type": "KT"
     },
     {
       "id": "0260001",
       "title": "Spezielle Wirtschaftsinformatik - Theorie und Praxis, inklusive Bachelorarbeit",
       "ects": 12,
-      "type": "PE",
-      "constraints": []
+      "type": "PE"
     }
   ],
   "groups": [
     {
       "id": "001",
       "title": "Einführung in die Wirtschaftsinformatik",
-      "courses": [      ]
+      "courses": []
     },
     {
       "id": "002",
       "title": "Grundlagen der Betriebswirtschaftslehre und des integrierten Managements",
-      "courses": [      ]
+      "courses": []
     },
     {
       "id": "003",
       "title": "Grundlagen der Informatik",
-      "courses": [      ]
+      "courses": []
     },
     {
       "id": "004",
       "title": "Algorithmen und Datenstrukturen",
-      "courses": [      ]
+      "courses": []
     },
     {
       "id": "005",
       "title": "Datenmodellierung",
-      "courses": [      ]
+      "courses": []
     },
     {
       "id": "006",
       "title": "Prozess- und Kommunikationsmodellierung",
-      "courses": [      ]
+      "courses": []
     },
     {
       "id": "007",
       "title": "Soziale und geschlechterspezifische Aspekte der IT",
-      "courses": [      ]
+      "courses": []
     },
     {
       "id": "008",
       "title": "Unternehmensrechnung",
-      "courses": [      ]
+      "courses": []
     },
     {
       "id": "009",
       "title": "Leistungserstellung und -verwertung",
-      "courses": [
-      ]
+      "courses": []
     },
     {
       "id": "010",
       "title": "Grundlagen des Rechts",
-      "courses": [
-      ]
+      "courses": []
     },
     {
       "id": "011",
       "title": "Einführung in Informatik und Betriebssysteme",
-      "courses": [
-
-      ]
+      "courses": []
     },
     {
       "id": "012",
       "title": "Vertiefung Softwareentwicklung",
-      "courses": [
-
-      ]
+      "courses": []
     },
     {
       "id": "013",
       "title": "Fachsprache Englisch",
-      "courses": [
-
-      ]
+      "courses": []
     },
     {
       "id": "014",
       "title": "Mathematik und Logik",
-      "courses": [
-
-      ]
+      "courses": []
     },
     {
       "id": "015",
       "title": "Formale Grundlagen",
-      "courses": [
-
-      ]
+      "courses": []
     },
     {
       "id": "016",
       "title": "Statistik",
-      "courses": [
-
-      ]
+      "courses": []
     },
     {
       "id": "017",
       "title": "IT-Project Engineering & Management",
-      "courses": [
-
-      ]
+      "courses": []
     },
     {
       "id": "018",
       "title": "Informationsmanagement",
-      "courses": [
-
-      ]
+      "courses": []
     },
     {
       "id": "019",
       "title": "IT-Projekt Wirtschaftsinformatik",
-      "courses": [
-
-      ]
+      "courses": []
     },
     {
       "id": "020",
       "title": "Methoden und Konzepte des Software Engineering",
-      "courses": [
-
-      ]
+      "courses": []
     },
     {
       "id": "021",
       "title": "Anwendungen des Software Engineering",
-      "courses": [
-
-      ]
+      "courses": []
     },
     {
       "id": "022",
       "title": "Ausgewählte Aspekte der Wirtschaftsinformatik",
-      "courses": [
-
-      ]
+      "courses": []
     },
     {
       "id": "023",
       "title": "Methoden und Konzepte des Data & Knowledge Engineering",
       "courses": [
-
       ]
     },
     {
       "id": "024",
       "title": "Methoden und Konzepte des Communications Engineering",
       "courses": [
-
       ]
     },
     {
       "id": "025",
       "title": "Anwendungen des Communications Engineering",
       "courses": [
-
       ]
     },
     {
       "id": "026",
       "title": "Spezialisierungsfach Wirtschaftsinformatik (mit Bachelorarbeit)",
       "courses": [
-
       ]
     }
   ]

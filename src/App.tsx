@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import data from './courses.json';
+import data from './data/courses.json';
 import {Container} from "@material-ui/core";
-import {DragDropContext, DropResult} from "react-beautiful-dnd";
+import {DragDropContext, DragStart, DropResult} from "react-beautiful-dnd";
 import Course from "./types";
 import Curriculum from "./Curriculum";
 import Storage from "./Storage";
+import semesterConstraints from './data/semesterConstraints.json'
 
 
 export interface CurriculumType {
@@ -12,8 +13,10 @@ export interface CurriculumType {
 }
 
 export interface SemesterType {
+    number: number,
     id: string,
-    courses: Course[]
+    courses: Course[],
+    dropColor?: string
 }
 
 export interface SectionType {
@@ -23,34 +26,7 @@ export interface SectionType {
 }
 
 const plan: CurriculumType = {
-    semesters: [
-        {
-            id: "1",
-            courses: []
-        },
-        {
-            id: "2",
-            courses: []
-        },
-        {
-            id: "3",
-            courses: []
-        },
-        {
-            id: "4",
-            courses: []
-        },
-        {
-            id: "5",
-            courses: []
-        },
-        {
-            id: "6",
-            courses: []
-        },
-
-    ]
-
+    semesters: Array.from([0, 1, 2, 3, 4, 5]).map(a => ({number: a, id: "00" + a, courses: []}))
 }
 
 const App = () => {
@@ -65,6 +41,7 @@ const App = () => {
         const destination = result.destination
         if (destination === undefined || destination === null) return;
         moveCourse(result.source.droppableId, destination.droppableId, result.draggableId, destination.index)
+        removeDropColors()
     }
 
 
@@ -75,6 +52,16 @@ const App = () => {
         } else {
             moveCourseFromListToList(listId1, listId2, courseId, index);
         }
+    }
+
+    const removeDropColors = () => {
+        setCurriculum((prev) => {
+            const newSemesters: SemesterType[] = [];
+            for (let semester of prev.semesters) {
+                newSemesters.push({...semester, dropColor: undefined})
+            }
+            return {...prev, semesters: newSemesters}
+        })
     }
 
 
@@ -243,18 +230,86 @@ const App = () => {
         console.log("Successfully moved curse with id " + courseId + " from list " + listId1 + " to " + listId2)
     }
 
+    const findCourseById = (id: string): Course | undefined => {
+        for (let course of storage) {
+            if (course.id === id) return course;
+        }
+        for (let semester of curriculum.semesters) {
+            for (let course of semester.courses) {
+                if (course.id === id) return course;
+            }
+        }
+    }
+
+    const handleDragStart = (dragStart: DragStart) => {
+        console.log(dragStart)
+
+
+        const course = findCourseById(dragStart.draggableId)
+
+        if (!course) return;
+
+        // there should only be a single semester constraint, if there are multiple we take only the first one for now todo make better
+        let semesterSign: "SS" | "WS" | undefined = semesterConstraints.WS.find(id => id === course.id) ? "WS" : undefined;
+        if (!semesterSign) semesterSign = semesterConstraints.SS.find(id => id === course.id) ? "SS" : undefined;
+        if (!semesterSign) return
+
+        const newSemesters: SemesterType[] = []
+        for (let semester of curriculum.semesters) {
+            if (checkSemesterConstraint(semesterSign, semester)) {
+                // color green
+                newSemesters.push({...semester, dropColor: "#00ff00"})
+            } else {
+                // color red
+                newSemesters.push({...semester, dropColor: "#ff0000"})
+            }
+        }
+
+        setCurriculum((prev) => ({...prev, semesters: newSemesters}))
+
+        // check constraints and see which semesters to color red or green
+
+
+    }
+
+    // we are now assuming semester 1,3,5.. are WS and others are SS
+
+
+    const checkSemesterConstraint = (semesterSign: "WS" | "SS", semester: SemesterType): boolean => {
+        return (semesterSign === "WS" && semester.number % 2 === 0) || (semesterSign === "SS" && semester.number % 2 === 1);
+    }
+
+    const removeSemester = (semesterId: string) => {
+        const index = curriculum.semesters.findIndex(s => s.id === semesterId)
+        const newSemesters = curriculum.semesters.slice()
+        if (index === -1) return
+
+        const semester = newSemesters.splice(index, 1)[0]
+
+        // put all courses from semester into storage
+        setStorage(prev => {
+            const newStorage = prev.slice()
+            newStorage.push(...semester.courses);
+            return newStorage
+        })
+
+        setCurriculum(prev => ({...prev,semesters:newSemesters}))
+    }
+
+
     return (
         <div className="App">
             <header className="App-header">
             </header>
             <Container maxWidth={"xl"}>
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                    <DragDropContext onDragEnd={(result) => handleDrop(result)}>
+                    <DragDropContext onDragEnd={(result) => handleDrop(result)} onDragStart={handleDragStart}>
                         <div style={{
                             maxHeight: "90vh",
                             height: "85vh",
                             overflowY: "auto",
-                            flex: "0 1 20%"
+                            flex: "0 1 20%",
+                            backgroundColor: "#dddddd"
                         }}>
                             <Storage storage={storage}/>
                         </div>
@@ -264,7 +319,8 @@ const App = () => {
                             height: "85vh",
                             overflowY: "auto",
                         }}>
-                            <Curriculum curriculum={curriculum}/>
+                            <Curriculum removeSemester={removeSemester} setCurriculum={setCurriculum}
+                                        curriculum={curriculum}/>
                         </div>
                     </DragDropContext>
                 </div>
