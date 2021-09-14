@@ -1,31 +1,11 @@
-import {Draggable, Droppable} from "react-beautiful-dnd";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import { Droppable} from "react-beautiful-dnd";
 import React from "react";
 import {SemesterType} from "./App";
-import {createStyles, makeStyles} from "@material-ui/core";
-
-const useStyles = makeStyles(() =>
-    createStyles({
-        list: {
-            backgroundColor: "#ffffff",
-            padding: "0.5rem"
-        },
-        item: {
-            backgroundColor: "#cccccc",
-            marginBottom: "0.5rem"
-        }
-    }),
-);
-
+import CourseList from "./components/courseList";
 
 const Semester = ({semester, index}: { semester: SemesterType, index: number }) => {
 
-    const classes = useStyles()
-
     return (
-
         <div style={{position: "relative", padding: "3rem 1rem 3rem 1rem", height: "100%"}}>
             <div style={{
                 fontSize: "2.25rem",
@@ -42,31 +22,13 @@ const Semester = ({semester, index}: { semester: SemesterType, index: number }) 
                             height: "100%"
                         }}  {...provided.droppableProps}
                              ref={provided.innerRef}>
-                            <List disablePadding className={classes.list}>
-                                {semester.courses.map((c, index) => (
-                                    <Draggable key={c.id} draggableId={c.id} index={index}>
-                                        {(provided) => {
-                                            return (
-                                                <ListItem
-                                                    className={classes.item}
-                                                    ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                                    <ListItemText>
-                                                        {c.type} - {c.title}
-                                                    </ListItemText>
-                                                </ListItem>
-                                            )
-                                        }}
-                                    </Draggable>
-                                ))}
-                                {provided.placeholder}
-                            </List>
+                            <CourseList outerProvided={provided} courses={semester.courses}/>
                         </div>
                     )}
                 </Droppable>
                 {semester.courses.reduce(((prev, course) => prev + course.ects), 0)}
             </div>
         </div>
-
     )
 }
 

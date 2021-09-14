@@ -4,6 +4,7 @@ export default interface Course {
     ects: number,
     type: "VL" | "KS" | "KV" | "UE" | "PE" | "KT" | "SE" | string,
     steop?: boolean,
+    kusssId: string
 }
 
 export type Constraint =
