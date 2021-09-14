@@ -1,11 +1,18 @@
 import React, {useState} from 'react';
 import data from './data/courses.json';
-import {Container} from "@material-ui/core";
+import {
+    AppBar,
+    Container,
+    createStyles,
+    makeStyles,
+    Toolbar,
+} from "@material-ui/core";
 import {DragDropContext, DragStart, DropResult} from "react-beautiful-dnd";
 import Course from "./types";
 import Curriculum from "./Curriculum";
 import Storage from "./Storage";
 import semesterConstraints from './data/semesterConstraints.json'
+import SelectSemester from "./components/selectSemester";
 
 
 export interface CurriculumType {
@@ -32,6 +39,8 @@ const App = () => {
 
     const [storage, setStorage] = useState<Course[]>(data.courses)
     const [curriculum, setCurriculum] = useState<CurriculumType>(plan)
+    const [startSemester, setStartSemester] = useState<"WS" | "SS">("WS")
+
 
     const handleDrop = (result: DropResult) => {
 
@@ -276,8 +285,10 @@ const App = () => {
     // we are now assuming semester 1,3,5.. are WS and others are SS
 
 
-    const checkSemesterConstraint = (semesterSign: "WS" | "SS", index:number): boolean => {
-        return (semesterSign === "WS" && index % 2 === 0) || (semesterSign === "SS" && index % 2 === 1);
+    const checkSemesterConstraint = (semesterSign: "WS" | "SS", index: number): boolean => {
+
+        if(startSemester === "WS") return (semesterSign === "WS" && index % 2 === 0) || (semesterSign === "SS" && index % 2 === 1);
+        else return (semesterSign === "WS" && index % 2 === 1) || (semesterSign === "SS" && index % 2 === 0)
     }
 
     const removeSemester = (index: number) => {
@@ -293,15 +304,29 @@ const App = () => {
         })
 
         // remove semester
-        setCurriculum(prev => ({...prev,semesters:newSemesters}))
+        setCurriculum(prev => ({...prev, semesters: newSemesters}))
     }
+
+    const useStyles = makeStyles(() =>
+        createStyles({
+            container: {
+                padding: "2rem"
+            }
+        }),
+    )
+
+    const classes = useStyles()
+
 
 
     return (
         <div className="App">
-            <header className="App-header">
-            </header>
-            <Container maxWidth={"xl"}>
+            <AppBar position={"static"}>
+                <Toolbar>
+                    <SelectSemester semester={startSemester} setSemester={setStartSemester}/>
+                </Toolbar>
+            </AppBar>
+            <Container className={classes.container} maxWidth={"xl"}>
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                     <DragDropContext onDragEnd={(result) => handleDrop(result)} onDragStart={handleDragStart}>
                         <div style={{
@@ -314,7 +339,7 @@ const App = () => {
                             <Storage storage={storage}/>
                         </div>
                         <div style={{
-                            flex: "0 1 80%",
+                            flex: "0 1 70%",
                             maxHeight: "90vh",
                             height: "85vh",
                             overflowY: "auto",
