@@ -20,7 +20,7 @@ const useStyles = makeStyles(() =>
 );
 
 
-const Semester = ({semester}: { semester: SemesterType }) => {
+const Semester = ({semester, index}: { semester: SemesterType, index: number }) => {
 
     const classes = useStyles()
 
@@ -33,9 +33,9 @@ const Semester = ({semester}: { semester: SemesterType }) => {
                 top: "8rem",
                 left: "-2rem",
                 transform: "rotate(270deg)"
-            }}>Semester {semester.number+1}</div>
+            }}>Semester {index + 1}</div>
             <div style={{position: "relative", paddingLeft: "4rem", height: "100%"}}>
-                <Droppable droppableId={semester.id}>
+                <Droppable droppableId={"sem" + index}>
                     {(provided) => (
                         <div style={{
                             border: semester.dropColor ? "5px dashed " + semester.dropColor : "1px solid black",
@@ -63,6 +63,7 @@ const Semester = ({semester}: { semester: SemesterType }) => {
                         </div>
                     )}
                 </Droppable>
+                {semester.courses.reduce(((prev, course) => prev + course.ects), 0)}
             </div>
         </div>
 

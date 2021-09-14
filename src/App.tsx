@@ -13,8 +13,6 @@ export interface CurriculumType {
 }
 
 export interface SemesterType {
-    number: number,
-    id: string,
     courses: Course[],
     dropColor?: string
 }
@@ -76,9 +74,9 @@ const App = () => {
         // we are shuffling in semester List
 
         // find semester
-        const semesterIndex = curriculum.semesters.findIndex(s => s.id === listId)
+        const semesterIndex = Number(listId.slice(3))
 
-        if (semesterIndex === -1) {
+        if (isNaN(semesterIndex)) {
             console.error("weird semester index wasn't found: " + listId)
             return
         }
@@ -160,7 +158,7 @@ const App = () => {
             // moving from storage to curriculum
 
             // find semester
-            const semesterIndex = curriculum.semesters.findIndex(s => s.id === listId2)
+            const semesterIndex = Number(listId2.slice(3))
 
             // get Course and new Storage List
             const [course, storageList] = removeCourseFromList(courseId, storage);
@@ -170,7 +168,7 @@ const App = () => {
                 return
             }
 
-            if (semesterIndex === -1) {
+            if (isNaN(semesterIndex)) {
                 console.error("weird semester index wasn't found: " + listId2)
                 return
             }
@@ -180,9 +178,11 @@ const App = () => {
             // setState
             updateState(storageList, currList, semesterIndex)
         } else if (listId2 === "storage") { // moving from curriculum to storage
-            const semesterIndex = curriculum.semesters.findIndex(s => s.id === listId1)
-            if (semesterIndex === -1) {
-                console.error("didn't find semester in curriculum with id:" + listId1)
+
+            // find semester
+            const semesterIndex = Number(listId1.slice(3))
+            if (isNaN(semesterIndex)) {
+                console.error("weird semester index wasn't found: " + listId1)
                 return
             }
 
@@ -203,10 +203,11 @@ const App = () => {
 
             // from semester to other semester
 
-            const semesterIndex1 = curriculum.semesters.findIndex(s => s.id === listId1)
-            const semesterIndex2 = curriculum.semesters.findIndex(s => s.id === listId2)
-            if (semesterIndex1 === -1 || semesterIndex2 === -1) {
-                console.error("didn't find semester in curriculum with id:" + listId1)
+            const semesterIndex1 = Number(listId1.slice(3))
+            const semesterIndex2 = Number(listId2.slice(3))
+
+            if (isNaN(semesterIndex1) || isNaN(semesterIndex2)) {
+                console.error("weird semester index wasn't found: " + listId1)
                 return
             }
 
@@ -255,13 +256,13 @@ const App = () => {
         if (!semesterSign) return
 
         const newSemesters: SemesterType[] = []
-        for (let semester of curriculum.semesters) {
-            if (checkSemesterConstraint(semesterSign, semester)) {
+        for (let i = 0; i < curriculum.semesters.length; i++) {
+            if (checkSemesterConstraint(semesterSign, i)) {
                 // color green
-                newSemesters.push({...semester, dropColor: "#00ff00"})
+                newSemesters.push({...curriculum.semesters[i], dropColor: "#00ff00"})
             } else {
                 // color red
-                newSemesters.push({...semester, dropColor: "#ff0000"})
+                newSemesters.push({...curriculum.semesters[i], dropColor: "#ff0000"})
             }
         }
 
@@ -275,15 +276,13 @@ const App = () => {
     // we are now assuming semester 1,3,5.. are WS and others are SS
 
 
-    const checkSemesterConstraint = (semesterSign: "WS" | "SS", semester: SemesterType): boolean => {
-        return (semesterSign === "WS" && semester.number % 2 === 0) || (semesterSign === "SS" && semester.number % 2 === 1);
+    const checkSemesterConstraint = (semesterSign: "WS" | "SS", index:number): boolean => {
+        return (semesterSign === "WS" && index % 2 === 0) || (semesterSign === "SS" && index % 2 === 1);
     }
 
-    const removeSemester = (semesterId: string) => {
-        const index = curriculum.semesters.findIndex(s => s.id === semesterId)
-        const newSemesters = curriculum.semesters.slice()
-        if (index === -1) return
+    const removeSemester = (index: number) => {
 
+        const newSemesters = curriculum.semesters.slice()
         const semester = newSemesters.splice(index, 1)[0]
 
         // put all courses from semester into storage
@@ -293,6 +292,7 @@ const App = () => {
             return newStorage
         })
 
+        // remove semester
         setCurriculum(prev => ({...prev,semesters:newSemesters}))
     }
 
