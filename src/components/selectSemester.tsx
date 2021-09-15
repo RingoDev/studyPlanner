@@ -1,10 +1,7 @@
 import {createStyles, FormControl, makeStyles, MenuItem, Select, Typography} from "@material-ui/core";
 import React from "react";
-
-interface Props {
-    semester: "WS" | "SS",
-    setSemester: (semester: "SS" | "WS") => void
-}
+import {useAppDispatch, useAppSelector} from "../redux/hooks";
+import {setStartSemester} from "../redux/data/data.actions";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -15,16 +12,26 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-const SelectSemester = ({semester, setSemester}: Props) => {
+const SelectSemester = () => {
+
+    const startSemester = useAppSelector((state) => state.data.startSemester)
+    const dispatch = useAppDispatch()
+
+    const handleChange = (e: React.ChangeEvent<{ name?: string; value: unknown; }>) => {
+        dispatch(setStartSemester(
+            {startSemester: (e.target.value as "SS" | "WS")}
+        ))
+    }
+
     const classes = useStyles()
     return (
         <>
             <Typography>Start with </Typography>
-            <FormControl >
+            <FormControl>
                 <Select
                     className={classes.input}
-                    value={semester}
-                    onChange={(e) => setSemester(e.target.value as "SS" | "WS")}
+                    value={startSemester}
+                    onChange={handleChange}
                 >
                     <MenuItem value={"WS"}>WS</MenuItem>
                     <MenuItem value={"SS"}><Typography>SS</Typography></MenuItem>

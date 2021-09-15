@@ -18,7 +18,7 @@ const Semester = ({semester, index}: { semester: SemesterType, index: number }) 
                 <Droppable droppableId={"sem" + index}>
                     {(provided) => (
                         <div style={{
-                            border: semester.dropColor ? "5px dashed " + semester.dropColor : "1px solid black",
+                            border: semester.dropColor ? "2px dashed " + semester.dropColor : "2px solid black",
                             height: "100%"
                         }}  {...provided.droppableProps}
                              ref={provided.innerRef}>

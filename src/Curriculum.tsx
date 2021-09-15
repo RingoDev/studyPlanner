@@ -1,23 +1,13 @@
 import React from "react";
-import {CurriculumType} from "./App";
 import Semester from "./Semester";
 import {Button} from "@material-ui/core";
+import {useAppDispatch, useAppSelector} from "./redux/hooks";
+import {addSemester, removeSemester} from "./redux/data/data.actions";
 
-interface Props {
-    curriculum: CurriculumType,
-    setCurriculum: React.Dispatch<React.SetStateAction<CurriculumType>>
-    removeSemester: (index: number) => void
-}
+const Curriculum = () => {
 
-const Curriculum = ({curriculum, setCurriculum, removeSemester}: Props) => {
-
-    const addSemester = () => {
-        setCurriculum(prev => {
-            const newSemesters = prev.semesters.slice();
-            newSemesters.push({courses: []})
-            return {...prev, semesters: newSemesters}
-        })
-    }
+    const curriculum = useAppSelector((state) => state.data.curriculum)
+    const dispatch = useAppDispatch()
 
     return (
         <>
@@ -32,10 +22,10 @@ const Curriculum = ({curriculum, setCurriculum, removeSemester}: Props) => {
                 {curriculum.semesters.map((s, index) => (
                     <div key={index} style={{flexBasis: "50%", minHeight: "20rem"}}>
                         <Semester semester={s} index={index}/>
-                        <Button style={{zIndex: 2}} onClick={() => removeSemester(index)}>Remove</Button>
+                        <Button style={{zIndex: 2}} onClick={() => dispatch(removeSemester({semesterIndex:index}))}>Remove</Button>
                     </div>
                 ))}
-                <Button style={{flexBasis: "50%", minHeight: "20rem"}} onClick={addSemester}>Add Semester</Button>
+                <Button style={{flexBasis: "50%", minHeight: "20rem"}} onClick={() => dispatch(addSemester({}))}>Add Semester</Button>
             </div>
         </>
     )
