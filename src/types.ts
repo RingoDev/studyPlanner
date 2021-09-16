@@ -1,10 +1,40 @@
 export default interface Course {
+    type: "course"
     id: string
     title: string,
     ects: number,
-    type: "VL" | "KS" | "KV" | "UE" | "PE" | "KT" | "SE" | string,
+    sign: "VL" | "KS" | "KV" | "UE" | "PE" | "KT" | "SE" | "*" | string,
     steop?: boolean,
     kusssId: string
+}
+
+export interface CurriculumType {
+    semesters: SemesterType[]
+}
+
+export interface Group {
+    type: "group"
+    courses: Course[]
+    id: string,
+    title: string
+}
+
+export interface DataGroup {
+    id: string,
+    title: string,
+    courses: string[]
+}
+
+export interface SemesterType {
+    courses: Course[],
+    dropColor?: string,
+    customEcts: number
+}
+
+export interface SectionType {
+    id: string,
+    title: string
+    courses: Course[]
 }
 
 export type Constraint =

@@ -1,13 +1,12 @@
 import {createReducer} from '@reduxjs/toolkit'
-import Course from "../../types";
-import {CurriculumType} from "../../App";
-import data from "../../data/courses.json";
+import Course, {CurriculumType} from "../../types";
+import courses from "../../data/courses.json";
 import semesterConstraints from "../../data/semesterConstraints.json"
 import {
     addSemester, hideConstraintIndicators,
     moveCourse,
     moveCourseInList,
-    removeSemester, setStartSemester,
+    removeSemester, setCustomStudies, setStartSemester,
     showConstraintIndicators,
 } from "./data.actions";
 
@@ -17,12 +16,81 @@ interface INITIAL_STATE_TYPE {
     curriculum: CurriculumType
 }
 
+
+const getCourseById = (id: string): Course => {
+    const course = courses.find(c => c.id === id)
+    if (course === undefined) {
+        // should never happen
+        return {
+            ects: 0, id: "", kusssId: "", steop: false, title: "", sign: "*", type: "course"
+        }
+    }
+    return {...course, type: "course"}
+}
+
+const examplePlan: { courses: string[], customECTs: number }[] =
+    [
+        {
+            courses: [
+                "0010001", "0010002", "0020001", "0020002", "0030001", "0030002", "0110002", "0140001", "0140002", "0130001"
+            ],
+            customECTs: 0
+        },
+        {
+            courses: [
+                "0040001", "0040002", "0060001", "0060002", "0110001", "0120001", "0120002", "0150001", "0150002"
+            ],
+            customECTs: 3
+        },
+        {
+            courses: [
+                "0050001", "0050002", "0090001", "0090002", "0160001", "0170001", "0170002", "0200001", "0200002"
+            ],
+            customECTs: 3
+        },
+        {
+            courses: [
+                "0080001", "0080002", "0100001", "0100002", "0180001", "0180002", "0210001", "0230001", "0230002"
+            ],
+            customECTs: 0
+        },
+        {
+            courses: [
+                "0070002", "0270001", "0240001", "0240002", "0190001", "0130002", "0220001"
+            ],
+            customECTs: 3
+        },
+        {
+            courses: [
+                "0070001", "0250001", "0250002", "0220003", "0260001", "0280001"
+            ],
+            customECTs: 0
+        }
+
+    ]
+
+
+const exampleCurriculum: CurriculumType = {
+    semesters: examplePlan.map(item => ({
+        courses: item.courses.map(id => getCourseById(id)),
+        customEcts: item.customECTs
+    }))
+
+}
+
+// const initialState: INITIAL_STATE_TYPE = {
+//     startSemester: "WS",
+//     storage: courses.map(c => ({...c,type:"course"})),
+//     curriculum: {
+//         semesters: Array.from([0, 1, 2, 3, 4, 5]).map(a => ({number: a, id: "00" + a, courses: [], customEcts: 0}))
+//     }
+// };
+
+
 const initialState: INITIAL_STATE_TYPE = {
     startSemester: "WS",
-    storage: data.courses,
-    curriculum: {
-        semesters: Array.from([0, 1, 2, 3, 4, 5]).map(a => ({number: a, id: "00" + a, courses: []}))
-    }
+    storage: [],
+    curriculum: exampleCurriculum
 };
 
 const courseReducer = createReducer(initialState, (builder) => {
@@ -60,11 +128,15 @@ const courseReducer = createReducer(initialState, (builder) => {
                 // add course to semester
                 state.curriculum.semesters[destinationSemesterIndex].courses.splice(payload.destinationIndex, 0, course);
             }
+
+            // sort storage
+            state.storage.sort((c1, c2) => Number(c1.id) - Number(c2.id))
             console.log("Successfully moved curse with id " + payload.courseId + " from list " + payload.sourceId + " to " + payload.destinationId)
         })
         .addCase(moveCourseInList, (state, {payload}) => {
             if (payload.listId === "storage") {// we are shuffling in storage list
-                state.storage = arrayMove(payload.sourceIndex, payload.destinationIndex, state.storage)
+                // do nothing
+                // state.storage = arrayMove(payload.sourceIndex, payload.destinationIndex, state.storage)
             } else {// we are shuffling in a semester list
 
                 // get semesterIndex from the semesterId
@@ -78,7 +150,7 @@ const courseReducer = createReducer(initialState, (builder) => {
             }
         })
         .addCase(addSemester, (state) => {
-            state.curriculum.semesters.push({courses: []})
+            state.curriculum.semesters.push({courses: [], customEcts: 0})
         })
 
         .addCase(removeSemester, (state, {payload}) => {
@@ -91,7 +163,7 @@ const courseReducer = createReducer(initialState, (builder) => {
         })
         .addCase(showConstraintIndicators, (state, {payload}) => {
 
-            const course = data.courses.find(c => c.id === payload.courseId)
+            const course = courses.find(c => c.id === payload.courseId)
             if (!course) return;
 
             // semester constraint checking
@@ -118,7 +190,12 @@ const courseReducer = createReducer(initialState, (builder) => {
         .addCase(setStartSemester, (state, {payload}) => {
             state.startSemester = payload.startSemester;
         })
+
+        .addCase(setCustomStudies, (state, {payload}) => {
+            state.curriculum.semesters[payload.semesterIndex].customEcts = payload.ects;
+        })
 })
+
 
 // we are now assuming semester 1,3,5.. are WS and others are SS
 function checkSemesterConstraint(startSemester: "WS" | "SS", semesterSign: "WS" | "SS", index: number): boolean {
@@ -139,7 +216,6 @@ function arrayMove<T>(oldIndex: number, newIndex: number, list: T[]) {
     newList.splice(newIndex, 0, object)
 
     return newList
-
 }
 
 export default courseReducer

@@ -7,7 +7,6 @@ import {
     Toolbar,
 } from "@material-ui/core";
 import {DragDropContext, DragStart, DropResult} from "react-beautiful-dnd";
-import Course from "./types";
 import Curriculum from "./Curriculum";
 import Storage from "./Storage";
 import SelectSemester from "./components/selectSemester";
@@ -20,20 +19,7 @@ import {
 } from "./redux/data/data.actions";
 
 
-export interface CurriculumType {
-    semesters: SemesterType[]
-}
 
-export interface SemesterType {
-    courses: Course[],
-    dropColor?: string
-}
-
-export interface SectionType {
-    id: string,
-    title: string
-    courses: Course[]
-}
 
 const App = () => {
 

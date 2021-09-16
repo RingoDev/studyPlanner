@@ -1,9 +1,12 @@
 import { Droppable} from "react-beautiful-dnd";
 import React from "react";
-import {SemesterType} from "./App";
 import CourseList from "./components/courseList";
+import {SemesterType} from "./types";
+import {useAppSelector} from "./redux/hooks";
 
 const Semester = ({semester, index}: { semester: SemesterType, index: number }) => {
+
+    const customECTsCounter = useAppSelector((state) => state.data.curriculum.semesters[index].customEcts)
 
     return (
         <div style={{position: "relative", padding: "3rem 1rem 3rem 1rem", height: "100%"}}>
@@ -22,11 +25,11 @@ const Semester = ({semester, index}: { semester: SemesterType, index: number }) 
                             height: "100%"
                         }}  {...provided.droppableProps}
                              ref={provided.innerRef}>
-                            <CourseList outerProvided={provided} courses={semester.courses}/>
+                            <CourseList outerProvided={provided} courses={semester.courses} id={"sem"+index}/>
                         </div>
                     )}
                 </Droppable>
-                {semester.courses.reduce(((prev, course) => prev + course.ects), 0)}
+                {customECTsCounter + semester.courses.reduce(((prev, course) => prev + course.ects), 0)}
             </div>
         </div>
     )

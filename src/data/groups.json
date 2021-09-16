@@ -1,0 +1,209 @@
+[
+  {
+    "id": "001",
+    "title": "Einführung in die Wirtschaftsinformatik",
+    "courses": [
+      "0010001",
+      "0010002"
+    ]
+  },
+  {
+    "id": "002",
+    "title": "Grundlagen der Betriebswirtschaftslehre und des integrierten Managements",
+    "courses": [
+      "0020001",
+      "0020002"
+    ]
+  },
+  {
+    "id": "003",
+    "title": "Grundlagen der Informatik",
+    "courses": [
+      "0030001",
+      "0030002"
+    ]
+  },
+  {
+    "id": "004",
+    "title": "Algorithmen und Datenstrukturen",
+    "courses": [
+      "0040001",
+      "0040002"
+    ]
+  },
+  {
+    "id": "005",
+    "title": "Datenmodellierung",
+    "courses": [
+      "0050001",
+      "0050002"
+    ]
+  },
+  {
+    "id": "006",
+    "title": "Prozess- und Kommunikationsmodellierung",
+    "courses": [
+      "0060001",
+      "0060002"
+    ]
+  },
+  {
+    "id": "007",
+    "title": "Soziale und geschlechterspezifische Aspekte der IT",
+    "courses": [
+      "0070001",
+      "0070002"
+    ]
+  },
+  {
+    "id": "008",
+    "title": "Unternehmensrechnung",
+    "courses": [
+      "0080001",
+      "0080002"
+    ]
+  },
+  {
+    "id": "009",
+    "title": "Leistungserstellung und -verwertung",
+    "courses": [
+      "0090001",
+      "0090002"
+    ]
+  },
+  {
+    "id": "010",
+    "title": "Grundlagen des Rechts",
+    "courses": [
+      "0100001",
+      "0100002"
+    ]
+  },
+  {
+    "id": "011",
+    "title": "Einführung in Informatik und Betriebssysteme",
+    "courses": [
+      "0110001",
+      "0110002"
+    ]
+  },
+  {
+    "id": "012",
+    "title": "Vertiefung Softwareentwicklung",
+    "courses": [
+      "0120001",
+      "0120002"
+    ]
+  },
+  {
+    "id": "013",
+    "title": "Fachsprache Englisch",
+    "courses": [
+      "0130001",
+      "0130002"
+    ]
+  },
+  {
+    "id": "014",
+    "title": "Mathematik und Logik",
+    "courses": [
+      "0140001",
+      "0140002"
+    ]
+  },
+  {
+    "id": "015",
+    "title": "Formale Grundlagen",
+    "courses": [
+      "0150001",
+      "0150002"
+    ]
+  },
+  {
+    "id": "016",
+    "title": "Statistik",
+    "courses": [
+      "0160001"
+    ]
+  },
+  {
+    "id": "017",
+    "title": "IT-Project Engineering & Management",
+    "courses": [
+      "0170001",
+      "0170002"
+    ]
+  },
+  {
+    "id": "018",
+    "title": "Informationsmanagement",
+    "courses": [
+      "0180001",
+      "0180002"
+    ]
+  },
+  {
+    "id": "019",
+    "title": "IT-Projekt Wirtschaftsinformatik",
+    "courses": [
+      "0190001",
+      "0190002"
+    ]
+  },
+  {
+    "id": "020",
+    "title": "Methoden und Konzepte des Software Engineering",
+    "courses": [
+      "0200001",
+      "0200002"
+    ]
+  },
+  {
+    "id": "021",
+    "title": "Anwendungen des Software Engineering",
+    "courses": [
+      "0210001"
+    ]
+  },
+  {
+    "id": "022",
+    "title": "Ausgewählte Aspekte der Wirtschaftsinformatik",
+    "courses": [
+      "0220001",
+      "0220002",
+      "0220003",
+      "0220004"
+    ]
+  },
+  {
+    "id": "023",
+    "title": "Methoden und Konzepte des Data & Knowledge Engineering",
+    "courses": [
+      "0230001",
+      "0230002"
+    ]
+  },
+  {
+    "id": "024",
+    "title": "Methoden und Konzepte des Communications Engineering",
+    "courses": [
+      "0240001",
+      "0240002"
+    ]
+  },
+  {
+    "id": "025",
+    "title": "Anwendungen des Communications Engineering",
+    "courses": [
+      "0250001",
+      "0250002"
+    ]
+  },
+  {
+    "id": "026",
+    "title": "Spezialisierungsfach Wirtschaftsinformatik (mit Bachelorarbeit)",
+    "courses": [
+      "0260001"
+    ]
+  }
+]

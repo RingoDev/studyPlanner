@@ -10,9 +10,9 @@ const Storage = () => {
     return (
         <Droppable droppableId={"storage"}>
             {provided => (
-                <div style={{height:"100%"}} {...provided.droppableProps}
+                <div style={{height:"100%",overflowY:"auto"}} {...provided.droppableProps}
                       ref={provided.innerRef}>
-                    <CourseList courses={storage} outerProvided={provided}/>
+                    <CourseList courses={storage} outerProvided={provided} id={"storage"}/>
                 </div>
             )}
         </Droppable>
