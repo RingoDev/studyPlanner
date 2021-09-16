@@ -9,6 +9,7 @@ import {
     removeSemester, setCustomStudies, setStartSemester,
     showConstraintIndicators,
 } from "./data.actions";
+import curriculumWS6S from '../../data/examples/WS6Semester.json'
 
 interface INITIAL_STATE_TYPE {
     startSemester: "WS" | "SS"
@@ -28,46 +29,8 @@ const getCourseById = (id: string): Course => {
     return {...course, type: "course"}
 }
 
-const examplePlan: { courses: string[], customECTs: number }[] =
-    [
-        {
-            courses: [
-                "0010001", "0010002", "0020001", "0020002", "0030001", "0030002", "0110002", "0140001", "0140002", "0130001"
-            ],
-            customECTs: 0
-        },
-        {
-            courses: [
-                "0040001", "0040002", "0060001", "0060002", "0110001", "0120001", "0120002", "0150001", "0150002"
-            ],
-            customECTs: 3
-        },
-        {
-            courses: [
-                "0050001", "0050002", "0090001", "0090002", "0160001", "0170001", "0170002", "0200001", "0200002"
-            ],
-            customECTs: 3
-        },
-        {
-            courses: [
-                "0080001", "0080002", "0100001", "0100002", "0180001", "0180002", "0210001", "0230001", "0230002"
-            ],
-            customECTs: 0
-        },
-        {
-            courses: [
-                "0070002", "0270001", "0240001", "0240002", "0190001", "0130002", "0220001"
-            ],
-            customECTs: 3
-        },
-        {
-            courses: [
-                "0070001", "0250001", "0250002", "0220003", "0260001", "0280001"
-            ],
-            customECTs: 0
-        }
+const examplePlan: { courses: string[], customECTs: number }[] = curriculumWS6S
 
-    ]
 
 
 const exampleCurriculum: CurriculumType = {
@@ -189,6 +152,10 @@ const courseReducer = createReducer(initialState, (builder) => {
         })
         .addCase(setStartSemester, (state, {payload}) => {
             state.startSemester = payload.startSemester;
+            console.log(JSON.stringify(state.curriculum.semesters.map(s => ({
+                courses: s.courses.map(c => c.id),
+                customECTs: s.customEcts
+            }))))
         })
 
         .addCase(setCustomStudies, (state, {payload}) => {
