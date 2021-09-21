@@ -6,6 +6,12 @@ export default interface Course {
     sign: "VL" | "KS" | "KV" | "UE" | "PE" | "KT" | "SE" | "*" | string,
     steop?: boolean,
     kusssId: string
+    violations?: Violation[]
+}
+
+export interface Violation {
+    severity: number
+    reason: string
 }
 
 export interface CurriculumType {

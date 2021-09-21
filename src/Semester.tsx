@@ -2,14 +2,16 @@ import { Droppable} from "react-beautiful-dnd";
 import React from "react";
 import CourseList from "./components/courseList";
 import {SemesterType} from "./types";
-import {useAppSelector} from "./redux/hooks";
+import {useAppDispatch, useAppSelector} from "./redux/hooks";
+import {Button} from "@material-ui/core";
+import {removeSemester} from "./redux/data/data.actions";
 
 const Semester = ({semester, index}: { semester: SemesterType, index: number }) => {
 
     const customECTsCounter = useAppSelector((state) => state.data.curriculum.semesters[index].customEcts)
-
+    const dispatch = useAppDispatch()
     return (
-        <div style={{position: "relative", padding: "3rem 1rem 3rem 1rem", height: "100%"}}>
+        <div style={{position: "relative", padding: "3rem 1rem 3rem 1rem", height: "100%", display:"flex",flexDirection:"column"}}>
             <div style={{
                 fontSize: "2.25rem",
                 position: "absolute",
@@ -18,10 +20,11 @@ const Semester = ({semester, index}: { semester: SemesterType, index: number }) 
                 transform: "rotate(270deg)"
             }}>Semester {index + 1}</div>
             <div style={{position: "relative", paddingLeft: "4rem", height: "100%"}}>
+                <div style={{  height: "100%",display:"flex",flexDirection:"column"}}>
                 <Droppable droppableId={"sem" + index}>
                     {(provided) => (
                         <div style={{
-                            border: semester.dropColor ? "2px dashed " + semester.dropColor : "2px solid black",
+                            border: semester.dropColor ? "2px solid " + semester.dropColor : "2px solid black",
                             height: "100%"
                         }}  {...provided.droppableProps}
                              ref={provided.innerRef}>
@@ -29,7 +32,11 @@ const Semester = ({semester, index}: { semester: SemesterType, index: number }) 
                         </div>
                     )}
                 </Droppable>
-                {customECTsCounter + semester.courses.reduce(((prev, course) => prev + course.ects), 0)}
+                    <div style={{textAlign:"center",fontSize:"1.75rem"}}>
+                        {customECTsCounter + semester.courses.reduce(((prev, course) => prev + course.ects), 0)} ECTs
+                    </div>
+                    <Button style={{zIndex: 2}} onClick={() => dispatch(removeSemester({semesterIndex:index}))}>Remove</Button>
+                </div>
             </div>
         </div>
     )

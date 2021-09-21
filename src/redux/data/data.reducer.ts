@@ -1,12 +1,16 @@
-import {createReducer} from '@reduxjs/toolkit'
-import Course, {CurriculumType} from "../../types";
+import {AnyAction, createReducer} from '@reduxjs/toolkit'
+import Course, {CurriculumType, SemesterType} from "../../types";
 import courses from "../../data/courses.json";
 import semesterConstraints from "../../data/semesterConstraints.json"
+import steopConstraints from '../../data/steopConstraints.json'
 import {
-    addSemester, hideConstraintIndicators,
+    addSemester,
+    hideConstraintIndicators,
     moveCourse,
     moveCourseInList,
-    removeSemester, setCustomStudies, setStartSemester,
+    removeSemester,
+    setCustomStudies,
+    setStartSemester,
     showConstraintIndicators,
 } from "./data.actions";
 import curriculumWS6S from '../../data/examples/WS6Semester.json'
@@ -16,7 +20,6 @@ interface INITIAL_STATE_TYPE {
     storage: Course[]
     curriculum: CurriculumType
 }
-
 
 const getCourseById = (id: string): Course => {
     const course = courses.find(c => c.id === id)
@@ -30,8 +33,6 @@ const getCourseById = (id: string): Course => {
 }
 
 const examplePlan: { courses: string[], customECTs: number }[] = curriculumWS6S
-
-
 
 const exampleCurriculum: CurriculumType = {
     semesters: examplePlan.map(item => ({
@@ -55,6 +56,9 @@ const initialState: INITIAL_STATE_TYPE = {
     storage: [],
     curriculum: exampleCurriculum
 };
+
+// checking Course Constraints after most actions
+const checkCourseConstraintsMatcher = (action: AnyAction) => !showConstraintIndicators.match(action) && !moveCourseInList.match(action)
 
 const courseReducer = createReducer(initialState, (builder) => {
     builder
@@ -161,15 +165,91 @@ const courseReducer = createReducer(initialState, (builder) => {
         .addCase(setCustomStudies, (state, {payload}) => {
             state.curriculum.semesters[payload.semesterIndex].customEcts = payload.ects;
         })
+
+        .addMatcher(checkCourseConstraintsMatcher, (state, {payload}) => {
+
+            for (let i = 0; i < state.curriculum.semesters.length; i++) {
+                for (let course of state.curriculum.semesters[i].courses) {
+                    // removing all violations
+                    course.violations = [];
+
+                    // checking semester constraint
+                    // there should only be a single semester constraint, if there are multiple we take only the first one for now todo make better
+                    const courseSemesterSign = getSemesterConstraint(course.id);
+                    if (courseSemesterSign) {
+                        if (!checkSemesterConstraint(state.startSemester, courseSemesterSign, i)) {// add violation to course
+                            course.violations.push({severity: 1, reason: "Can only be taken in " + courseSemesterSign})
+                        }
+                    }
+
+                    // checking steop constraint
+                    if (!courseIsSteop(course.id)) {
+                        if (!allowedBeforeSteopFinished(course.id)) {
+                            // check that all steop courses are booked before this semester
+
+                            const violatingSteopCourses = findSteopCoursesAfter(i, state.curriculum.semesters)
+                            for (let foundCourse of violatingSteopCourses) {
+                                course.violations.push({
+                                    severity: 2,
+                                    reason: "Can not be booked because the required StEOP course: " +
+                                        foundCourse.sign +
+                                        " - " +
+                                        foundCourse.title +
+                                        " is not finished before this semester"
+                                })
+                            }
+
+                        }
+                    }
+                }
+            }
+        })
 })
 
+function courseIsSteop(courseId: string): boolean {
+    return steopConstraints.steop.findIndex(c => c === courseId) !== -1
+}
 
-// we are now assuming semester 1,3,5.. are WS and others are SS
+
+function courseIsInSemester(courseId: string, semester: SemesterType): boolean {
+    return semester.courses.findIndex(c => c.id === courseId) !== -1;
+
+}
+
+// returns an array of found steop courses at the same or later semester
+function findSteopCoursesAfter(semesterIndex: number, semesters: SemesterType[]): Course[] {
+    const result = []
+
+    for (let id of steopConstraints.steop) {
+        const course = getCourseById(id);
+        if (!course) continue;
+
+        for (let i = semesterIndex; i < semesters.length; i++) {
+            if (courseIsInSemester(course.id, semesters[i])) {
+                console.log("Found late Steop Course:" + course.title + " in Semester with index" + i)
+                result.push(course)
+                break;
+            }
+        }
+    }
+    return result
+}
+
+function allowedBeforeSteopFinished(courseId: string): boolean {
+    return steopConstraints.beforeSteopFinished.findIndex(s => s === courseId) !== -1
+}
+
+function getSemesterConstraint(courseId: string): "SS" | "WS" | undefined {
+    let courseSemesterSign: "SS" | "WS" | undefined = semesterConstraints.WS.find(id => id === courseId) ? "WS" : undefined;
+    if (!courseSemesterSign) courseSemesterSign = semesterConstraints.SS.find(id => id === courseId) ? "SS" : undefined;
+    return courseSemesterSign
+
+}
+
 function checkSemesterConstraint(startSemester: "WS" | "SS", semesterSign: "WS" | "SS", index: number): boolean {
     if (startSemester === "WS") return (semesterSign === "WS" && index % 2 === 0) || (semesterSign === "SS" && index % 2 === 1);
     else return (semesterSign === "WS" && index % 2 === 1) || (semesterSign === "SS" && index % 2 === 0)
 }
-
 
 function arrayMove<T>(oldIndex: number, newIndex: number, list: T[]) {
 

@@ -1,9 +1,13 @@
 import {
-    ADD_SEMESTER, HIDE_CONSTRAINT_INDICATORS,
+    ADD_SEMESTER,
+    CHECK_COURSE_CONSTRAINTS,
+    HIDE_CONSTRAINT_INDICATORS,
     MOVE_COURSE,
     MOVE_COURSE_IN_LIST,
-    REMOVE_SEMESTER, SET_CUSTOM_STUDIES,
-    SET_START_SEMESTER, SHOW_CONSTRAINT_INDICATORS,
+    REMOVE_SEMESTER,
+    SET_CUSTOM_STUDIES,
+    SET_START_SEMESTER,
+    SHOW_CONSTRAINT_INDICATORS
 } from "./data.types";
 import {createAction} from "@reduxjs/toolkit"
 
@@ -18,5 +22,6 @@ export const hideConstraintIndicators = createAction<{}>(HIDE_CONSTRAINT_INDICAT
 
 export const setStartSemester = createAction<{ startSemester: "WS" | "SS" }>(SET_START_SEMESTER)
 export const setCustomStudies = createAction<{ semesterIndex: number, ects: number }>(SET_CUSTOM_STUDIES)
+export const checkCourseConstraints = createAction<{ }>(CHECK_COURSE_CONSTRAINTS)
 
 

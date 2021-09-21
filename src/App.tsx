@@ -19,13 +19,14 @@ import {
 } from "./redux/data/data.actions";
 
 
-
-
 const App = () => {
 
     const dispatch = useAppDispatch()
 
     const handleDrop = (result: DropResult) => {
+
+        dispatch(hideConstraintIndicators({}))
+
         console.log(result)
         const destination = result.destination
         if (destination === undefined || destination === null) return;
@@ -46,7 +47,7 @@ const App = () => {
                 destinationIndex: destination.index
             }))
         }
-        dispatch(hideConstraintIndicators({}))
+
     }
 
     const handleDragStart = (dragStart: DragStart) => {
@@ -91,7 +92,7 @@ const App = () => {
                             <Storage/>
                         </div>
                         <div style={{
-                            flex: "0 1 70%",
+                            flex: "1 1 70%",
                             maxHeight: "90vh",
                             height: "85vh",
                             overflowY: "auto",
