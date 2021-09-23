@@ -7,10 +7,11 @@ export default interface Course {
     steop?: boolean,
     kusssId: string
     violations?: Violation[]
+    color?: string
 }
 
 export interface Violation {
-    severity: number
+    severity: "HIGH" | "MEDIUM" | "LOW"
     reason: string
 }
 
@@ -23,6 +24,7 @@ export interface Group {
     courses: Course[]
     id: string,
     title: string
+    color?: string
 }
 
 export interface DataGroup {

@@ -1,5 +1,6 @@
 [
   {
+    "color": "#ffff99",
     "id": "001",
     "title": "Einführung in die Wirtschaftsinformatik",
     "courses": [
@@ -8,6 +9,7 @@
     ]
   },
   {
+    "color": "#fdd375",
     "id": "002",
     "title": "Grundlagen der Betriebswirtschaftslehre und des integrierten Managements",
     "courses": [
@@ -16,6 +18,7 @@
     ]
   },
   {
+    "color": "#a4bf8a",
     "id": "003",
     "title": "Grundlagen der Informatik",
     "courses": [
@@ -24,6 +27,7 @@
     ]
   },
   {
+    "color": "#ffff99",
     "id": "004",
     "title": "Algorithmen und Datenstrukturen",
     "courses": [
@@ -32,6 +36,7 @@
     ]
   },
   {
+    "color": "#ffff99",
     "id": "005",
     "title": "Datenmodellierung",
     "courses": [
@@ -40,6 +45,7 @@
     ]
   },
   {
+    "color": "#ffff99",
     "id": "006",
     "title": "Prozess- und Kommunikationsmodellierung",
     "courses": [
@@ -48,6 +54,7 @@
     ]
   },
   {
+    "color": "#9ab2f5",
     "id": "007",
     "title": "Soziale und geschlechterspezifische Aspekte der IT",
     "courses": [
@@ -56,6 +63,7 @@
     ]
   },
   {
+    "color": "#fdd375",
     "id": "008",
     "title": "Unternehmensrechnung",
     "courses": [
@@ -64,6 +72,7 @@
     ]
   },
   {
+    "color": "#fdd375",
     "id": "009",
     "title": "Leistungserstellung und -verwertung",
     "courses": [
@@ -80,6 +89,7 @@
     ]
   },
   {
+    "color": "#a4bf8a",
     "id": "011",
     "title": "Einführung in Informatik und Betriebssysteme",
     "courses": [
@@ -88,6 +98,7 @@
     ]
   },
   {
+    "color": "#a4bf8a",
     "id": "012",
     "title": "Vertiefung Softwareentwicklung",
     "courses": [
@@ -95,7 +106,7 @@
       "0120002"
     ]
   },
-  {
+  {    "color": "#ad8abf",
     "id": "013",
     "title": "Fachsprache Englisch",
     "courses": [
@@ -103,7 +114,7 @@
       "0130002"
     ]
   },
-  {
+  { "color": "#a6e8e2",
     "id": "014",
     "title": "Mathematik und Logik",
     "courses": [
@@ -111,7 +122,7 @@
       "0140002"
     ]
   },
-  {
+  { "color": "#a6e8e2",
     "id": "015",
     "title": "Formale Grundlagen",
     "courses": [
@@ -119,14 +130,14 @@
       "0150002"
     ]
   },
-  {
+  { "color": "#a6e8e2",
     "id": "016",
     "title": "Statistik",
     "courses": [
       "0160001"
     ]
   },
-  {
+  {"color": "#ffde67",
     "id": "017",
     "title": "IT-Project Engineering & Management",
     "courses": [
@@ -134,7 +145,7 @@
       "0170002"
     ]
   },
-  {
+  {"color": "#ffde67",
     "id": "018",
     "title": "Informationsmanagement",
     "courses": [
@@ -142,7 +153,7 @@
       "0180002"
     ]
   },
-  {
+  {"color": "#ffde67",
     "id": "019",
     "title": "IT-Projekt Wirtschaftsinformatik",
     "courses": [
@@ -150,7 +161,7 @@
       "0190002"
     ]
   },
-  {
+  {"color": "#ffde67",
     "id": "020",
     "title": "Methoden und Konzepte des Software Engineering",
     "courses": [
@@ -158,14 +169,14 @@
       "0200002"
     ]
   },
-  {
+  {"color": "#ffde67",
     "id": "021",
     "title": "Anwendungen des Software Engineering",
     "courses": [
       "0210001"
     ]
   },
-  {
+  {"color": "#ffde67",
     "id": "022",
     "title": "Ausgewählte Aspekte der Wirtschaftsinformatik",
     "courses": [
@@ -175,7 +186,7 @@
       "0220004"
     ]
   },
-  {
+  {"color": "#ffde67",
     "id": "023",
     "title": "Methoden und Konzepte des Data & Knowledge Engineering",
     "courses": [
@@ -183,7 +194,7 @@
       "0230002"
     ]
   },
-  {
+  {"color": "#ffde67",
     "id": "024",
     "title": "Methoden und Konzepte des Communications Engineering",
     "courses": [
@@ -191,7 +202,7 @@
       "0240002"
     ]
   },
-  {
+  {"color": "#ffde67",
     "id": "025",
     "title": "Anwendungen des Communications Engineering",
     "courses": [
@@ -199,7 +210,7 @@
       "0250002"
     ]
   },
-  {
+  {"color": "#ffde67",
     "id": "026",
     "title": "Spezialisierungsfach Wirtschaftsinformatik (mit Bachelorarbeit)",
     "courses": [
