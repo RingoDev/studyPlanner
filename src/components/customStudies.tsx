@@ -4,6 +4,7 @@ import {Button, createStyles, makeStyles} from "@material-ui/core";
 import React from "react";
 import {useAppDispatch, useAppSelector} from "../redux/hooks";
 import {setCustomStudies} from "../redux/data/data.actions";
+import {Minus, Plus} from "lucide-react";
 
 
 const useStyles = makeStyles(() =>
@@ -36,12 +37,14 @@ const CustomStudies = ({semesterIndex}: Props) => {
             <Button onClick={() => dispatch(setCustomStudies({
                 semesterIndex: semesterIndex,
                 ects: Math.max(counter - 1, 0)
-            }))}>-</Button>
+            }))}><Minus/></Button>
             <ListItemText>
                 {counter} ECTs
             </ListItemText>
             <Button
-                onClick={() => dispatch(setCustomStudies({semesterIndex: semesterIndex, ects: counter + 1}))}>+</Button>
+                onClick={() => dispatch(setCustomStudies({semesterIndex: semesterIndex, ects: counter + 1}))}>
+                <Plus/>
+            </Button>
         </ListItem>
     )
 }

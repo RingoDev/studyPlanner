@@ -20,8 +20,8 @@ export const removeSemester = createAction<{ semesterIndex: number }>(REMOVE_SEM
 export const showConstraintIndicators = createAction<{ sourceId: string, courseId: string, sourceIndex: number }>(SHOW_CONSTRAINT_INDICATORS)
 export const hideConstraintIndicators = createAction<{}>(HIDE_CONSTRAINT_INDICATORS)
 
-export const setStartSemester = createAction<{ startSemester: "WS" | "SS" }>(SET_START_SEMESTER)
 export const setCustomStudies = createAction<{ semesterIndex: number, ects: number }>(SET_CUSTOM_STUDIES)
-export const checkCourseConstraints = createAction<{ }>(CHECK_COURSE_CONSTRAINTS)
+export const checkCourseConstraints = createAction<{}>(CHECK_COURSE_CONSTRAINTS)
+export const setStartSemester = createAction<{ startSemesterIndex: number }>(SET_START_SEMESTER)
 
 

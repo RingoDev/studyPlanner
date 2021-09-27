@@ -9,7 +9,6 @@ import {
 import {DragDropContext, DragStart, DropResult} from "react-beautiful-dnd";
 import Curriculum from "./Curriculum";
 import Storage from "./Storage";
-import SelectSemester from "./components/selectSemester";
 import {useAppDispatch} from "./redux/hooks";
 import {
     hideConstraintIndicators,
@@ -78,8 +77,7 @@ const Planner = () => {
         <div className="App">
             <AppBar position={"static"}>
                 <Toolbar>
-                    <SelectSemester/>
-                    <Link to="/settings">Settings</Link>
+                    <Link to="/configuration">Settings</Link>
                 </Toolbar>
             </AppBar>
             <Container className={classes.container} maxWidth={"xl"}>

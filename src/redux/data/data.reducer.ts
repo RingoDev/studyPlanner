@@ -18,7 +18,10 @@ import curriculumWS6S from '../../data/examples/WS6Semester.json'
 import groups from '../../data/groups.json'
 
 interface INITIAL_STATE_TYPE {
+    selectSemesterList: string[]
     startSemester: "WS" | "SS"
+    startSemesterIndex: number,
+    currentSemesterIndex: number
     storage: Course[]
     curriculum: CurriculumType
 }
@@ -60,9 +63,34 @@ const exampleCurriculum: CurriculumType = {
 //     }
 // };
 
+const offset = 10
+const startYear = new Date().getFullYear() - offset/2
+const selectOptions = 18
+const selectSemesterList: string[] = Array.from(Array(selectOptions).keys()).map(n =>
+    (n % 2 === 0
+        ? "WS" + (startYear + n / 2) + "/" + (startYear - 1999 + n / 2)
+        : "SS" + (startYear + 1 + Math.floor(n / 2))))
+
+
+const getCurrentSemester = () => {
+    // todo don't rely on starting selection year being current year - 3
+    if (new Date().getMonth() < 4) {
+        console.log("current semester ", offset-1, selectSemesterList[offset-1])
+        return offset-1
+    } else if (new Date().getMonth() < 10) {
+        console.log("current semester ", offset, selectSemesterList[offset])
+        return offset
+    }
+    console.log("current semester ", offset+1, selectSemesterList[offset+1])
+    return offset+1
+}
+
 
 const initialState: INITIAL_STATE_TYPE = {
+    selectSemesterList: selectSemesterList,
     startSemester: "WS",
+    startSemesterIndex: 0,
+    currentSemesterIndex: getCurrentSemester(),
     storage: [],
     curriculum: exampleCurriculum
 };
@@ -165,11 +193,12 @@ const courseReducer = createReducer(initialState, (builder) => {
             }
         })
         .addCase(setStartSemester, (state, {payload}) => {
-            state.startSemester = payload.startSemester;
-            console.log(JSON.stringify(state.curriculum.semesters.map(s => ({
-                courses: s.courses.map(c => c.id),
-                customECTs: s.customEcts
-            }))))
+            state.startSemesterIndex = payload.startSemesterIndex
+            state.startSemester = payload.startSemesterIndex % 2 === 0 ? "WS" : "SS";
+            // console.log(JSON.stringify(state.curriculum.semesters.map(s => ({
+            //     courses: s.courses.map(c => c.id),
+            //     customECTs: s.customEcts
+            // }))))
         })
 
         .addCase(setCustomStudies, (state, {payload}) => {
@@ -225,7 +254,7 @@ const courseReducer = createReducer(initialState, (builder) => {
                     if (constraints !== undefined && constraints.dependsOn.length !== 0) {
 
                         // check if prior courses are in same semester or before -- check if they are after
-                        const violatingDependencies = findCoursesNotBefore(constraints.dependsOn, i+1, state.curriculum.semesters)
+                        const violatingDependencies = findCoursesNotBefore(constraints.dependsOn, i + 1, state.curriculum.semesters)
                         // console.log("violating dependencies:",violatingDependencies)
                         for (let foundCourse of violatingDependencies) {
                             course.violations.push({
