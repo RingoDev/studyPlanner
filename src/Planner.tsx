@@ -1,32 +1,38 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
-    AppBar,
+    AppBar, Box, Button,
     Container,
-    createStyles,
-    makeStyles,
-    Toolbar,
+    createStyles, FormControl, Grid,
+    makeStyles, MenuItem, Modal, Select,
+    Toolbar, Typography,
 } from "@material-ui/core";
-import {DragDropContext, DragStart, DropResult} from "react-beautiful-dnd";
+import {BeforeCapture, DragDropContext, DragStart, DropResult} from "react-beautiful-dnd";
 import Curriculum from "./Curriculum";
 import Storage from "./Storage";
-import {useAppDispatch} from "./redux/hooks";
+import {useAppDispatch, useAppSelector} from "./redux/hooks";
 import {
-    hideConstraintIndicators,
+    hideConstraintIndicators, lockDroppables,
     moveCourse,
-    moveCourseInList,
-    showConstraintIndicators
+    moveCourseInList, setStartSemester,
+    showConstraintIndicators, unlockDroppables
 } from "./redux/data/data.actions";
+import {Link} from "react-router-dom";
+import ConfigurationModal from "./components/configurationModal";
 
-import {Link} from 'react-router-dom'
 
 
 const Planner = () => {
 
     const dispatch = useAppDispatch()
 
+    const [open,setOpen] = useState<boolean>(false)
+
+
+
     const handleDrop = (result: DropResult) => {
 
         dispatch(hideConstraintIndicators({}))
+        dispatch(unlockDroppables({}))
 
         console.log(result)
         const destination = result.destination
@@ -60,12 +66,38 @@ const Planner = () => {
             sourceIndex: dragStart.source.index
         }))
 
+        dispatch(lockDroppables({
+            sourceId: dragStart.source.droppableId,
+            draggableId: dragStart.draggableId,
+        }))
+
+
+    }
+
+    const handleOnBeforeCapture = (before:BeforeCapture) => {
     }
 
     const useStyles = makeStyles(() =>
         createStyles({
             container: {
                 padding: "2rem"
+            },
+            box: {
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: 400,
+                padding: "4rem",
+                backdropFilter: "blur(20px)",
+                boxShadow: "0 8px 32px 0 rgba( 31, 38, 135, 0.37 )",
+                borderRadius: "1rem",
+                minHeight: "50rem",
+                background: "rgba( 255, 255, 255, 0.3 )",
+                border: "1px solid rgba( 255, 255, 255, 0.18 )",
+            },
+            toolbar:{
+                backgroundColor:"#99d98c"
             }
         }),
     )
@@ -76,13 +108,15 @@ const Planner = () => {
     return (
         <div className="App">
             <AppBar position={"static"}>
-                <Toolbar>
-                    <Link to="/configuration">Settings</Link>
+                <Toolbar className={classes.toolbar} >
+                    <Button onClick={() => setOpen(!open)}>Configuration </Button>
                 </Toolbar>
             </AppBar>
+            <ConfigurationModal open={open} setOpen={setOpen}/>
+
             <Container className={classes.container} maxWidth={"xl"}>
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                    <DragDropContext onDragEnd={(result) => handleDrop(result)} onDragStart={handleDragStart}>
+                    <DragDropContext onBeforeCapture={handleOnBeforeCapture} onDragEnd={(result) => handleDrop(result)} onDragStart={handleDragStart}>
                         <div style={{
                             maxHeight: "90vh",
                             height: "85vh",

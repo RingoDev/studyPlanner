@@ -1,18 +1,18 @@
 import {AnyAction, createReducer} from '@reduxjs/toolkit'
-import Course, {CurriculumType, SemesterType} from "../../types";
+import Course, {CurriculumType, Group, SemesterType} from "../../types";
 import courses from "../../data/courses.json";
 import semesterConstraints from "../../data/semesterConstraints.json"
 import steopConstraints from '../../data/steopConstraints.json'
 import dependencyConstraints from '../../data/dependencyConstraints.json'
 import {
     addSemester,
-    hideConstraintIndicators,
+    hideConstraintIndicators, lockDroppables,
     moveCourse,
     moveCourseInList,
     removeSemester,
     setCustomStudies,
     setStartSemester,
-    showConstraintIndicators,
+    showConstraintIndicators, unlockDroppables,
 } from "./data.actions";
 import curriculumWS6S from '../../data/examples/WS6Semester.json'
 import groups from '../../data/groups.json'
@@ -22,7 +22,7 @@ interface INITIAL_STATE_TYPE {
     startSemester: "WS" | "SS"
     startSemesterIndex: number,
     currentSemesterIndex: number
-    storage: Course[]
+    storage: Group[]
     curriculum: CurriculumType
 }
 
@@ -55,16 +55,9 @@ const exampleCurriculum: CurriculumType = {
     }))
 }
 
-// const initialState: INITIAL_STATE_TYPE = {
-//     startSemester: "WS",
-//     storage: courses.map(c => ({...c,type:"course"})),
-//     curriculum: {
-//         semesters: Array.from([0, 1, 2, 3, 4, 5]).map(a => ({number: a, id: "00" + a, courses: [], customEcts: 0}))
-//     }
-// };
 
 const offset = 10
-const startYear = new Date().getFullYear() - offset/2
+const startYear = new Date().getFullYear() - offset / 2
 const selectOptions = 18
 const selectSemesterList: string[] = Array.from(Array(selectOptions).keys()).map(n =>
     (n % 2 === 0
@@ -75,14 +68,23 @@ const selectSemesterList: string[] = Array.from(Array(selectOptions).keys()).map
 const getCurrentSemester = () => {
     // todo don't rely on starting selection year being current year - 3
     if (new Date().getMonth() < 4) {
-        console.log("current semester ", offset-1, selectSemesterList[offset-1])
-        return offset-1
+        console.log("current semester ", offset - 1, selectSemesterList[offset - 1])
+        return offset - 1
     } else if (new Date().getMonth() < 10) {
         console.log("current semester ", offset, selectSemesterList[offset])
         return offset
     }
-    console.log("current semester ", offset+1, selectSemesterList[offset+1])
-    return offset+1
+    console.log("current semester ", offset + 1, selectSemesterList[offset + 1])
+    return offset + 1
+}
+
+
+const createGroups = (): Group[] => {
+    return groups.map(g => ({
+        ...g,
+        type: "group",
+        courses: g.courses.map(id => ({...getCourseById(id), color: getCourseColor(id)}))
+    }))
 }
 
 
@@ -91,12 +93,20 @@ const initialState: INITIAL_STATE_TYPE = {
     startSemester: "WS",
     startSemesterIndex: 0,
     currentSemesterIndex: getCurrentSemester(),
-    storage: [],
-    curriculum: exampleCurriculum
-};
+    // storage: courses.map(c => ({...getCourseById(c.id), color: getCourseColor(c.id)})),
+    storage: createGroups(),
+    curriculum: {
+        semesters: Array.from([0, 1, 2, 3, 4, 5]).map(a => ({number: a, id: "00" + a, courses: [], customEcts: 0}))
+    }
+}
+
+// uncomment for example curriculum
+// initialState.storage = []
+// initialState.curriculum = exampleCurriculum;
+
 
 // checking Course Constraints after most actions
-const checkCourseConstraintsMatcher = (action: AnyAction) => !setCustomStudies.match(action) && !showConstraintIndicators.match(action) && !moveCourseInList.match(action)
+const checkCourseConstraintsMatcher = (action: AnyAction) => !setCustomStudies.match(action) && !lockDroppables.match(action) && !showConstraintIndicators.match(action) && !moveCourseInList.match(action)
 
 const courseReducer = createReducer(initialState, (builder) => {
     builder
@@ -110,7 +120,7 @@ const courseReducer = createReducer(initialState, (builder) => {
                 const course = state.storage.splice(payload.sourceIndex, 1)[0]
 
                 // add course to semester
-                state.curriculum.semesters[semesterIndex].courses.splice(payload.destinationIndex, 0, course);
+                // state.curriculum.semesters[semesterIndex].courses.splice(payload.destinationIndex, 0, course);
             } else if (payload.destinationId === "storage") { // moving from curriculum to storage
 
                 // find semester
@@ -120,7 +130,7 @@ const courseReducer = createReducer(initialState, (builder) => {
                 const course = state.curriculum.semesters[semesterIndex].courses.splice(payload.sourceIndex, 1)[0]
 
                 // add course to storage
-                state.storage.splice(payload.destinationIndex, 0, course);
+                // state.storage.splice(payload.destinationIndex, 0, course);
             } else {// from semester to other semester
 
                 // find semester
@@ -154,6 +164,20 @@ const courseReducer = createReducer(initialState, (builder) => {
                 state.curriculum.semesters[semesterIndex].courses = arrayMove(payload.sourceIndex, payload.destinationIndex, state.curriculum.semesters[semesterIndex].courses)
             }
         })
+        .addCase(lockDroppables, (state, {payload}) => {
+                // disable drop on course in storage with id != sourceId
+                state.storage.map(group => {
+                    if (group.id !== payload.draggableId) {
+                        console.log("disabling drop on group", group.title)
+                        return {...group, dropDisabled: true}
+                    }
+                    return {group}
+                })
+                // disable drop on storage
+        })
+        .addCase(unlockDroppables, (state) => {
+
+        })
         .addCase(addSemester, (state) => {
             state.curriculum.semesters.push({courses: [], customEcts: 0})
         })
@@ -161,7 +185,7 @@ const courseReducer = createReducer(initialState, (builder) => {
         .addCase(removeSemester, (state, {payload}) => {
 
             // add courses to storage with reset violations
-            state.storage.push(...state.curriculum.semesters[payload.semesterIndex].courses)
+            // state.storage.push(...state.curriculum.semesters[payload.semesterIndex].courses)
 
             // remove semester
             state.curriculum.semesters.splice(payload.semesterIndex, 1)
@@ -210,7 +234,7 @@ const courseReducer = createReducer(initialState, (builder) => {
             console.log("Checking constraints")
 
             for (let course of state.storage) {
-                course.violations = []
+                // course.violations = []
             }
 
             for (let i = 0; i < state.curriculum.semesters.length; i++) {

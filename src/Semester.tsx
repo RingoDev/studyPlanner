@@ -3,29 +3,48 @@ import React from "react";
 import CourseList from "./components/courseList";
 import {SemesterType} from "./types";
 import {useAppDispatch, useAppSelector} from "./redux/hooks";
-import {Button} from "@material-ui/core";
+import {Button, createStyles, makeStyles} from "@material-ui/core";
 import {removeSemester} from "./redux/data/data.actions";
+import SemesterName from "./components/semesterName";
+
+
+const useStyles = makeStyles(() =>
+    createStyles({
+        container: {
+            padding: "2rem"
+        },
+        semester: {
+
+            boxShadow: "0 8px 32px 0 rgba( 31, 38, 135, 0.37 )",
+            borderRadius: "1rem",
+
+            border: "1px solid rgba( 255, 255, 255, 0.18 )",
+        },
+        test:{
+            position: "relative",
+            padding: "3rem 1rem 3rem 1rem",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            background: "rgba( 255, 255, 255, 0.5 )",
+            // backdropFilter: "blur(20px)",
+        }
+    }),
+)
+
 
 const Semester = ({semester, index}: { semester: SemesterType, index: number }) => {
 
     const customECTsCounter = useAppSelector((state) => state.data.curriculum.semesters[index].customEcts)
     const semesterIsDone: boolean = useAppSelector((state) => (state.data.currentSemesterIndex - state.data.startSemesterIndex) > index)
+
+
+    const classes = useStyles()
+
     const dispatch = useAppDispatch()
     return (
-        <div style={{
-            position: "relative",
-            padding: "3rem 1rem 3rem 1rem",
-            height: "100%",
-            display: "flex",
-            flexDirection: "column"
-        }}>
-            <div style={{
-                fontSize: "2.25rem",
-                position: "absolute",
-                top: "8rem",
-                left: "-2rem",
-                transform: "rotate(270deg)"
-            }}>Semester {index + 1}</div>
+        <div className={classes.test}>
+           <SemesterName index={index}/>
             <div style={{position: "relative", paddingLeft: "4rem", height: "100%"}}>
                 <div style={{height: "100%", display: "flex", flexDirection: "column"}}>
                     <Droppable droppableId={"sem" + index}>
@@ -44,7 +63,7 @@ const Semester = ({semester, index}: { semester: SemesterType, index: number }) 
                     </div>
                     <Button style={{zIndex: 2}}
                             onClick={() => dispatch(removeSemester({semesterIndex: index}))}>Remove</Button>
-                    {semesterIsDone ? "done" : "not done"}
+                    {/*{semesterIsDone ? "done" : "not done"}*/}
                 </div>
             </div>
         </div>

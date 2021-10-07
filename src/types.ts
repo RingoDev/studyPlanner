@@ -25,6 +25,7 @@ export interface Group {
     id: string,
     title: string
     color?: string
+    dropDisabled?:boolean
 }
 
 export interface DataGroup {

@@ -1,13 +1,13 @@
 import {
     ADD_SEMESTER,
     CHECK_COURSE_CONSTRAINTS,
-    HIDE_CONSTRAINT_INDICATORS,
+    HIDE_CONSTRAINT_INDICATORS, LOCK_DROPPABLES,
     MOVE_COURSE,
     MOVE_COURSE_IN_LIST,
     REMOVE_SEMESTER,
     SET_CUSTOM_STUDIES,
     SET_START_SEMESTER,
-    SHOW_CONSTRAINT_INDICATORS
+    SHOW_CONSTRAINT_INDICATORS, UNLOCK_DROPPABLES
 } from "./data.types";
 import {createAction} from "@reduxjs/toolkit"
 
@@ -19,6 +19,9 @@ export const removeSemester = createAction<{ semesterIndex: number }>(REMOVE_SEM
 
 export const showConstraintIndicators = createAction<{ sourceId: string, courseId: string, sourceIndex: number }>(SHOW_CONSTRAINT_INDICATORS)
 export const hideConstraintIndicators = createAction<{}>(HIDE_CONSTRAINT_INDICATORS)
+
+export const lockDroppables = createAction<{sourceId: string, draggableId: string }>(LOCK_DROPPABLES)
+export const unlockDroppables = createAction<{ }>(UNLOCK_DROPPABLES)
 
 export const setCustomStudies = createAction<{ semesterIndex: number, ects: number }>(SET_CUSTOM_STUDIES)
 export const checkCourseConstraints = createAction<{}>(CHECK_COURSE_CONSTRAINTS)
