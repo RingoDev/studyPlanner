@@ -1,8 +1,6 @@
-import { Droppable} from "react-beautiful-dnd";
 import React from "react";
-import CourseList from "./components/courseList";
 import {useAppSelector} from "./redux/hooks";
-import GroupList from "./components/groupList";
+import DroppableGroupList from "./components/droppableGroupList";
 
 const Storage = () => {
 
@@ -10,8 +8,7 @@ const Storage = () => {
 
     return (
                 <div style={{height:"100%",overflowY:"auto"}}>
-                    {/*<CourseList courses={storage} outerProvided={provided} id={"storage"}/>*/}
-                    <GroupList groups={storage}/>
+                    <DroppableGroupList groups={storage}/>
                 </div>
     )
 }

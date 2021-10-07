@@ -1,7 +1,7 @@
 import {ListItemIcon, Tooltip, Typography, withStyles} from "@material-ui/core";
 import {AlertCircle, XCircle} from "lucide-react";
 import React from "react";
-import Course from "../types";
+import Course from "../types/types";
 
 const ConstraintIndicator = ({course}: { course: Course }) => {
 

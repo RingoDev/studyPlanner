@@ -1,9 +1,8 @@
-import Course, {Group} from "../types";
+import  {Group} from "../types/types";
 import List from "@material-ui/core/List";
 import React from "react";
 import {createStyles, makeStyles} from "@material-ui/core";
-import GroupItem from "./groupItem";
-
+import DraggableGroupItem from "./draggableGroupItem";
 
 interface Props {
     groups: Group[]
@@ -25,7 +24,7 @@ const GroupList = ({groups}: Props) => {
     return (
         <>
             <List disablePadding className={classes.list}>
-                {groups.map((g, index) => <GroupItem
+                {groups.map((g, index) => <DraggableGroupItem
                     key={g.id}
                     group={g}
                     index={index}/>)}

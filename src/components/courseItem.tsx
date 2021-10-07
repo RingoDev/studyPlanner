@@ -1,17 +1,14 @@
 import {createStyles, makeStyles} from "@material-ui/core";
-import {Draggable} from "react-beautiful-dnd";
-import React, {MouseEventHandler} from "react";
-import {moveCourse} from "../redux/data/data.actions";
+import React from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import KusssLink from "./kusssLink";
-import Course from "../types";
-import {useAppDispatch} from "../redux/hooks";
+import Course from "../types/types";
 import ConstraintIndicator from "./constraintIndicator";
 
-const CourseItem = ({course, index, semesterId}: { course: Course, index: number, semesterId: string }) => {
+const CourseItem = ({course}: { course: Course, index: number, semesterId: string }) => {
 
-    const dispatch = useAppDispatch()
+    // const dispatch = useAppDispatch()
 
     const useStyles = makeStyles(() => {
         let color = "#cccccc"

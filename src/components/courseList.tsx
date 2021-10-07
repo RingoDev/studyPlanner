@@ -1,20 +1,15 @@
-import Course from "../types";
-import {Draggable, DroppableProvided} from "react-beautiful-dnd";
+import Course from "../types/types";
 import List from "@material-ui/core/List";
-import React, {MouseEventHandler} from "react";
+import React from "react";
 import {createStyles, makeStyles} from "@material-ui/core";
 import CustomStudies from "./customStudies";
-import CourseItem from "./courseItem";
-import {moveCourse} from "../redux/data/data.actions";
-import {useAppDispatch} from "../redux/hooks";
+import DraggableCourseItem from "./draggableCourseItem";
 
 
 interface Props {
     courses: Course[],
-    outerProvided: DroppableProvided,
     id: string
 }
-
 
 
 const useStyles = makeStyles(() =>
@@ -26,43 +21,33 @@ const useStyles = makeStyles(() =>
 );
 
 
-const CourseList = ({courses, outerProvided, id}: Props) => {
+const CourseList = ({courses, id}: Props) => {
 
-    const dispatch = useAppDispatch()
+    // const dispatch = useAppDispatch()
     const classes = useStyles()
 
     return (
         <>
             <List disablePadding className={classes.list}>
                 {courses.map((c, index) => (
-                        <Draggable key={c.id} draggableId={c.id} index={index}>
-                            {(provided) => {
-                                const handleLeftClick: MouseEventHandler<HTMLLIElement | HTMLDivElement> = (e) => {
-                                    if (id !== "storage") {
-                                        e.preventDefault()
-                                        console.log(e)
-                                        dispatch(moveCourse({
-                                            courseId: c.id,
-                                            destinationId: "storage",
-                                            destinationIndex: 0,
-                                            sourceIndex: index,
-                                            sourceId: id
-                                        }))
-                                    }
-                                }
-                                return (
-                                    <div onContextMenu={handleLeftClick}
-                                         ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                        <CourseItem key={c.id} course={c} index={index} semesterId={id}/>
-                                    </div>
-                                )
-                            }}
-                        </Draggable>
-
-
+                        // const handleLeftClick: MouseEventHandler<HTMLLIElement | HTMLDivElement> = (e) => {
+                        //     if (id !== "storage") {
+                        //         e.preventDefault()
+                        //         console.log(e)
+                        //         dispatch(moveCourse({
+                        //             courseId: c.id,
+                        //             destinationId: "storage",
+                        //             destinationIndex: 0,
+                        //             sourceIndex: index,
+                        //             sourceId: id
+                        //         }))
+                        //     }
+                        // }
+                        <div>
+                            <DraggableCourseItem course={c} index={index} semesterId={id}/>
+                        </div>
                     )
                 )}
-                {outerProvided.placeholder}
                 {id === "storage" ? null : <CustomStudies semesterIndex={Number(id.slice(3))}/>}
             </List>
         </>

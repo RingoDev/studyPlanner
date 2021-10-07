@@ -1,5 +1,5 @@
 import {AnyAction, createReducer} from '@reduxjs/toolkit'
-import Course, {CurriculumType, Group, SemesterType} from "../../types";
+import Course, {CurriculumType, Group, SemesterType} from "../../types/types";
 import courses from "../../data/courses.json";
 import semesterConstraints from "../../data/semesterConstraints.json"
 import steopConstraints from '../../data/steopConstraints.json'
@@ -83,7 +83,8 @@ const createGroups = (): Group[] => {
     return groups.map(g => ({
         ...g,
         type: "group",
-        courses: g.courses.map(id => ({...getCourseById(id), color: getCourseColor(id)}))
+        // courses: g.courses.map(id => ({...getCourseById(id), color: getCourseColor(id)}))
+        courses: []
     }))
 }
 
@@ -101,8 +102,8 @@ const initialState: INITIAL_STATE_TYPE = {
 }
 
 // uncomment for example curriculum
-// initialState.storage = []
-// initialState.curriculum = exampleCurriculum;
+initialState.storage = createGroups()
+initialState.curriculum = exampleCurriculum;
 
 
 // checking Course Constraints after most actions
@@ -114,10 +115,10 @@ const courseReducer = createReducer(initialState, (builder) => {
             if (payload.sourceId === "storage") {// moving from storage to curriculum
 
                 // find semester
-                const semesterIndex = Number(payload.destinationId.slice(3))
+                // const semesterIndex = Number(payload.destinationId.slice(3))
 
                 // remove course from storage list
-                const course = state.storage.splice(payload.sourceIndex, 1)[0]
+                // const course = state.storage.splice(payload.sourceIndex, 1)[0]
 
                 // add course to semester
                 // state.curriculum.semesters[semesterIndex].courses.splice(payload.destinationIndex, 0, course);
@@ -131,6 +132,15 @@ const courseReducer = createReducer(initialState, (builder) => {
 
                 // add course to storage
                 // state.storage.splice(payload.destinationIndex, 0, course);
+                const groupId = findGroupIdOfCourse(course.id)
+
+                console.log("GroupId of course " + course.title + "  " + course.id + " is " + groupId)
+                if (groupId) {
+                    const index = state.storage.findIndex(group => group.id === groupId)
+                    if (index !== -1) {
+                        state.storage[index].courses.push(course);
+                    }
+                }
             } else {// from semester to other semester
 
                 // find semester
@@ -145,7 +155,12 @@ const courseReducer = createReducer(initialState, (builder) => {
             }
 
             // sort storage
-            state.storage.sort((c1, c2) => Number(c1.id) - Number(c2.id))
+            state.storage.sort((c1, c2) => {
+                if ((c1.courses.length === 0 && c2.courses.length === 0) || (c1.courses.length !== 0 && c2.courses.length !== 0)) {
+                    return Number(c1.id) - Number(c2.id)
+                } else return c2.courses.length - c1.courses.length
+
+            })
             console.log("Successfully moved curse with id " + payload.courseId + " from list " + payload.sourceId + " to " + payload.destinationId)
         })
         .addCase(moveCourseInList, (state, {payload}) => {
@@ -165,17 +180,17 @@ const courseReducer = createReducer(initialState, (builder) => {
             }
         })
         .addCase(lockDroppables, (state, {payload}) => {
-                // disable drop on course in storage with id != sourceId
-                state.storage.map(group => {
-                    if (group.id !== payload.draggableId) {
-                        console.log("disabling drop on group", group.title)
-                        return {...group, dropDisabled: true}
-                    }
-                    return {group}
-                })
-                // disable drop on storage
+            // disable drop on course in storage with id != sourceId
+            state.storage.map(group => {
+                if (group.id !== payload.draggableId) {
+                    console.log("disabling drop on group", group.title)
+                    return {...group, dropDisabled: true}
+                }
+                return {group}
+            })
+            // disable drop on storage
         })
-        .addCase(unlockDroppables, (state) => {
+        .addCase(unlockDroppables, () => {
 
         })
         .addCase(addSemester, (state) => {
@@ -233,8 +248,11 @@ const courseReducer = createReducer(initialState, (builder) => {
 
             console.log("Checking constraints")
 
-            for (let course of state.storage) {
-                // course.violations = []
+            for (let group of state.storage) {
+                for (let course of group.courses) {
+                    course.violations = []
+                }
+
             }
 
             for (let i = 0; i < state.curriculum.semesters.length; i++) {
@@ -358,6 +376,12 @@ function arrayMove<T>(oldIndex: number, newIndex: number, list: T[]) {
     newList.splice(newIndex, 0, object)
 
     return newList
+}
+
+function findGroupIdOfCourse(courseId: string): string | undefined {
+    const groupIndex = groups.findIndex(g => g.courses.findIndex(id => id === courseId) !== -1)
+    if (groupIndex === -1) return;
+    return groups[groupIndex].id
 }
 
 export default courseReducer
