@@ -1,3 +1,5 @@
+import {GROUP} from "./dndTypes";
+
 export default interface Course {
     type: "course"
     id: string
@@ -20,7 +22,7 @@ export interface CurriculumType {
 }
 
 export interface Group {
-    type: "group"
+    type: typeof GROUP
     courses: Course[]
     id: string,
     title: string

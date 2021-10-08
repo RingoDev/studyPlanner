@@ -7,8 +7,7 @@ import dependencyConstraints from '../../data/dependencyConstraints.json'
 import {
     addSemester,
     hideConstraintIndicators, lockDroppables,
-    moveCourse,
-    moveCourseInList,
+    moveCourse, moveGroup,
     removeSemester,
     setCustomStudies,
     setStartSemester,
@@ -16,13 +15,14 @@ import {
 } from "./data.actions";
 import curriculumWS6S from '../../data/examples/WS6Semester.json'
 import groups from '../../data/groups.json'
+import {GROUP} from "../../types/dndTypes";
 
 interface INITIAL_STATE_TYPE {
     selectSemesterList: string[]
     startSemester: "WS" | "SS"
     startSemesterIndex: number,
     currentSemesterIndex: number
-    storage: Group[]
+    storage: Course[]
     curriculum: CurriculumType
 }
 
@@ -79,14 +79,14 @@ const getCurrentSemester = () => {
 }
 
 
-const createGroups = (): Group[] => {
-    return groups.map(g => ({
-        ...g,
-        type: "group",
-        // courses: g.courses.map(id => ({...getCourseById(id), color: getCourseColor(id)}))
-        courses: []
-    }))
-}
+// const createGroups = (): Group[] => {
+//     return groups.map(g => ({
+//         ...g,
+//         type: GROUP,
+//         // courses: g.courses.map(id => ({...getCourseById(id), color: getCourseColor(id)}))
+//         courses: []
+//     }))
+// }
 
 
 const initialState: INITIAL_STATE_TYPE = {
@@ -94,90 +94,104 @@ const initialState: INITIAL_STATE_TYPE = {
     startSemester: "WS",
     startSemesterIndex: 0,
     currentSemesterIndex: getCurrentSemester(),
-    // storage: courses.map(c => ({...getCourseById(c.id), color: getCourseColor(c.id)})),
-    storage: createGroups(),
+    storage: courses.map(c => ({...getCourseById(c.id), color: getCourseColor(c.id)})),
+    // storage: createGroups(),
     curriculum: {
         semesters: Array.from([0, 1, 2, 3, 4, 5]).map(a => ({number: a, id: "00" + a, courses: [], customEcts: 0}))
     }
 }
 
 // uncomment for example curriculum
-initialState.storage = createGroups()
-initialState.curriculum = exampleCurriculum;
+// initialState.storage = []
+// initialState.curriculum = exampleCurriculum;
 
 
 // checking Course Constraints after most actions
-const checkCourseConstraintsMatcher = (action: AnyAction) => !setCustomStudies.match(action) && !lockDroppables.match(action) && !showConstraintIndicators.match(action) && !moveCourseInList.match(action)
+const checkCourseConstraintsMatcher = (action: AnyAction) => !setCustomStudies.match(action) && !lockDroppables.match(action) && !showConstraintIndicators.match(action)
 
 const courseReducer = createReducer(initialState, (builder) => {
     builder
         .addCase(moveCourse, (state, {payload}) => {
-            if (payload.sourceId === "storage") {// moving from storage to curriculum
+            if (payload.sourceId === payload.courseId && isGroupId(payload.sourceId)) {
+                // do nothing
+            } else if (isGroupId(payload.sourceId)) {
+                // moving Course from storage to curriculum
 
                 // find semester
-                // const semesterIndex = Number(payload.destinationId.slice(3))
+                const semesterIndex = Number(payload.destinationId.slice(3))
 
-                // remove course from storage list
-                // const course = state.storage.splice(payload.sourceIndex, 1)[0]
+                const courseIndex = state.storage.findIndex(c => c.id === payload.courseId)
 
-                // add course to semester
-                // state.curriculum.semesters[semesterIndex].courses.splice(payload.destinationIndex, 0, course);
-            } else if (payload.destinationId === "storage") { // moving from curriculum to storage
+                if (courseIndex !== -1) {
+                    // remove course from Storage
+                    const course = state.storage.splice(courseIndex, 1)[0]
+
+                    // add course to semester
+                    state.curriculum.semesters[semesterIndex].courses.splice(0, 0, course);
+                }
+
+            } else if (isStorageId(payload.destinationId)) {
+                // moving from curriculum to storage
+
 
                 // find semester
                 const semesterIndex = Number(payload.sourceId.slice(3))
+                const courseIndex = state.curriculum.semesters[semesterIndex].courses.findIndex(c => c.id === payload.courseId)
 
-                // remove course from semester list
-                const course = state.curriculum.semesters[semesterIndex].courses.splice(payload.sourceIndex, 1)[0]
 
-                // add course to storage
-                // state.storage.splice(payload.destinationIndex, 0, course);
-                const groupId = findGroupIdOfCourse(course.id)
+                console.log(payload.courseId + " course id")
+                console.log(semesterIndex + " semester index")
+                console.log(courseIndex + " Course Index")
 
-                console.log("GroupId of course " + course.title + "  " + course.id + " is " + groupId)
-                if (groupId) {
-                    const index = state.storage.findIndex(group => group.id === groupId)
-                    if (index !== -1) {
-                        state.storage[index].courses.push(course);
-                    }
+                if (courseIndex !== -1) {
+
+                    console.log("removing course from index " + courseIndex)
+
+                    // remove course from semester list
+                    const course = state.curriculum.semesters[semesterIndex].courses.splice(courseIndex, 1)[0]
+
+                    // add course to storage
+                    state.storage.splice(0, 0, course);
                 }
             } else {// from semester to other semester
 
                 // find semester
                 const sourceSemesterIndex = Number(payload.sourceId.slice(3))
                 const destinationSemesterIndex = Number(payload.destinationId.slice(3))
+                const sourceCourseIndex = state.curriculum.semesters[sourceSemesterIndex].courses.findIndex(c => c.id === payload.courseId)
+                const destinationCourseIndex = state.curriculum.semesters[destinationSemesterIndex].courses.findIndex(c => c.id === payload.courseId)
+
 
                 // remove course from semester list
-                const course = state.curriculum.semesters[sourceSemesterIndex].courses.splice(payload.sourceIndex, 1)[0]
+                const course = state.curriculum.semesters[sourceSemesterIndex].courses.splice(sourceCourseIndex, 1)[0]
 
                 // add course to semester
-                state.curriculum.semesters[destinationSemesterIndex].courses.splice(payload.destinationIndex, 0, course);
+                state.curriculum.semesters[destinationSemesterIndex].courses.splice(destinationCourseIndex, 0, course);
             }
 
-            // sort storage
-            state.storage.sort((c1, c2) => {
-                if ((c1.courses.length === 0 && c2.courses.length === 0) || (c1.courses.length !== 0 && c2.courses.length !== 0)) {
-                    return Number(c1.id) - Number(c2.id)
-                } else return c2.courses.length - c1.courses.length
-
-            })
             console.log("Successfully moved curse with id " + payload.courseId + " from list " + payload.sourceId + " to " + payload.destinationId)
         })
-        .addCase(moveCourseInList, (state, {payload}) => {
-            if (payload.listId === "storage") {// we are shuffling in storage list
-                // do nothing
-                // state.storage = arrayMove(payload.sourceIndex, payload.destinationIndex, state.storage)
-            } else {// we are shuffling in a semester list
+        .addCase(moveGroup, (state, {payload}) => {
+            const groupIndex = groups.findIndex(g => g.id === payload.groupId)
+            // find semester
+            const semesterIndex = Number(payload.destinationId.slice(3))
 
-                // get semesterIndex from the semesterId
-                const semesterIndex = Number(payload.listId.slice(3))
+            if (groupIndex !== -1) {
+                const IDs = groups[groupIndex].courses
+                for (let id of IDs) {
+                    // check if course with id is in storage
+                    const courseIndex = state.storage.findIndex(c => c.id === id)
+                    if(courseIndex !== -1){
+                        // remove course from Storage
+                        const course = state.storage.splice(courseIndex, 1)[0]
 
-                if (isNaN(semesterIndex)) {
-                    console.error("weird semester index wasn't found: " + payload.listId)
-                    return
+                        // add course to semester
+                        state.curriculum.semesters[semesterIndex].courses.splice(0, 0, course);
+                    }
+
                 }
-                state.curriculum.semesters[semesterIndex].courses = arrayMove(payload.sourceIndex, payload.destinationIndex, state.curriculum.semesters[semesterIndex].courses)
             }
+
         })
         .addCase(lockDroppables, (state, {payload}) => {
             // disable drop on course in storage with id != sourceId
@@ -245,14 +259,9 @@ const courseReducer = createReducer(initialState, (builder) => {
         })
 
         .addMatcher(checkCourseConstraintsMatcher, (state, {payload}) => {
-
             console.log("Checking constraints")
-
-            for (let group of state.storage) {
-                for (let course of group.courses) {
-                    course.violations = []
-                }
-
+            for (let course of state.storage) {
+                course.violations = []
             }
 
             for (let i = 0; i < state.curriculum.semesters.length; i++) {
@@ -383,5 +392,15 @@ function findGroupIdOfCourse(courseId: string): string | undefined {
     if (groupIndex === -1) return;
     return groups[groupIndex].id
 }
+
+
+function isGroupId(id: string) {
+    return !isNaN(Number(id)) && id.length === 3
+}
+
+function isStorageId(id: string) {
+    return id === "storage"
+}
+
 
 export default courseReducer

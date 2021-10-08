@@ -31,12 +31,11 @@ const DroppableGroupList = ({groups}: Props) => {
         accept: [COURSE],
         drop: (dragObject, _) => {
             if (dragObject.type === COURSE) {
+                console.log("dropped course with id " + dragObject.payload.id + " onto storage")
                 dispatch(moveCourse({
                     courseId: dragObject.payload.id,
                     sourceId: dragObject.sourceId,
                     destinationId: "storage",
-                    sourceIndex: dragObject.sourceIndex,
-                    destinationIndex: 0
                 }))
             }
 

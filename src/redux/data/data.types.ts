@@ -1,5 +1,5 @@
 export const MOVE_COURSE = "MOVE_COURSE";
-export const MOVE_COURSE_IN_LIST = "MOVE_COURSE_IN_LIST"
+export const MOVE_GROUP = "MOVE_GROUP";
 export const ADD_SEMESTER = "ADD_SEMESTER";
 export const REMOVE_SEMESTER = "REMOVE_SEMESTER"
 

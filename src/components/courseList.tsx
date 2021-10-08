@@ -43,8 +43,8 @@ const CourseList = ({courses, id}: Props) => {
                         //         }))
                         //     }
                         // }
-                        <div>
-                            <DraggableCourseItem course={c} index={index} semesterId={id}/>
+                        <div key={c.id}>
+                            <DraggableCourseItem course={c} index={index} containerId={id}/>
                         </div>
                     )
                 )}

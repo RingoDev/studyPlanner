@@ -7,24 +7,19 @@ import {CourseDrop} from "./droppableCourseList";
 interface Props {
     course: Course
     index: number
-    semesterId: string
+    containerId: string
 }
 
 
-const DraggableCourseItem = ({course, index, semesterId}: Props) => {
-    const [collected, drag, dragPreview] = useDrag<CourseDrop, any, { isDragging: boolean }>(() => ({
+const DraggableCourseItem = ({course, index, containerId}: Props) => {
+    const [collected, drag, dragPreview] = useDrag<CourseDrop, any, unknown>(() => ({
         type: COURSE,
-        item: {type: COURSE, payload: course, sourceId: semesterId, sourceIndex: index},
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging()
-        })
+        item: {type: COURSE, payload: course, sourceId: containerId}
     }))
 
-    return collected.isDragging ? (
-        <div ref={dragPreview}/>
-    ) : (
+    return (
         <div ref={drag} {...collected} style={{cursor: "pointer"}}>
-            <CourseItem course={course} index={index} semesterId={semesterId}/>
+            <CourseItem course={course} index={index} semesterId={containerId}/>
         </div>
     )
 }

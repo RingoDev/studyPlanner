@@ -8,12 +8,9 @@ import ConstraintIndicator from "./constraintIndicator";
 
 const CourseItem = ({course}: { course: Course, index: number, semesterId: string }) => {
 
-    // const dispatch = useAppDispatch()
-
     const useStyles = makeStyles(() => {
         let color = "#cccccc"
         if (course.color) color = course.color
-        // if(course.violations && course.violations.length !== 0) color = "rgba(95,24,24,0.67)"
 
         return createStyles({
             item: {
@@ -27,9 +24,7 @@ const CourseItem = ({course}: { course: Course, index: number, semesterId: strin
         })
     })
 
-
     const classes = useStyles()
-
 
     return (
         <ListItem className={classes.item}>

@@ -1,7 +1,8 @@
 import {Group} from "../types/types";
 import {useDrag} from "react-dnd";
-import {GROUP} from "../types/dndTypes";
+import {GROUP, STORAGE} from "../types/dndTypes";
 import GroupItem from "./groupItem";
+import {MultipleCourseDrop} from "./droppableCourseList";
 
 interface Props {
     group: Group
@@ -10,12 +11,17 @@ interface Props {
 
 
 const DraggableGroupItem = ({group, index}: Props) => {
-    const [collected, drag,] = useDrag<{ id: string }, any, { isDragging: boolean }>(() => ({
-        type: GROUP,
-        item: {id: group.id},
-    }))
+    const [collected, drag,] = useDrag<MultipleCourseDrop, any, { isDragging: boolean }>(() => {
+        console.log(index,group)
 
-    if(group.courses.length === 0){
+        return {
+            type: GROUP,
+            item: {type: GROUP, payload: {id:group.id}, sourceId: STORAGE},
+        }
+    })
+
+
+    if (group.courses.length === 0) {
         return <></>
     }
     return (

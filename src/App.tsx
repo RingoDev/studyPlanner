@@ -1,7 +1,6 @@
-import {Link, Route, Switch} from "react-router-dom";
+import { Route, Switch} from "react-router-dom";
 import Configuration from "./configuration";
 import Planner from "./Planner";
-import {AppBar, Toolbar} from "@material-ui/core";
 import React from "react";
 
 const App = () => {

@@ -3,7 +3,7 @@ import {
     CHECK_COURSE_CONSTRAINTS,
     HIDE_CONSTRAINT_INDICATORS, LOCK_DROPPABLES,
     MOVE_COURSE,
-    MOVE_COURSE_IN_LIST,
+     MOVE_GROUP,
     REMOVE_SEMESTER,
     SET_CUSTOM_STUDIES,
     SET_START_SEMESTER,
@@ -11,8 +11,9 @@ import {
 } from "./data.types";
 import {createAction} from "@reduxjs/toolkit"
 
-export const moveCourse = createAction<{ sourceId: string, destinationId: string, courseId: string, sourceIndex: number, destinationIndex: number }>(MOVE_COURSE);
-export const moveCourseInList = createAction<{ listId: string, courseId: string, sourceIndex: number, destinationIndex: number }>(MOVE_COURSE_IN_LIST);
+export const moveCourse = createAction<{ sourceId: string, destinationId: string, courseId: string }>(MOVE_COURSE);
+export const moveGroup = createAction<{  destinationId: string, groupId: string }>(MOVE_GROUP);
+// export const moveCourseInList = createAction<{ listId: string, courseId: string, sourceIndex: number, destinationIndex: number }>(MOVE_COURSE_IN_LIST);
 
 export const addSemester = createAction<{}>(ADD_SEMESTER);
 export const removeSemester = createAction<{ semesterIndex: number }>(REMOVE_SEMESTER)
