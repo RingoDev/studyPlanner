@@ -5,6 +5,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import KusssLink from "./kusssLink";
 import Course from "../types/types";
 import ConstraintIndicator from "./constraintIndicator";
+import CourseOptions from "./courseOptions";
 
 const CourseItem = ({course}: { course: Course, index: number, semesterId: string }) => {
 
@@ -29,10 +30,12 @@ const CourseItem = ({course}: { course: Course, index: number, semesterId: strin
     return (
         <ListItem className={classes.item}>
             <ListItemText>
+                {course.finished ? "Done" : null}
                 {course.kusssId !== "" ? <KusssLink
                     id={course.kusssId}>{course.sign + " - " + course.title}</KusssLink> : (course.sign + " - " + course.title)}
             </ListItemText>
             <ConstraintIndicator course={course}/>
+            <CourseOptions course={course}/>
         </ListItem>
     )
 }

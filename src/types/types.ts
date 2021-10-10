@@ -10,6 +10,8 @@ export default interface Course {
     kusssId: string
     violations?: Violation[]
     color?: string
+    credited?: boolean
+    finished?: boolean
 }
 
 export interface Violation {

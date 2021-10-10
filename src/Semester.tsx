@@ -21,7 +21,7 @@ const useStyles = makeStyles(() =>
         },
         test: {
             position: "relative",
-            padding: "3rem 1rem 3rem 1rem",
+            padding: "3rem 1rem 1rem 1rem",
             height: "100%",
             display: "flex",
             flexDirection: "column",

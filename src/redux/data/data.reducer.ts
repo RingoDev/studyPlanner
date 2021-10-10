@@ -1,5 +1,5 @@
 import {AnyAction, createReducer} from '@reduxjs/toolkit'
-import Course, {CurriculumType, Group, SemesterType} from "../../types/types";
+import Course, {CurriculumType,  SemesterType} from "../../types/types";
 import courses from "../../data/courses.json";
 import semesterConstraints from "../../data/semesterConstraints.json"
 import steopConstraints from '../../data/steopConstraints.json'
@@ -8,14 +8,13 @@ import {
     addSemester,
     hideConstraintIndicators, lockDroppables,
     moveCourse, moveGroup,
-    removeSemester,
+    removeSemester, setCourseFinished, setCourseUnfinished,
     setCustomStudies,
     setStartSemester,
     showConstraintIndicators, unlockDroppables,
 } from "./data.actions";
-import curriculumWS6S from '../../data/examples/WS6Semester.json'
+// import curriculumWS6S from '../../data/examples/WS6Semester.json'
 import groups from '../../data/groups.json'
-import {GROUP} from "../../types/dndTypes";
 
 interface INITIAL_STATE_TYPE {
     selectSemesterList: string[]
@@ -45,15 +44,15 @@ const getCourseColor = (id: string): string | undefined => {
     }
 }
 
-const examplePlan: { courses: string[], customECTs: number }[] = curriculumWS6S
+// const examplePlan: { courses: string[], customECTs: number }[] = curriculumWS6S
 
 
-const exampleCurriculum: CurriculumType = {
-    semesters: examplePlan.map(item => ({
-        courses: item.courses.map(id => ({...getCourseById(id), color: getCourseColor(id)})),
-        customEcts: item.customECTs
-    }))
-}
+// const exampleCurriculum: CurriculumType = {
+//     semesters: examplePlan.map(item => ({
+//         courses: item.courses.map(id => ({...getCourseById(id), color: getCourseColor(id)})),
+//         customEcts: item.customECTs
+//     }))
+// }
 
 
 const offset = 10
@@ -145,8 +144,6 @@ const courseReducer = createReducer(initialState, (builder) => {
 
                 if (courseIndex !== -1) {
 
-                    console.log("removing course from index " + courseIndex)
-
                     // remove course from semester list
                     const course = state.curriculum.semesters[semesterIndex].courses.splice(courseIndex, 1)[0]
 
@@ -181,7 +178,7 @@ const courseReducer = createReducer(initialState, (builder) => {
                 for (let id of IDs) {
                     // check if course with id is in storage
                     const courseIndex = state.storage.findIndex(c => c.id === id)
-                    if(courseIndex !== -1){
+                    if (courseIndex !== -1) {
                         // remove course from Storage
                         const course = state.storage.splice(courseIndex, 1)[0]
 
@@ -256,6 +253,43 @@ const courseReducer = createReducer(initialState, (builder) => {
 
         .addCase(setCustomStudies, (state, {payload}) => {
             state.curriculum.semesters[payload.semesterIndex].customEcts = payload.ects;
+        })
+
+        .addCase(setCourseFinished, (state, {payload}) => {
+
+            for (let i = 0; i < state.storage.length; i++) {
+                if (state.storage[i].id === payload.courseId) {
+                    state.storage[i].finished = true;
+                    return;
+                }
+            }
+
+            for (let j = 0; j < state.curriculum.semesters.length; j++) {
+                for (let k = 0; k < state.curriculum.semesters[j].courses.length; k++) {
+                    if (state.curriculum.semesters[j].courses[k].id === payload.courseId) {
+                        state.curriculum.semesters[j].courses[k].finished = true;
+                        return
+                    }
+                }
+            }
+        })
+        .addCase(setCourseUnfinished, (state, {payload}) => {
+
+            for (let i = 0; i < state.storage.length; i++) {
+                if (state.storage[i].id === payload.courseId) {
+                    state.storage[i].finished = false;
+                    return;
+                }
+            }
+
+            for (let j = 0; j < state.curriculum.semesters.length; j++) {
+                for (let k = 0; k < state.curriculum.semesters[j].courses.length; k++) {
+                    if (state.curriculum.semesters[j].courses[k].id === payload.courseId) {
+                        state.curriculum.semesters[j].courses[k].finished = false;
+                        return
+                    }
+                }
+            }
         })
 
         .addMatcher(checkCourseConstraintsMatcher, (state, {payload}) => {

@@ -20,7 +20,7 @@ const Curriculum = () => {
                 justifyContent: "space-evenly"
             }}>
                 {curriculum.semesters.map((s, index) => (
-                    <div key={index} style={{flexBasis: "50%", minHeight: "20rem"}}>
+                    <div key={index} style={{flexBasis: "50%", minHeight: "20rem",padding:"1rem"}}>
                         <Semester semester={s} index={index}/>
                     </div>
                 ))}

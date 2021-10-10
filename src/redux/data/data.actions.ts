@@ -3,8 +3,8 @@ import {
     CHECK_COURSE_CONSTRAINTS,
     HIDE_CONSTRAINT_INDICATORS, LOCK_DROPPABLES,
     MOVE_COURSE,
-     MOVE_GROUP,
-    REMOVE_SEMESTER,
+    MOVE_GROUP,
+    REMOVE_SEMESTER, SET_COURSE_FINISHED, SET_COURSE_UNFINISHED,
     SET_CUSTOM_STUDIES,
     SET_START_SEMESTER,
     SHOW_CONSTRAINT_INDICATORS, UNLOCK_DROPPABLES
@@ -27,5 +27,8 @@ export const unlockDroppables = createAction<{ }>(UNLOCK_DROPPABLES)
 export const setCustomStudies = createAction<{ semesterIndex: number, ects: number }>(SET_CUSTOM_STUDIES)
 export const checkCourseConstraints = createAction<{}>(CHECK_COURSE_CONSTRAINTS)
 export const setStartSemester = createAction<{ startSemesterIndex: number }>(SET_START_SEMESTER)
+
+export const setCourseFinished = createAction<{ courseId: string }>(SET_COURSE_FINISHED)
+export const setCourseUnfinished = createAction<{ courseId: string }>(SET_COURSE_UNFINISHED)
 
 
