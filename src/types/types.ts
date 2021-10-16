@@ -8,7 +8,7 @@ export default interface Course {
     sign: "VL" | "KS" | "KV" | "UE" | "PE" | "KT" | "SE" | "*" | string,
     steop?: boolean,
     kusssId: string
-    violations?: Violation[]
+    violations: Violation[]
     color?: string
     credited?: boolean
     finished?: boolean

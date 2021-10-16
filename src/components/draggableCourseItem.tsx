@@ -12,7 +12,7 @@ interface Props {
 
 
 const DraggableCourseItem = ({course, index, containerId}: Props) => {
-    const [collected, drag, dragPreview] = useDrag<CourseDrop, any, unknown>(() => ({
+    const [collected, drag,] = useDrag<CourseDrop, any, unknown>(() => ({
         type: COURSE,
         item: {type: COURSE, payload: course, sourceId: containerId}
     }))

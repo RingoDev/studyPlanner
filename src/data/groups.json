@@ -106,7 +106,8 @@
       "0120002"
     ]
   },
-  {    "color": "#ad8abf",
+  {
+    "color": "#ad8abf",
     "id": "013",
     "title": "Fachsprache Englisch",
     "courses": [
@@ -114,7 +115,8 @@
       "0130002"
     ]
   },
-  { "color": "#a6e8e2",
+  {
+    "color": "#a6e8e2",
     "id": "014",
     "title": "Mathematik und Logik",
     "courses": [
@@ -122,7 +124,8 @@
       "0140002"
     ]
   },
-  { "color": "#a6e8e2",
+  {
+    "color": "#a6e8e2",
     "id": "015",
     "title": "Formale Grundlagen",
     "courses": [
@@ -130,14 +133,16 @@
       "0150002"
     ]
   },
-  { "color": "#a6e8e2",
+  {
+    "color": "#a6e8e2",
     "id": "016",
     "title": "Statistik",
     "courses": [
       "0160001"
     ]
   },
-  {"color": "#ffde67",
+  {
+    "color": "#ffde67",
     "id": "017",
     "title": "IT-Project Engineering & Management",
     "courses": [
@@ -145,7 +150,8 @@
       "0170002"
     ]
   },
-  {"color": "#ffde67",
+  {
+    "color": "#ffde67",
     "id": "018",
     "title": "Informationsmanagement",
     "courses": [
@@ -153,7 +159,8 @@
       "0180002"
     ]
   },
-  {"color": "#ffde67",
+  {
+    "color": "#ffde67",
     "id": "019",
     "title": "IT-Projekt Wirtschaftsinformatik",
     "courses": [
@@ -161,7 +168,8 @@
       "0190002"
     ]
   },
-  {"color": "#ffde67",
+  {
+    "color": "#ffde67",
     "id": "020",
     "title": "Methoden und Konzepte des Software Engineering",
     "courses": [
@@ -169,14 +177,16 @@
       "0200002"
     ]
   },
-  {"color": "#ffde67",
+  {
+    "color": "#ffde67",
     "id": "021",
     "title": "Anwendungen des Software Engineering",
     "courses": [
       "0210001"
     ]
   },
-  {"color": "#ffde67",
+  {
+    "color": "#ffde67",
     "id": "022",
     "title": "Ausgewählte Aspekte der Wirtschaftsinformatik",
     "courses": [
@@ -186,7 +196,8 @@
       "0220004"
     ]
   },
-  {"color": "#ffde67",
+  {
+    "color": "#ffde67",
     "id": "023",
     "title": "Methoden und Konzepte des Data & Knowledge Engineering",
     "courses": [
@@ -194,7 +205,8 @@
       "0230002"
     ]
   },
-  {"color": "#ffde67",
+  {
+    "color": "#ffde67",
     "id": "024",
     "title": "Methoden und Konzepte des Communications Engineering",
     "courses": [
@@ -202,7 +214,8 @@
       "0240002"
     ]
   },
-  {"color": "#ffde67",
+  {
+    "color": "#ffde67",
     "id": "025",
     "title": "Anwendungen des Communications Engineering",
     "courses": [
@@ -210,7 +223,8 @@
       "0250002"
     ]
   },
-  {"color": "#ffde67",
+  {
+    "color": "#ffde67",
     "id": "026",
     "title": "Spezialisierungsfach Wirtschaftsinformatik (mit Bachelorarbeit)",
     "courses": [

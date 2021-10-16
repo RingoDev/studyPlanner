@@ -1,9 +1,10 @@
 import {AnyAction, createReducer} from '@reduxjs/toolkit'
-import Course, {CurriculumType,  SemesterType} from "../../types/types";
+import Course, {CurriculumType, SemesterType} from "../../types/types";
 import courses from "../../data/courses.json";
 import semesterConstraints from "../../data/semesterConstraints.json"
 import steopConstraints from '../../data/steopConstraints.json'
 import dependencyConstraints from '../../data/dependencyConstraints.json'
+import xOutOfYConstraints from '../../data/xOutOfYConstraints.json'
 import {
     addSemester,
     hideConstraintIndicators, lockDroppables,
@@ -13,7 +14,7 @@ import {
     setStartSemester,
     showConstraintIndicators, unlockDroppables,
 } from "./data.actions";
-// import curriculumWS6S from '../../data/examples/WS6Semester.json'
+import curriculumWS6S from '../../data/examples/WS6Semester.json'
 import groups from '../../data/groups.json'
 
 interface INITIAL_STATE_TYPE {
@@ -30,10 +31,10 @@ const getCourseById = (id: string): Course => {
     if (course === undefined) {
         // should never happen
         return {
-            ects: 0, id: "", kusssId: "", steop: false, title: "", sign: "*", type: "course"
+            ects: 0, id: "", kusssId: "", steop: false, title: "", sign: "*", type: "course", violations: []
         }
     }
-    return {...course, type: "course"}
+    return {...course, type: "course", violations: []}
 }
 
 const getCourseColor = (id: string): string | undefined => {
@@ -44,15 +45,15 @@ const getCourseColor = (id: string): string | undefined => {
     }
 }
 
-// const examplePlan: { courses: string[], customECTs: number }[] = curriculumWS6S
+const examplePlan: { courses: string[], customECTs: number }[] = curriculumWS6S
 
 
-// const exampleCurriculum: CurriculumType = {
-//     semesters: examplePlan.map(item => ({
-//         courses: item.courses.map(id => ({...getCourseById(id), color: getCourseColor(id)})),
-//         customEcts: item.customECTs
-//     }))
-// }
+const exampleCurriculum: CurriculumType = {
+    semesters: examplePlan.map(item => ({
+        courses: item.courses.map(id => ({...getCourseById(id), color: getCourseColor(id)})),
+        customEcts: item.customECTs
+    }))
+}
 
 
 const offset = 10
@@ -87,22 +88,32 @@ const getCurrentSemester = () => {
 //     }))
 // }
 
+const allCourses = courses.map(c => ({...getCourseById(c.id), color: getCourseColor(c.id)}))
+
 
 const initialState: INITIAL_STATE_TYPE = {
     selectSemesterList: selectSemesterList,
     startSemester: "WS",
     startSemesterIndex: 0,
     currentSemesterIndex: getCurrentSemester(),
-    storage: courses.map(c => ({...getCourseById(c.id), color: getCourseColor(c.id)})),
+    storage: allCourses,
     // storage: createGroups(),
     curriculum: {
         semesters: Array.from([0, 1, 2, 3, 4, 5]).map(a => ({number: a, id: "00" + a, courses: [], customEcts: 0}))
     }
 }
 
+const removeSomeCourses = (allCourses: Course[], toRemove: CurriculumType): Course[] => {
+    return allCourses
+        .filter(c => toRemove.semesters
+            .flatMap(s => s.courses)
+            .findIndex(course => course.id === c.id) === -1
+        )
+}
+
 // uncomment for example curriculum
-// initialState.storage = []
-// initialState.curriculum = exampleCurriculum;
+initialState.storage = removeSomeCourses(allCourses, exampleCurriculum)
+initialState.curriculum = exampleCurriculum;
 
 
 // checking Course Constraints after most actions
@@ -298,10 +309,11 @@ const courseReducer = createReducer(initialState, (builder) => {
                 course.violations = []
             }
 
+
             for (let i = 0; i < state.curriculum.semesters.length; i++) {
                 for (let course of state.curriculum.semesters[i].courses) {
-                    // removing all violations
-                    course.violations = [];
+
+                    course.violations = []
 
                     // checking semester constraint
                     // there should only be a single semester constraint, if there are multiple we take only the first one for now todo make better
@@ -354,6 +366,44 @@ const courseReducer = createReducer(initialState, (builder) => {
 
                     }
                 }
+            }
+
+            for (let constraint of xOutOfYConstraints) {
+                const group = groups.find(g => g.id === constraint.group);
+                if (!group) continue;
+
+                // check if x or less courses of this group are booked
+                // if not, every single one of them gets a new constraint added
+
+
+                const X = constraint.x
+                let count = 0;
+                let foundCourses: [semesterIndex: number, courseIndex: number][] = []
+
+                for (let i = 0; i < state.curriculum.semesters.length; i++) {
+                    for (let j = 0; j < state.curriculum.semesters[i].courses.length; j++) {
+                        if (group.courses.findIndex(id => id === state.curriculum.semesters[i].courses[j].id) !== -1) {
+                            count++;
+                            foundCourses.push([i, j])
+                        }
+                    }
+                }
+
+                if (count > X) {
+                    // violation, more courses than constraint allows
+                    for (let indices of foundCourses) {
+
+                        state.curriculum.semesters[indices[0]].courses[indices[1]].violations.push({
+                            severity: "HIGH",
+                            reason: "Only " + X + " out of "
+                                + group.courses.length
+                                + " courses for the Group "
+                                + group.title
+                                + " should be booked."
+                        })
+                    }
+                }
+
             }
         })
 })

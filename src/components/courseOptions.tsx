@@ -1,7 +1,7 @@
 import {alpha, Button, ListItemIcon, Menu, MenuItem, MenuProps, styled} from "@material-ui/core";
-import React, { MouseEventHandler, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import Course from "../types/types";
-import {MoreVertical, Check,X} from "lucide-react";
+import {MoreVertical, Check, X} from "lucide-react";
 import {useAppDispatch} from "../redux/hooks";
 import {setCourseFinished, setCourseUnfinished} from "../redux/data/data.actions";
 
@@ -55,10 +55,10 @@ const CourseOptions = ({course}: { course: Course }) => {
     }));
 
 
-    const handleFinish = (finish:boolean) => {
-        if(finish){
+    const handleFinish = (finish: boolean) => {
+        if (finish) {
             dispatch(setCourseFinished({courseId: course.id}))
-        }else{
+        } else {
             dispatch(setCourseUnfinished({courseId: course.id}))
         }
 
@@ -74,14 +74,14 @@ const CourseOptions = ({course}: { course: Course }) => {
                 onClose={() => setOpen(false)}
             >
                 {
-                    course.finished ?      <MenuItem disableRipple onClick={() => handleFinish(false)}>
-                        Abschließen
-                        <X/>
-                    </MenuItem>
-                        :<MenuItem disableRipple onClick={() => handleFinish(true)}>
+                    course.finished ? <MenuItem disableRipple onClick={() => handleFinish(false)}>
                             Abschließen
-                        <Check/>
-                    </MenuItem>
+                            <X/>
+                        </MenuItem>
+                        : <MenuItem disableRipple onClick={() => handleFinish(true)}>
+                            Abschließen
+                            <Check/>
+                        </MenuItem>
                 }
 
                 <MenuItem disableRipple onClick={() => setOpen(false)}>

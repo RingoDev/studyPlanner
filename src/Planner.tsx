@@ -16,58 +16,7 @@ import {HTML5Backend} from "react-dnd-html5-backend";
 
 const Planner = () => {
 
-    // const dispatch = useAppDispatch()
-
     const [open, setOpen] = useState<boolean>(false)
-
-
-    // const handleDrop = (result: DropResult) => {
-    //
-    //     dispatch(hideConstraintIndicators({}))
-    //     dispatch(unlockDroppables({}))
-    //
-    //     console.log(result)
-    //     const destination = result.destination
-    //     if (destination === undefined || destination === null) return;
-    //
-    //     if (result.source.droppableId === destination.droppableId) {
-    //         dispatch(moveCourseInList({
-    //             listId: result.source.droppableId,
-    //             courseId: result.draggableId,
-    //             sourceIndex: result.source.index,
-    //             destinationIndex: destination.index
-    //         }));
-    //     } else {
-    //         dispatch(moveCourse({
-    //             sourceId: result.source.droppableId,
-    //             destinationId: destination.droppableId,
-    //             courseId: result.draggableId,
-    //             sourceIndex: result.source.index,
-    //             destinationIndex: destination.index
-    //         }))
-    //     }
-    //
-    // }
-
-    // const handleDragStart = (dragStart: DragStart) => {
-    //     console.log(dragStart)
-    //
-    //     dispatch(showConstraintIndicators({
-    //         sourceId: dragStart.source.droppableId,
-    //         courseId: dragStart.draggableId,
-    //         sourceIndex: dragStart.source.index
-    //     }))
-    //
-    //     dispatch(lockDroppables({
-    //         sourceId: dragStart.source.droppableId,
-    //         draggableId: dragStart.draggableId,
-    //     }))
-    //
-    //
-    // }
-
-    // const handleOnBeforeCapture = (before: BeforeCapture) => {
-    // }
 
     const useStyles = makeStyles(() =>
         createStyles({
