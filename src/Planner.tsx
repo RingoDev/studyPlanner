@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {
-    AppBar,  Button,
+    AppBar, Button,
     Container,
     createStyles,
     makeStyles,
@@ -12,11 +12,16 @@ import Storage from "./Storage";
 import ConfigurationModal from "./components/configurationModal";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
-
+import {Download} from "lucide-react";
+import {useAppSelector} from "./redux/hooks";
+import UploadButton from "./components/uploadButton";
 
 const Planner = () => {
 
     const [open, setOpen] = useState<boolean>(false)
+
+    const curriculum = useAppSelector(state => state.data.curriculum)
+    const initialConfig = useAppSelector(state => state.data.initialConfig)
 
     const useStyles = makeStyles(() =>
         createStyles({
@@ -40,10 +45,21 @@ const Planner = () => {
             toolbar: {
                 backgroundColor: "#99d98c"
             }
-        }),
+        })
     )
 
     const classes = useStyles()
+
+
+    const download = () => {
+        const href = URL.createObjectURL(new Blob([JSON.stringify({config: initialConfig, curriculum: curriculum})]));
+        const link = document.createElement('a');
+        link.href = href;
+        link.download = "curriculum.jku";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 
 
     return (
@@ -51,6 +67,10 @@ const Planner = () => {
             <AppBar position={"static"}>
                 <Toolbar className={classes.toolbar}>
                     <Button onClick={() => setOpen(!open)}>Configuration </Button>
+                    <Button onClick={download}>
+                        <Download/>
+                    </Button>
+                    <UploadButton/>
                 </Toolbar>
             </AppBar>
             <ConfigurationModal open={open} setOpen={setOpen}/>

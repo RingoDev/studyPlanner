@@ -4,12 +4,14 @@ import {
     HIDE_CONSTRAINT_INDICATORS, LOCK_DROPPABLES,
     MOVE_COURSE,
     MOVE_GROUP,
-    REMOVE_SEMESTER, SET_COURSE_FINISHED, SET_COURSE_UNFINISHED,
+    REMOVE_SEMESTER, SET_APPLICATION_STATE, SET_COURSE_FINISHED, SET_COURSE_UNFINISHED,
     SET_CUSTOM_STUDIES,
     SET_START_SEMESTER,
     SHOW_CONSTRAINT_INDICATORS, UNLOCK_DROPPABLES
 } from "./data.types";
 import {createAction} from "@reduxjs/toolkit"
+import initialConfig from "../../data";
+import {CurriculumType} from "../../types/types";
 
 export const moveCourse = createAction<{ sourceId: string, destinationId: string, courseId: string }>(MOVE_COURSE);
 export const moveGroup = createAction<{  destinationId: string, groupId: string }>(MOVE_GROUP);
@@ -31,4 +33,5 @@ export const setStartSemester = createAction<{ startSemesterIndex: number }>(SET
 export const setCourseFinished = createAction<{ courseId: string }>(SET_COURSE_FINISHED)
 export const setCourseUnfinished = createAction<{ courseId: string }>(SET_COURSE_UNFINISHED)
 
+export const setApplicationState = createAction<{ config:typeof initialConfig, curriculum: CurriculumType}>(SET_APPLICATION_STATE)
 

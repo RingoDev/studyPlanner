@@ -1,23 +1,25 @@
 import {AnyAction, createReducer} from '@reduxjs/toolkit'
 import Course, {CurriculumType, SemesterType} from "../../types/types";
-import courses from "../../data/courses.json";
-import semesterConstraints from "../../data/semesterConstraints.json"
-import steopConstraints from '../../data/steopConstraints.json'
-import dependencyConstraints from '../../data/dependencyConstraints.json'
-import xOutOfYConstraints from '../../data/xOutOfYConstraints.json'
 import {
     addSemester,
-    hideConstraintIndicators, lockDroppables,
-    moveCourse, moveGroup,
-    removeSemester, setCourseFinished, setCourseUnfinished,
+    hideConstraintIndicators,
+    lockDroppables,
+    moveCourse,
+    moveGroup,
+    removeSemester,
+    setApplicationState,
+    setCourseFinished,
+    setCourseUnfinished,
     setCustomStudies,
     setStartSemester,
-    showConstraintIndicators, unlockDroppables,
+    showConstraintIndicators,
+    unlockDroppables,
 } from "./data.actions";
 import curriculumWS6S from '../../data/examples/WS6Semester.json'
-import groups from '../../data/groups.json'
+import initialConfig from "../../data";
 
 interface INITIAL_STATE_TYPE {
+    initialConfig: typeof initialConfig
     selectSemesterList: string[]
     startSemester: "WS" | "SS"
     startSemesterIndex: number,
@@ -27,7 +29,7 @@ interface INITIAL_STATE_TYPE {
 }
 
 const getCourseById = (id: string): Course => {
-    const course = courses.find(c => c.id === id)
+    const course = initialConfig.courses.find(c => c.id === id)
     if (course === undefined) {
         // should never happen
         return {
@@ -38,7 +40,7 @@ const getCourseById = (id: string): Course => {
 }
 
 const getCourseColor = (id: string): string | undefined => {
-    for (let group of groups) {
+    for (let group of initialConfig.groups) {
         if (group.courses.findIndex(c => c === id) !== -1) {
             return group.color
         }
@@ -88,10 +90,11 @@ const getCurrentSemester = () => {
 //     }))
 // }
 
-const allCourses = courses.map(c => ({...getCourseById(c.id), color: getCourseColor(c.id)}))
+const allCourses = initialConfig.courses.map(c => ({...getCourseById(c.id), color: getCourseColor(c.id)}))
 
 
 const initialState: INITIAL_STATE_TYPE = {
+    initialConfig: initialConfig,
     selectSemesterList: selectSemesterList,
     startSemester: "WS",
     startSemesterIndex: 0,
@@ -180,12 +183,12 @@ const courseReducer = createReducer(initialState, (builder) => {
             console.log("Successfully moved curse with id " + payload.courseId + " from list " + payload.sourceId + " to " + payload.destinationId)
         })
         .addCase(moveGroup, (state, {payload}) => {
-            const groupIndex = groups.findIndex(g => g.id === payload.groupId)
+            const groupIndex = initialConfig.groups.findIndex(g => g.id === payload.groupId)
             // find semester
             const semesterIndex = Number(payload.destinationId.slice(3))
 
             if (groupIndex !== -1) {
-                const IDs = groups[groupIndex].courses
+                const IDs = initialConfig.groups[groupIndex].courses
                 for (let id of IDs) {
                     // check if course with id is in storage
                     const courseIndex = state.storage.findIndex(c => c.id === id)
@@ -229,14 +232,14 @@ const courseReducer = createReducer(initialState, (builder) => {
         })
         .addCase(showConstraintIndicators, (state, {payload}) => {
 
-            const course = courses.find(c => c.id === payload.courseId)
+            const course = initialConfig.courses.find(c => c.id === payload.courseId)
             if (!course) return;
 
             // semester constraint checking
 
             // there should only be a single semester constraint, if there are multiple we take only the first one for now todo make better
-            let semesterSign: "SS" | "WS" | undefined = semesterConstraints.WS.find(id => id === course.id) ? "WS" : undefined;
-            if (!semesterSign) semesterSign = semesterConstraints.SS.find(id => id === course.id) ? "SS" : undefined;
+            let semesterSign: "SS" | "WS" | undefined = initialConfig.constraints.semesterConstraints.WS.find(id => id === course.id) ? "WS" : undefined;
+            if (!semesterSign) semesterSign = initialConfig.constraints.semesterConstraints.SS.find(id => id === course.id) ? "SS" : undefined;
             if (!semesterSign) {// color all black
                 for (let i = 0; i < state.curriculum.semesters.length; i++) {
                     state.curriculum.semesters[i].dropColor = "#000000"
@@ -303,6 +306,14 @@ const courseReducer = createReducer(initialState, (builder) => {
             }
         })
 
+        .addCase(setApplicationState, (state, {payload}) => {
+            const allConfigCourses = payload.config.courses.map(c => ({
+                ...getCourseById(c.id),
+                color: getCourseColor(c.id)
+            }))
+            state.storage = removeSomeCourses(allConfigCourses, payload.curriculum)
+            state.curriculum = payload.curriculum
+        })
         .addMatcher(checkCourseConstraintsMatcher, (state, {payload}) => {
             console.log("Checking constraints")
             for (let course of state.storage) {
@@ -332,7 +343,7 @@ const courseReducer = createReducer(initialState, (builder) => {
                         if (!allowedBeforeSteopFinished(course.id)) {
                             // check that all steop courses are booked before this semester
 
-                            const violatingSteopCourses = findCoursesNotBefore(steopConstraints.steop, i, state.curriculum.semesters)
+                            const violatingSteopCourses = findCoursesNotBefore(initialConfig.constraints.steopConstraints.steop, i, state.curriculum.semesters)
                             for (let foundCourse of violatingSteopCourses) {
                                 course.violations.push({
                                     severity: "HIGH",
@@ -347,7 +358,7 @@ const courseReducer = createReducer(initialState, (builder) => {
                     }
 
                     // checking dependency constraints
-                    const constraints = dependencyConstraints.find(c => c.course === course.id)
+                    const constraints = initialConfig.constraints.dependencyConstraints.find(c => c.course === course.id)
                     if (constraints !== undefined && constraints.dependsOn.length !== 0) {
 
                         // check if prior courses are in same semester or before -- check if they are after
@@ -368,8 +379,8 @@ const courseReducer = createReducer(initialState, (builder) => {
                 }
             }
 
-            for (let constraint of xOutOfYConstraints) {
-                const group = groups.find(g => g.id === constraint.group);
+            for (let constraint of initialConfig.constraints.xOutOfYConstraints) {
+                const group = initialConfig.groups.find(g => g.id === constraint.group);
                 if (!group) continue;
 
                 // check if x or less courses of this group are booked
@@ -409,7 +420,7 @@ const courseReducer = createReducer(initialState, (builder) => {
 })
 
 function courseIsSteop(courseId: string): boolean {
-    return steopConstraints.steop.findIndex(c => c === courseId) !== -1
+    return initialConfig.constraints.steopConstraints.steop.findIndex(c => c === courseId) !== -1
 }
 
 
@@ -442,12 +453,12 @@ function findCoursesNotBefore(idList: string[], semesterIndex: number, semesters
 }
 
 function allowedBeforeSteopFinished(courseId: string): boolean {
-    return steopConstraints.beforeSteopFinished.findIndex(s => s === courseId) !== -1
+    return initialConfig.constraints.steopConstraints.beforeSteopFinished.findIndex(s => s === courseId) !== -1
 }
 
 function getSemesterConstraint(courseId: string): "SS" | "WS" | undefined {
-    let courseSemesterSign: "SS" | "WS" | undefined = semesterConstraints.WS.find(id => id === courseId) ? "WS" : undefined;
-    if (!courseSemesterSign) courseSemesterSign = semesterConstraints.SS.find(id => id === courseId) ? "SS" : undefined;
+    let courseSemesterSign: "SS" | "WS" | undefined = initialConfig.constraints.semesterConstraints.WS.find(id => id === courseId) ? "WS" : undefined;
+    if (!courseSemesterSign) courseSemesterSign = initialConfig.constraints.semesterConstraints.SS.find(id => id === courseId) ? "SS" : undefined;
     return courseSemesterSign
 
 }
@@ -457,25 +468,25 @@ function checkSemesterConstraint(startSemester: "WS" | "SS", semesterSign: "WS" 
     else return (semesterSign === "WS" && index % 2 === 1) || (semesterSign === "SS" && index % 2 === 0)
 }
 
-function arrayMove<T>(oldIndex: number, newIndex: number, list: T[]) {
-
-    // copy array
-    const newList = list.slice();
-
-    // remove from old Index
-    const object = newList.splice(oldIndex, 1)[0]
-
-    // insert at different Index
-    newList.splice(newIndex, 0, object)
-
-    return newList
-}
-
-function findGroupIdOfCourse(courseId: string): string | undefined {
-    const groupIndex = groups.findIndex(g => g.courses.findIndex(id => id === courseId) !== -1)
-    if (groupIndex === -1) return;
-    return groups[groupIndex].id
-}
+// function arrayMove<T>(oldIndex: number, newIndex: number, list: T[]) {
+//
+//     // copy array
+//     const newList = list.slice();
+//
+//     // remove from old Index
+//     const object = newList.splice(oldIndex, 1)[0]
+//
+//     // insert at different Index
+//     newList.splice(newIndex, 0, object)
+//
+//     return newList
+// }
+//
+// function findGroupIdOfCourse(courseId: string): string | undefined {
+//     const groupIndex = initialConfig.groups.findIndex(g => g.courses.findIndex(id => id === courseId) !== -1)
+//     if (groupIndex === -1) return;
+//     return initialConfig.groups[groupIndex].id
+// }
 
 
 function isGroupId(id: string) {
