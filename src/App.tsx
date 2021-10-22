@@ -1,6 +1,7 @@
 import { Route, Switch} from "react-router-dom";
 import Configuration from "./configuration";
 import Planner from "./Planner";
+import Progress from "./Progress";
 import React from "react";
 
 const App = () => {
@@ -14,8 +15,11 @@ const App = () => {
                     <Route path={"/configuration"}>
                         <Configuration/>
                     </Route>
-                    <Route>
+                    <Route path={"/planner"}>
                         <Planner/>
+                    </Route>
+                    <Route>
+                        <Progress/>
                     </Route>
                 </Switch>
             </div>

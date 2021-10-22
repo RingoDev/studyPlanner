@@ -15,6 +15,8 @@ import {HTML5Backend} from "react-dnd-html5-backend";
 import {Download} from "lucide-react";
 import {useAppSelector} from "./redux/hooks";
 import UploadButton from "./components/uploadButton";
+import {Link} from "react-router-dom";
+
 
 const Planner = () => {
 
@@ -70,6 +72,7 @@ const Planner = () => {
                     <Button onClick={download}>
                         <Download/>
                     </Button>
+                    <Button>  <Link to={"/progress"}>Übersicht</Link></Button>
                     <UploadButton/>
                 </Toolbar>
             </AppBar>

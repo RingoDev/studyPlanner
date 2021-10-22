@@ -81,6 +81,7 @@
     ]
   },
   {
+    "color": "#aaaaaa",
     "id": "010",
     "title": "Grundlagen des Rechts",
     "courses": [
@@ -164,8 +165,7 @@
     "id": "019",
     "title": "IT-Projekt Wirtschaftsinformatik",
     "courses": [
-      "0190001",
-      "0190002"
+      "0190001"
     ]
   },
   {
@@ -208,6 +208,14 @@
   {
     "color": "#ffde67",
     "id": "024",
+    "title": "Anwendungen des Data & Knowledge Engineering",
+    "courses": [
+      "0270001"
+    ]
+  },
+  {
+    "color": "#ffde67",
+    "id": "025",
     "title": "Methoden und Konzepte des Communications Engineering",
     "courses": [
       "0240001",
@@ -216,7 +224,7 @@
   },
   {
     "color": "#ffde67",
-    "id": "025",
+    "id": "026",
     "title": "Anwendungen des Communications Engineering",
     "courses": [
       "0250001",
@@ -225,7 +233,7 @@
   },
   {
     "color": "#ffde67",
-    "id": "026",
+    "id": "027",
     "title": "Spezialisierungsfach Wirtschaftsinformatik (mit Bachelorarbeit)",
     "courses": [
       "0260001"

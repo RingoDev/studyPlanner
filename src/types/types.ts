@@ -33,6 +33,14 @@ export interface Group {
 }
 
 
+export interface Competency {
+    courses: Course[]
+    id: string,
+    title: string
+    color?: string
+}
+
+
 export interface DataGroup {
     id: string,
     title: string,
