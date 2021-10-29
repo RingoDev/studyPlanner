@@ -26,7 +26,6 @@ const useStyles = makeStyles(() =>
             display: "flex",
             flexDirection: "column",
             background: "rgba( 255, 255, 255, 0.5 )",
-            // backdropFilter: "blur(20px)",
         }
     }),
 )
@@ -35,7 +34,6 @@ const useStyles = makeStyles(() =>
 const Semester = ({semester, index}: { semester: SemesterType, index: number }) => {
 
     const customECTsCounter = useAppSelector((state) => state.data.curriculum.semesters[index].customEcts)
-
 
     const classes = useStyles()
 
@@ -50,7 +48,7 @@ const Semester = ({semester, index}: { semester: SemesterType, index: number }) 
                         {customECTsCounter + semester.courses.reduce(((prev, course) => prev + course.ects), 0)} ECTs
                     </div>
                     <Button style={{zIndex: 2}}
-                            onClick={() => dispatch(removeSemester({semesterIndex: index}))}>Remove</Button>
+                            onClick={() => dispatch(removeSemester({semesterIndex: index}))}>Semester entfernen</Button>
                 </div>
             </div>
         </div>

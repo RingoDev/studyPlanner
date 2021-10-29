@@ -12,8 +12,6 @@ interface Props {
 
 const DraggableGroupItem = ({group, index}: Props) => {
     const [collected, drag,] = useDrag<MultipleCourseDrop, any, { isDragging: boolean }>(() => {
-        console.log(index,group)
-
         return {
             type: GROUP,
             item: {type: GROUP, payload: {id:group.id}, sourceId: STORAGE},

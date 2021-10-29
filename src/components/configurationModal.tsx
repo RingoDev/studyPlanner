@@ -39,24 +39,24 @@ const useStyles = makeStyles(() =>
 
 const ConfigurationModal = ({open, setOpen}: { open: boolean, setOpen: (open: boolean) => void }) => {
 
+
+    const allCourses = useAppSelector((state) => state.data.initialConfig.courses)
     const semesterList = useAppSelector((state) => state.data.selectSemesterList)
     const startSemesterIndex = useAppSelector((state) => state.data.startSemesterIndex)
     const dispatch = useAppDispatch()
 
-
     const classes = useStyles()
     return (
         <>
-
-                <Modal
-                    open={open}
-                    onClose={() => {
-                    }}
-                    BackdropProps={{
-                        timeout: 2000,
-                    }}
-                >
-                    <Fade in={open}>
+            <Modal
+                open={open}
+                onClose={() => {
+                }}
+                BackdropProps={{
+                    timeout: 2000,
+                }}
+            >
+                <Fade in={open}>
                     <div className={classes.box}>
                         <Button onClick={() => setOpen(!open)}>
                             <X color={"black"}/>
@@ -65,7 +65,7 @@ const ConfigurationModal = ({open, setOpen}: { open: boolean, setOpen: (open: bo
                         <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                             <Grid>
                                 <Grid item>
-                                    <Typography align={"center"}>Starting Semester: </Typography>
+                                    <Typography align={"center"}>Start Semester auswählen: </Typography>
                                 </Grid>
                                 <Grid item>
                                     <FormControl>
@@ -81,7 +81,7 @@ const ConfigurationModal = ({open, setOpen}: { open: boolean, setOpen: (open: bo
                             </Grid>
                             <Grid>
                                 <Grid item>
-                                    <Typography align={"center"}>Select your studies: </Typography>
+                                    <Typography align={"center"}>Studium auswählen</Typography>
                                 </Grid>
                                 <Grid item>
                                     <FormControl>
@@ -95,10 +95,35 @@ const ConfigurationModal = ({open, setOpen}: { open: boolean, setOpen: (open: bo
                                     </FormControl>
                                 </Grid>
                             </Grid>
+
+                            <Grid>
+                                <Grid item>
+                                    <Typography align={"center"}>Kurse anrechnen:</Typography>
+                                </Grid>
+                                <Grid item>
+                                    <FormControl>
+                                        <Select
+                                            value={0}
+                                            onChange={(e) => {
+                                                console.log(e.target.value)
+                                                // todo set course as angerechnet
+                                            }}>
+                                            <MenuItem disabled value={0}>-- auswählen --</MenuItem>
+                                            {allCourses.map((c) =>
+                                                <MenuItem key={c.id} value={c.id}>{c.title}</MenuItem>)}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item>
+                                    {// todo angerechnete kurse anzeigen
+                                         }
+                                   <div/>
+                                </Grid>
+                            </Grid>
                         </div>
                     </div>
-                    </Fade>
-                </Modal>
+                </Fade>
+            </Modal>
 
         </>
     )

@@ -67,8 +67,8 @@ const selectSemesterList: string[] = Array.from(Array(selectOptions).keys()).map
         : "SS" + (startYear + 1 + Math.floor(n / 2))))
 
 
+
 const getCurrentSemester = () => {
-    // todo don't rely on starting selection year being current year - 3
     if (new Date().getMonth() < 4) {
         console.log("current semester ", offset - 1, selectSemesterList[offset - 1])
         return offset - 1
@@ -125,6 +125,7 @@ const checkCourseConstraintsMatcher = (action: AnyAction) => !setCustomStudies.m
 const courseReducer = createReducer(initialState, (builder) => {
     builder
         .addCase(moveCourse, (state, {payload}) => {
+            console.log("moving course")
             if (payload.sourceId === payload.courseId && isGroupId(payload.sourceId)) {
                 // do nothing
             } else if (isGroupId(payload.sourceId)) {

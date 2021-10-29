@@ -1,4 +1,5 @@
 import {GROUP} from "./dndTypes";
+import Color from "color";
 
 export default interface Course {
     type: "course"
@@ -37,7 +38,7 @@ export interface Competency {
     courses: Course[]
     id: string,
     title: string
-    color?: string
+    color: Color
 }
 
 

@@ -6,20 +6,19 @@ import KusssLink from "./kusssLink";
 import Course from "../types/types";
 import ConstraintIndicator from "./constraintIndicator";
 import CourseOptions from "./courseOptions";
+import Color from "color";
 
 const CourseItem = ({course}: { course: Course, index: number, semesterId: string }) => {
 
     const useStyles = makeStyles(() => {
-        let color = "#cccccc"
-        if (course.color) color = course.color
 
         return createStyles({
             item: {
-                backgroundColor: color,
+                backgroundColor: course.finished ? new Color(course.color).alpha(0.3).string() : course.color,
                 marginBottom: "0.375rem",
                 padding: "0.5rem"
             },
-            nested: {
+            nestedlighten: {
                 paddingLeft: "1rem",
             },
         })
@@ -27,10 +26,10 @@ const CourseItem = ({course}: { course: Course, index: number, semesterId: strin
 
     const classes = useStyles()
 
+
     return (
         <ListItem className={classes.item}>
             <ListItemText>
-                {course.finished ? "Done" : null}
                 {course.kusssId !== "" ? <KusssLink
                     id={course.kusssId}>{course.sign + " - " + course.title}</KusssLink> : (course.sign + " - " + course.title)}
             </ListItemText>

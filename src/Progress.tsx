@@ -1,23 +1,20 @@
-import React, { useRef} from 'react';
+import React, {useRef} from 'react';
 import {
-    AppBar, Button,
     Container,
     createStyles,
     makeStyles,
-    Toolbar,
 } from "@material-ui/core";
 import {Chart, Doughnut} from "react-chartjs-2";
 import {useAppSelector} from "./redux/hooks";
 import {ChartData} from "chart.js";
 import Course, {Competency} from "./types/types";
-import {Link} from 'react-router-dom'
+import Color from "color";
 
 const Progress = () => {
 
     const curriculumCourses = useAppSelector(state => state.data.curriculum.semesters).flatMap(s => s.courses)
     const storage = useAppSelector(state => state.data.storage)
     const initialConfig = useAppSelector(state => state.data.initialConfig)
-    // const customEcts = useAppSelector(state => state.data.curriculum.semesters).map(s => s.customEcts).reduce((x1, x2) => x1 + x2, 0)
 
     const chartRef = useRef<Chart<"doughnut", number[], string>>(null)
 
@@ -41,9 +38,6 @@ const Progress = () => {
                 background: "rgba( 255, 255, 255, 0.3 )",
                 border: "1px solid rgba( 255, 255, 255, 0.18 )",
             },
-            toolbar: {
-                backgroundColor: "#99d98c"
-            }
         })
     )
 
@@ -74,17 +68,20 @@ const Progress = () => {
 
             result.push({
                 ...competency,
-                courses: courses
+                courses: courses,
+                color: new Color<string>(competency.color, "hex")
             })
         }
         return result
     }
 
     const generateData = (): ChartData<"doughnut", number[], string> => {
-        const labels = []
+        const labels: string[] = []
         const data = []
-        const backgroundColor = []
-        const borderColor = []
+        const backgroundColor: string[] = []
+        const borderColor: string[] = []
+        const hoverBackgroundColor: string[] = []
+        const hoverBorderColor: string[] = []
 
         for (let competency of generateCompetencies()) {
 
@@ -102,15 +99,19 @@ const Progress = () => {
             if (doneValue !== 0) {
                 labels.push(competency.title)
                 data.push(doneValue)
-                backgroundColor.push(competency.color || "rgba(0, 0, 0, 1)")
-                borderColor.push(competency.color || "rgba(0, 0, 0, 1)")
+                backgroundColor.push(competency.color.string())
+                borderColor.push(competency.color.string())
+                hoverBackgroundColor.push(competency.color.darken(0.4).string())
+                hoverBorderColor.push(competency.color.darken(0.4).string())
             }
 
             if (notDoneValue !== 0) {
                 labels.push(competency.title + " - offen")
                 data.push(notDoneValue)
-                backgroundColor.push(competency.color + "80" || "rgba(0, 0, 0, 0.5)")
-                borderColor.push(competency.color || "rgba(0, 0, 0, 0.5)")
+                backgroundColor.push(competency.color.alpha(0.5).string() || "rgba(0, 0, 0, 0.5)")
+                borderColor.push(competency.color.string() || "rgba(0, 0, 0, 0.5)")
+                hoverBackgroundColor.push(competency.color.alpha(0.5).darken(0.4).string())
+                hoverBorderColor.push(competency.color.darken(0.4).string())
             }
 
             if (notDoneValue !== 0 || doneValue !== 0) {
@@ -118,6 +119,8 @@ const Progress = () => {
                 data.push(1)
                 backgroundColor.push("rgba(0, 0, 0, 0)")
                 borderColor.push("rgba(0, 0, 0, 0)")
+                hoverBackgroundColor.push("rgba(0, 0, 0, 0)")
+                hoverBorderColor.push("rgba(0, 0, 0, 0)")
             }
         }
 
@@ -145,18 +148,14 @@ const Progress = () => {
                 data: data,
                 backgroundColor: backgroundColor,
                 borderColor: borderColor,
-                hoverBackgroundColor: []
+                hoverBackgroundColor: hoverBackgroundColor,
+                hoverBorderColor: hoverBorderColor
             }]
         }
     }
 
     return (
         <div className="App">
-            <AppBar position={"static"}>
-                <Toolbar className={classes.toolbar}>
-                   <Button><Link to={"/planner"}>Planner</Link></Button>
-                </Toolbar>
-            </AppBar>
             <Container className={classes.container} maxWidth={"xl"}>
                 <div style={{position: "relative", height: "50vh"}}>
                     <Doughnut ref={chartRef} options={{
@@ -165,7 +164,8 @@ const Progress = () => {
                         plugins: {
                             legend: {
                                 position: "left",
-                                labels: {color: "black", filter: (legendItem) => legendItem.text !== ""}
+
+                                labels: {font:{size:24},color: "black", filter: (legendItem) => legendItem.text !== ""}
                             },
                             tooltip: {filter: (tooltip) => tooltip.label !== ""}
                         }
