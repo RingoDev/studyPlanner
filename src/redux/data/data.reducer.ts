@@ -7,8 +7,8 @@ import {
     moveCourse,
     moveGroup,
     removeSemester,
-    setApplicationState,
-    setCourseFinished,
+    setApplicationState, setCourseCredited,
+    setCourseFinished, setCourseUncredited,
     setCourseUnfinished,
     setCustomStudies,
     setStartSemester,
@@ -67,7 +67,6 @@ const selectSemesterList: string[] = Array.from(Array(selectOptions).keys()).map
         : "SS" + (startYear + 1 + Math.floor(n / 2))))
 
 
-
 const getCurrentSemester = () => {
     if (new Date().getMonth() < 4) {
         console.log("current semester ", offset - 1, selectSemesterList[offset - 1])
@@ -124,6 +123,7 @@ const checkCourseConstraintsMatcher = (action: AnyAction) => !setCustomStudies.m
 
 const courseReducer = createReducer(initialState, (builder) => {
     builder
+
         .addCase(moveCourse, (state, {payload}) => {
             console.log("moving course")
             if (payload.sourceId === payload.courseId && isGroupId(payload.sourceId)) {
@@ -159,8 +159,11 @@ const courseReducer = createReducer(initialState, (builder) => {
 
                 if (courseIndex !== -1) {
 
-                    // remove course from semester list
-                    const course = state.curriculum.semesters[semesterIndex].courses.splice(courseIndex, 1)[0]
+                    // remove course from semester list set finished attribute false
+                    const course = {
+                        ...state.curriculum.semesters[semesterIndex].courses.splice(courseIndex, 1)[0],
+                        finished: false
+                    }
 
                     // add course to storage
                     state.storage.splice(0, 0, course);
@@ -307,6 +310,42 @@ const courseReducer = createReducer(initialState, (builder) => {
             }
         })
 
+
+        .addCase(setCourseCredited, (state, {payload}) => {
+            for (let i = 0; i < state.storage.length; i++) {
+                if (state.storage[i].id === payload.courseId) {
+                    state.storage[i].credited = true;
+                    return;
+                }
+            }
+
+            for (let j = 0; j < state.curriculum.semesters.length; j++) {
+                for (let k = 0; k < state.curriculum.semesters[j].courses.length; k++) {
+                    if (state.curriculum.semesters[j].courses[k].id === payload.courseId) {
+                        state.curriculum.semesters[j].courses[k].credited = true;
+                        return
+                    }
+                }
+            }
+        })
+        .addCase(setCourseUncredited, (state, {payload}) => {
+            for (let i = 0; i < state.storage.length; i++) {
+                if (state.storage[i].id === payload.courseId) {
+                    state.storage[i].credited = false;
+                    return;
+                }
+            }
+
+            for (let j = 0; j < state.curriculum.semesters.length; j++) {
+                for (let k = 0; k < state.curriculum.semesters[j].courses.length; k++) {
+                    if (state.curriculum.semesters[j].courses[k].id === payload.courseId) {
+                        state.curriculum.semesters[j].courses[k].credited = false;
+                        return
+                    }
+                }
+            }
+        })
+
         .addCase(setApplicationState, (state, {payload}) => {
             const allConfigCourses = payload.config.courses.map(c => ({
                 ...getCourseById(c.id),
@@ -315,8 +354,11 @@ const courseReducer = createReducer(initialState, (builder) => {
             state.storage = removeSomeCourses(allConfigCourses, payload.curriculum)
             state.curriculum = payload.curriculum
         })
+        .addMatcher((() => true), ((_, action) => {
+            console.log(action)
+        }))
         .addMatcher(checkCourseConstraintsMatcher, (state, {payload}) => {
-            console.log("Checking constraints")
+            // console.log("Checking constraints")
             for (let course of state.storage) {
                 course.violations = []
             }
@@ -384,34 +426,33 @@ const courseReducer = createReducer(initialState, (builder) => {
                 const group = initialConfig.groups.find(g => g.id === constraint.group);
                 if (!group) continue;
 
-                // check if x or less courses of this group are booked
+                // check if x or less ects of this group are booked
                 // if not, every single one of them gets a new constraint added
 
-
-                const X = constraint.x
-                let count = 0;
+                const maxEcts = constraint.maxEcts
+                // const Y = constraint.y
+                let ectsCount = 0;
                 let foundCourses: [semesterIndex: number, courseIndex: number][] = []
 
                 for (let i = 0; i < state.curriculum.semesters.length; i++) {
                     for (let j = 0; j < state.curriculum.semesters[i].courses.length; j++) {
                         if (group.courses.findIndex(id => id === state.curriculum.semesters[i].courses[j].id) !== -1) {
-                            count++;
+                            ectsCount += state.curriculum.semesters[i].courses[j].ects;
                             foundCourses.push([i, j])
                         }
                     }
                 }
 
-                if (count > X) {
+                if (ectsCount > maxEcts) {
                     // violation, more courses than constraint allows
                     for (let indices of foundCourses) {
 
                         state.curriculum.semesters[indices[0]].courses[indices[1]].violations.push({
                             severity: "HIGH",
-                            reason: "Only " + X + " out of "
-                                + group.courses.length
-                                + " courses for the Group "
+                            reason: "Es können nur " + maxEcts + " ECTs "
+                                + " der Gruppe "
                                 + group.title
-                                + " should be booked."
+                                + " belegt werden."
                         })
                     }
                 }

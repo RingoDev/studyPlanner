@@ -58,8 +58,6 @@ const App = () => {
         document.body.removeChild(link);
     }
 
-    console.log(location.pathname)
-
     return (
         <>
             <div style={{

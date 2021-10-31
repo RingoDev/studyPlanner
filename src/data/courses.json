@@ -359,8 +359,57 @@
   {
     "kusssId": "",
     "id": "0280001",
-    "title": "Wahlfach",
+    "title": "Strategische IT-Planung",
     "ects": 6,
-    "sign": "*"
-}
+    "sign": "KV"
+  },
+  {
+    "kusssId": "",
+    "id": "0280002",
+    "title": "Software Business",
+    "ects": 6,
+    "sign": "KV"
+  },
+  {
+    "kusssId": "",
+    "id": "0280003",
+    "title": "Service Engineering",
+    "ects": 6,
+    "sign": "KV"
+  },
+  {
+    "kusssId": "",
+    "id": "0280004",
+    "title": "Data Warehousing",
+    "ects": 3,
+    "sign": "UE"
+  },
+  {
+    "kusssId": "",
+    "id": "0280005",
+    "title": "Data Warehousing",
+    "ects": 3,
+    "sign": "VL"
+  },
+  {
+    "kusssId": "",
+    "id": "0280006",
+    "title": "Data Mining",
+    "ects": 3,
+    "sign": "UE"
+  },
+  {
+    "kusssId": "",
+    "id": "0280007",
+    "title": "Business Engineering",
+    "ects": 3,
+    "sign": "UE"
+  },
+  {
+    "kusssId": "",
+    "id": "0280008",
+    "title": "Business Engineering",
+    "ects": 3,
+    "sign": "VL"
+  }
 ]

@@ -15,7 +15,15 @@ const GroupItem = ({group}: { group: Group, index: number }) => {
 
     const getMaxCourses = groups.find(g => g.id === group.id)?.courses.length || 0
 
-    const maxBookedCourses = xOutOfYConstraints.find(c => c.group === group.id)?.x || getMaxCourses
+    const unbookedEcts = group.courses.map(c => c.ects).reduce((e1, e2) => e1 + e2, 0)
+
+    const maxEcts = xOutOfYConstraints.find(c => c.group === group.id)?.maxEcts || 0
+
+
+    const allEcts = xOutOfYConstraints.find(c => c.group === group.id)?.allEcts || 0
+
+    console.log("unbooked Ects: " + unbookedEcts + " for groupid: " + group.id)
+    console.log("max booked Ects: " + maxEcts + " for groupid: " + group.id)
 
     const [open, setOpen] = useState(false)
 
@@ -29,10 +37,10 @@ const GroupItem = ({group}: { group: Group, index: number }) => {
                 marginBottom: "0.5rem"
             },
             item: {
-                backgroundColor: getMaxCourses - maxBookedCourses >= group.courses.length ? "#cccccc" : group.color,
+                backgroundColor: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color,
                 marginBottom: "0.375rem",
                 '&:hover': {
-                    backgroundColor: getMaxCourses - maxBookedCourses >= group.courses.length ? "#cccccc" : group.color,
+                    backgroundColor: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color,
                 }
             },
             nested: {
@@ -66,7 +74,7 @@ const GroupItem = ({group}: { group: Group, index: number }) => {
                                     <div key={course.id}>
                                         <DraggableCourseItem course={{
                                             ...course,
-                                            color: getMaxCourses - maxBookedCourses >= group.courses.length ? "#cccccc" : group.color
+                                            color: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color
                                         }} index={cIndex} containerId={group.id}/>
                                     </div>
                                 )

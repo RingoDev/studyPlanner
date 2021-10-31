@@ -1,5 +1,5 @@
 import Course from "../types/types";
-import { useDrag} from "react-dnd";
+import {useDrag} from "react-dnd";
 import CourseItem from "./courseItem";
 import {COURSE} from "../types/dndTypes";
 import {CourseDrop} from "./droppableCourseList";
@@ -11,7 +11,7 @@ interface Props {
 }
 
 
-const DraggableCourseItem = ({course, index, containerId}: Props) => {
+const DraggableCourseItem = ({course, containerId}: Props) => {
     const [collected, drag,] = useDrag<CourseDrop, any, unknown>(() => ({
         type: COURSE,
         item: {type: COURSE, payload: course, sourceId: containerId}
@@ -19,7 +19,7 @@ const DraggableCourseItem = ({course, index, containerId}: Props) => {
 
     return (
         <div ref={drag} {...collected} style={{cursor: "pointer"}}>
-            <CourseItem course={course} index={index} semesterId={containerId}/>
+            <CourseItem isInStorage={!containerId.startsWith("sem")} course={course}/>
         </div>
     )
 }

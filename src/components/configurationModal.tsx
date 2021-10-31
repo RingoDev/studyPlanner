@@ -10,7 +10,7 @@ import {
     Select,
     Typography
 } from "@material-ui/core";
-import {setStartSemester} from "../redux/data/data.actions";
+import {setCourseCredited, setStartSemester} from "../redux/data/data.actions";
 import React from "react";
 import {useAppDispatch, useAppSelector} from "../redux/hooks";
 
@@ -41,6 +41,9 @@ const ConfigurationModal = ({open, setOpen}: { open: boolean, setOpen: (open: bo
 
 
     const allCourses = useAppSelector((state) => state.data.initialConfig.courses)
+
+
+
     const semesterList = useAppSelector((state) => state.data.selectSemesterList)
     const startSemesterIndex = useAppSelector((state) => state.data.startSemesterIndex)
     const dispatch = useAppDispatch()
@@ -103,12 +106,13 @@ const ConfigurationModal = ({open, setOpen}: { open: boolean, setOpen: (open: bo
                                 <Grid item>
                                     <FormControl>
                                         <Select
-                                            value={0}
+                                            value={-1}
                                             onChange={(e) => {
-                                                console.log(e.target.value)
-                                                // todo set course as angerechnet
+                                                // console.log(e.target.value)
+                                                if (e.target.value === -1) return
+                                                dispatch(setCourseCredited({courseId: String(e.target.value)}))
                                             }}>
-                                            <MenuItem disabled value={0}>-- auswählen --</MenuItem>
+                                            <MenuItem disabled value={-1}>-- auswählen --</MenuItem>
                                             {allCourses.map((c) =>
                                                 <MenuItem key={c.id} value={c.id}>{c.title}</MenuItem>)}
                                         </Select>
@@ -116,8 +120,8 @@ const ConfigurationModal = ({open, setOpen}: { open: boolean, setOpen: (open: bo
                                 </Grid>
                                 <Grid item>
                                     {// todo angerechnete kurse anzeigen
-                                         }
-                                   <div/>
+                                    }
+                                    <div/>
                                 </Grid>
                             </Grid>
                         </div>

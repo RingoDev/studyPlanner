@@ -1,6 +1,13 @@
 [
   {
     "group": "022",
-    "x": 2
+    "maxEcts": 6,
+    "allEcts": 12
+  },
+
+  {
+    "group": "028",
+    "maxEcts": 6,
+    "allEcts": 33
   }
 ]

@@ -5,10 +5,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import KusssLink from "./kusssLink";
 import Course from "../types/types";
 import ConstraintIndicator from "./constraintIndicator";
-import CourseOptions from "./courseOptions";
 import Color from "color";
+import CourseOptions from "./courseOptions";
 
-const CourseItem = ({course}: { course: Course, index: number, semesterId: string }) => {
+const CourseItem = ({course, isInStorage}: { course: Course, isInStorage: boolean }) => {
 
     const useStyles = makeStyles(() => {
 
@@ -33,8 +33,15 @@ const CourseItem = ({course}: { course: Course, index: number, semesterId: strin
                 {course.kusssId !== "" ? <KusssLink
                     id={course.kusssId}>{course.sign + " - " + course.title}</KusssLink> : (course.sign + " - " + course.title)}
             </ListItemText>
-            <ConstraintIndicator course={course}/>
-            <CourseOptions course={course}/>
+            {
+                isInStorage ?
+                    null :
+                    <>
+                        <ConstraintIndicator course={course}/>
+                        <CourseOptions course={course}/>
+                    </>
+            }
+
         </ListItem>
     )
 }
