@@ -57,18 +57,39 @@ const Progress = () => {
                 return initialConfig.groups[index]
             })
 
-            const courses: Course[] = [];
+            let allCoursesEcts = 0;
+            let finishedCoursesEcts = 0;
+
             for (let group of groups) {
-                courses.push(...group.courses.map(id => {
-                    const index = storage.findIndex(course => course.id === id)
-                    if (index !== -1) return storage[index]
-                    else return curriculumCourses[curriculumCourses.findIndex(course => course.id === id)]
-                }))
+
+                const allCourses: Course[] = group.courses.map(id => {
+                    const index = curriculumCourses.findIndex(course => course.id === id)
+                    if (index !== -1) return curriculumCourses[index]
+                    else return {...storage[storage.findIndex(course => course.id === id)], ects: 0}
+                })
+
+                // if a x out of y constraint exists, use it to set the max ects of the competency
+                const constraint = initialConfig.constraints.xOutOfYConstraints.find(c => c.group === group.id)
+                if (constraint !== undefined) {
+                    allCoursesEcts += constraint.maxEcts
+                } else {
+                    allCoursesEcts += allCourses.map(c => c.ects).reduce((x1, x2) => x1 + x2, 0)
+                }
+
+                finishedCoursesEcts += allCourses.filter(c => c.finished).map(c => c.ects).reduce((x1, x2) => x1 + x2, 0)
+
+                // courses.push(...group.courses.map(id => {
+                //     const index = storage.findIndex(course => course.id === id)
+                //     if (index !== -1) return storage[index]
+                //     else return curriculumCourses[curriculumCourses.findIndex(course => course.id === id)]
+                // }))
             }
+
 
             result.push({
                 ...competency,
-                courses: courses,
+                allCoursesEcts: allCoursesEcts,
+                finishedCoursesEcts: finishedCoursesEcts,
                 color: new Color<string>(competency.color, "hex")
             })
         }
@@ -85,16 +106,8 @@ const Progress = () => {
 
         for (let competency of generateCompetencies()) {
 
-            const doneValue = competency.courses
-                .filter(c => c.finished)
-                .map(c => c.ects)
-                .reduce((x1, x2) => x1 + x2, 0)
-
-            const notDoneValue = competency.courses
-                .filter(c => !c.finished)
-                .map(c => c.ects)
-                .reduce((x1, x2) => x1 + x2, 0)
-
+            const doneValue = Math.min(competency.finishedCoursesEcts, competency.allCoursesEcts)
+            const notDoneValue = Math.max(competency.allCoursesEcts - competency.finishedCoursesEcts, 0)
 
             if (doneValue !== 0) {
                 labels.push(competency.title)
@@ -125,6 +138,22 @@ const Progress = () => {
         }
 
 
+        labels.push("Fehlende Kurse")
+
+        const gaps = data.filter(x => x === 1).length
+        data.push(180 - (data.reduce((x1, x2) => x1 + x2, 0) - gaps))
+        backgroundColor.push("rgba(0, 0, 0, 0)")
+        borderColor.push("rgba(0, 0, 0, 0)")
+        hoverBackgroundColor.push("rgba(0, 0, 0, 0)")
+        hoverBorderColor.push("rgba(0, 0, 0, 0)")
+
+        labels.push("")
+        data.push(1)
+        backgroundColor.push("rgba(0, 0, 0, 0)")
+        borderColor.push("rgba(0, 0, 0, 0)")
+        hoverBackgroundColor.push("rgba(0, 0, 0, 0)")
+        hoverBorderColor.push("rgba(0, 0, 0, 0)")
+
         // add custom ects competency
         // labels.push("Freie Studienleistungen")
         // labels.push("offene Freie Studienleistungen")
@@ -141,6 +170,7 @@ const Progress = () => {
         // borderColor.push("rgba(0, 0, 0, 1)")
         // borderColor.push("rgba(0, 0, 0, 0.5)")
         // borderColor.push("rgba(0, 0, 0, 0)")
+
 
         return {
             labels: labels,
@@ -165,7 +195,14 @@ const Progress = () => {
                             legend: {
                                 position: "left",
 
-                                labels: {font:{size:24},color: "black", filter: (legendItem) => legendItem.text !== ""}
+                                labels: {
+                                    font: {size: 24},
+                                    color: "black",
+                                    filter: (legendItem) => {
+                                        if (legendItem.text === "Fehlende Kurse") return false
+                                        return legendItem.text !== ""
+                                    }
+                                }
                             },
                             tooltip: {filter: (tooltip) => tooltip.label !== ""}
                         }

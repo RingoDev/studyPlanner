@@ -35,7 +35,8 @@ export interface Group {
 
 
 export interface Competency {
-    courses: Course[]
+    allCoursesEcts: number
+    finishedCoursesEcts: number
     id: string,
     title: string
     color: Color
