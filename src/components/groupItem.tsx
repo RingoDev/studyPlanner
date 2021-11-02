@@ -6,7 +6,6 @@ import List from "@material-ui/core/List";
 import React, {useState} from "react";
 import {Group} from "../types/types";
 import DraggableCourseItem from "./draggableCourseItem";
-import Color from "color";
 import {useAppSelector} from "../redux/hooks";
 import {getCoursesFromGroups, getGroupWithIdFromGroups} from "../data";
 import {COURSE_GROUP} from "../types/dndTypes";
@@ -28,8 +27,6 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
 
     const allEcts = xOutOfYConstraints.find(c => c.group === group.id)?.allEcts || 0
 
-    console.log("unbooked Ects: " + unbookedEcts + " for groupid: " + group.id)
-    console.log("max booked Ects: " + maxEcts + " for groupid: " + group.id)
 
     const [open, setOpen] = useState(false)
 
@@ -47,10 +44,10 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
                 marginBottom: "0.5rem"
             },
             item: {
-                backgroundColor: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color.string(),
+                backgroundColor: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color,
                 marginBottom: "0.375rem",
                 '&:hover': {
-                    backgroundColor: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color.string(),
+                    backgroundColor: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color,
                 }
             },
             nested: {
@@ -85,7 +82,7 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
                                     <div key={course.id}>
                                         <DraggableCourseItem course={{
                                             ...course,
-                                            color: allEcts - unbookedEcts >= maxEcts ? Color("#cccccc", "hex") : group.color
+                                            color: allEcts - unbookedEcts >= maxEcts ? "#cccccc": group.color
                                         }} index={cIndex} containerId={group.id}/>
                                     </div>
                                 )) :
@@ -95,7 +92,7 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
                                             level={level + 1}
                                             group={{
                                                 ...group,
-                                                color: allEcts - unbookedEcts >= maxEcts ? Color("#cccccc", "hex") : group.color
+                                                color: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color
                                             }} index={cIndex} containerId={group.id}/>
                                     </div>
                                 ))}

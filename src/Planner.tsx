@@ -45,7 +45,7 @@ const Planner = () => {
                             maxHeight: "90vh",
                             height: "85vh",
                             overflowY: "auto",
-                            flex: "0 1 20%",
+                            flex: "0 1 25%",
                             backgroundColor: "#dddddd"
                         }}>
                             <Storage/>

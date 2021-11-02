@@ -6,6 +6,7 @@ import KusssLink from "./kusssLink";
 import Course from "../types/types";
 import ConstraintIndicator from "./constraintIndicator";
 import CourseOptions from "./courseOptions";
+import Color from "color";
 
 const CourseItem = ({course, isInStorage}: { course: Course, isInStorage: boolean }) => {
 
@@ -13,7 +14,7 @@ const CourseItem = ({course, isInStorage}: { course: Course, isInStorage: boolea
 
         return createStyles({
             item: {
-                backgroundColor: course.finished ? course.color.alpha(0.3).string() : course.color.string(),
+                backgroundColor: course.finished ? Color(course.color).alpha(0.3).string() : course.color,
                 marginBottom: "0.375rem",
                 padding: "0.5rem"
             },

@@ -10,7 +10,7 @@ export default interface Course {
     steop?: boolean,
     kusssId: string
     violations: Violation[]
-    color: Color
+    color: string
     credited?: boolean
     finished?: boolean
 }
@@ -29,7 +29,7 @@ export interface CourseGroup {
     courses: Course[]
     id: string,
     title: string
-    color: Color
+    color: string
     dropDisabled?: boolean
 }
 
@@ -38,7 +38,7 @@ export interface CompositeGroup {
     groups: Group[]
     id: string,
     title: string
-    color: Color
+    color: string
     dropDisabled?: boolean
 }
 

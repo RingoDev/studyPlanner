@@ -5,7 +5,6 @@ import xOutOfYConstraints from './xOutOfYConstraints.json'
 import groups from './groups.json'
 import competencies from './competencies.json'
 import Course, {Group} from "../types/types";
-import Color from "color";
 
 
 export type InitialGroupType = CompositeGroupType | StandardGroupType
@@ -57,7 +56,7 @@ export function getCoursesFromGroups(configGroups: InitialGroupType[] | Group[] 
                 courses.push({
                     ...course,
                     type: "course",
-                    color: new Color(group.color),
+                    color: group.color,
                     violations: [],
                     kusssId: course.kusssId
                 })
