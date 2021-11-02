@@ -6,16 +6,22 @@ import List from "@material-ui/core/List";
 import React, {useState} from "react";
 import {Group} from "../types/types";
 import DraggableCourseItem from "./draggableCourseItem";
-import xOutOfYConstraints from "../data/xOutOfYConstraints.json"
-import groups from "../data/groups.json"
+import Color from "color";
+import {useAppSelector} from "../redux/hooks";
+import {getCoursesFromGroups, getGroupWithIdFromGroups} from "../data";
+import {COURSE_GROUP} from "../types/dndTypes";
+import DraggableGroupItem from "./draggableGroupItem";
 
 
-const GroupItem = ({group}: { group: Group, index: number }) => {
+const GroupItem = ({group, level}: { group: Group, index: number, level: number }) => {
 
+    const groups = useAppSelector((state) => state.data.initialConfig.groups)
+    const xOutOfYConstraints = useAppSelector((state) => state.data.initialConfig.constraints.xOutOfYConstraints)
 
-    const getMaxCourses = groups.find(g => g.id === group.id)?.courses.length || 0
+    const groupWithSameId = getGroupWithIdFromGroups(groups, group.id)
+    const getMaxCourses = groupWithSameId !== undefined ? getCoursesFromGroups([groupWithSameId]).length || 0 : 0
 
-    const unbookedEcts = group.courses.map(c => c.ects).reduce((e1, e2) => e1 + e2, 0)
+    const unbookedEcts = getCoursesFromGroups([group]).map(c => c.ects).reduce((e1, e2) => e1 + e2, 0)
 
     const maxEcts = xOutOfYConstraints.find(c => c.group === group.id)?.maxEcts || 0
 
@@ -29,18 +35,22 @@ const GroupItem = ({group}: { group: Group, index: number }) => {
 
     const useStyles = makeStyles(() =>
         createStyles({
+            collapsedDiv: {
+                paddingLeft: String(Math.round((level + 1) * 0.5 * 10) / 10) + "rem",
+            },
             list: {
                 backgroundColor: "#ffffff",
                 padding: "0.5rem"
             },
             div: {
+
                 marginBottom: "0.5rem"
             },
             item: {
-                backgroundColor: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color,
+                backgroundColor: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color.string(),
                 marginBottom: "0.375rem",
                 '&:hover': {
-                    backgroundColor: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color,
+                    backgroundColor: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color.string(),
                 }
             },
             nested: {
@@ -48,7 +58,6 @@ const GroupItem = ({group}: { group: Group, index: number }) => {
             },
         }),
     );
-
 
     const classes = useStyles()
 
@@ -60,25 +69,36 @@ const GroupItem = ({group}: { group: Group, index: number }) => {
                         {group.title}
                     </ListItemText>
                     <ListItemIcon>
-                        {group.courses.length}/{getMaxCourses}
+                        {group.type === COURSE_GROUP ?
+                            group.courses.length :
+                            getCoursesFromGroups([group]).length}/{getMaxCourses}
                     </ListItemIcon>
                     <ListItemIcon>
                         {open ? <ChevronUp/> : <ChevronDown/>}
                     </ListItemIcon>
                 </ListItem>
                 <Collapse in={open} timeout="auto" unmountOnExit>
-                    <div style={{height: "100%"}}>
+                    <div className={classes.collapsedDiv} style={{height: "100%"}}>
                         <List component="div" disablePadding>
-                            {group.courses.map((course, cIndex) => {
-                                return (
+                            {group.type === COURSE_GROUP ?
+                                group.courses.map((course, cIndex) => (
                                     <div key={course.id}>
                                         <DraggableCourseItem course={{
                                             ...course,
-                                            color: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color
+                                            color: allEcts - unbookedEcts >= maxEcts ? Color("#cccccc", "hex") : group.color
                                         }} index={cIndex} containerId={group.id}/>
                                     </div>
-                                )
-                            })}
+                                )) :
+                                group.groups.map((group, cIndex) => (
+                                    <div key={group.id}>
+                                        <DraggableGroupItem
+                                            level={level + 1}
+                                            group={{
+                                                ...group,
+                                                color: allEcts - unbookedEcts >= maxEcts ? Color("#cccccc", "hex") : group.color
+                                            }} index={cIndex} containerId={group.id}/>
+                                    </div>
+                                ))}
                         </List>
                     </div>
                 </Collapse>

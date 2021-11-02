@@ -46,9 +46,12 @@ const DroppableGroupList = ({groups}: Props) => {
         <>
             <List ref={drop} disablePadding className={classes.list}>
                 {groups.map((g, index) => <DraggableGroupItem
+                    containerId={"storage"}
                     key={g.id}
                     group={g}
-                    index={index}/>)}
+                    index={index}
+                    level={0}/>
+                )}
             </List>
         </>
     )

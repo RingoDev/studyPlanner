@@ -1,4 +1,4 @@
-import {GROUP} from "./dndTypes";
+import {COMPOSITE_GROUP, COURSE_GROUP} from "./dndTypes";
 import Color from "color";
 
 export default interface Course {
@@ -10,7 +10,7 @@ export default interface Course {
     steop?: boolean,
     kusssId: string
     violations: Violation[]
-    color?: string
+    color: Color
     credited?: boolean
     finished?: boolean
 }
@@ -24,14 +24,25 @@ export interface CurriculumType {
     semesters: SemesterType[]
 }
 
-export interface Group {
-    type: typeof GROUP
+export interface CourseGroup {
+    type: typeof COURSE_GROUP
     courses: Course[]
     id: string,
     title: string
-    color?: string
+    color: Color
     dropDisabled?: boolean
 }
+
+export interface CompositeGroup {
+    type: typeof COMPOSITE_GROUP
+    groups: Group[]
+    id: string,
+    title: string
+    color: Color
+    dropDisabled?: boolean
+}
+
+export type Group = CourseGroup | CompositeGroup
 
 
 export interface Competency {

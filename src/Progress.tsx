@@ -9,11 +9,12 @@ import {useAppSelector} from "./redux/hooks";
 import {ChartData} from "chart.js";
 import Course, {Competency} from "./types/types";
 import Color from "color";
+import {getCoursesFromGroups} from "./data";
 
 const Progress = () => {
 
-    const curriculumCourses = useAppSelector(state => state.data.curriculum.semesters).flatMap(s => s.courses)
-    const storage = useAppSelector(state => state.data.storage)
+    // const curriculumCourses = useAppSelector(state => state.data.curriculum.semesters).flatMap(s => s.courses)
+    // const storage = useAppSelector(state => state.data.storage)
     const initialConfig = useAppSelector(state => state.data.initialConfig)
 
     const chartRef = useRef<Chart<"doughnut", number[], string>>(null)
@@ -62,11 +63,12 @@ const Progress = () => {
 
             for (let group of groups) {
 
-                const allCourses: Course[] = group.courses.map(id => {
-                    const index = curriculumCourses.findIndex(course => course.id === id)
-                    if (index !== -1) return curriculumCourses[index]
-                    else return {...storage[storage.findIndex(course => course.id === id)], ects: 0}
-                })
+                const allCourses: Course[] = getCoursesFromGroups([group])
+                //     .map(c => {
+                //     const index = curriculumCourses.findIndex(course => course.id === c.id)
+                //     if (index !== -1) return curriculumCourses[index]
+                //     else return {...storage[storage.findIndex(course => course.id === c.id)], ects: 0}
+                // })
 
                 // if a x out of y constraint exists, use it to set the max ects of the competency
                 const constraint = initialConfig.constraints.xOutOfYConstraints.find(c => c.group === group.id)

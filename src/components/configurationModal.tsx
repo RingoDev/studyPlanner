@@ -41,9 +41,6 @@ const ConfigurationModal = ({open, setOpen}: { open: boolean, setOpen: (open: bo
 
 
     const allCourses = useAppSelector((state) => state.data.initialConfig.courses)
-
-
-
     const semesterList = useAppSelector((state) => state.data.selectSemesterList)
     const startSemesterIndex = useAppSelector((state) => state.data.startSemesterIndex)
     const dispatch = useAppDispatch()

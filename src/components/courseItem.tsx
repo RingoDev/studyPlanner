@@ -5,7 +5,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import KusssLink from "./kusssLink";
 import Course from "../types/types";
 import ConstraintIndicator from "./constraintIndicator";
-import Color from "color";
 import CourseOptions from "./courseOptions";
 
 const CourseItem = ({course, isInStorage}: { course: Course, isInStorage: boolean }) => {
@@ -14,7 +13,7 @@ const CourseItem = ({course, isInStorage}: { course: Course, isInStorage: boolea
 
         return createStyles({
             item: {
-                backgroundColor: course.finished ? new Color(course.color).alpha(0.3).string() : course.color,
+                backgroundColor: course.finished ? course.color.alpha(0.3).string() : course.color.string(),
                 marginBottom: "0.375rem",
                 padding: "0.5rem"
             },

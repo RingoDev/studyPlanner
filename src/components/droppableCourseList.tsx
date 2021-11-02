@@ -1,8 +1,8 @@
 import {useDrop} from 'react-dnd'
 import CourseList from "./courseList";
 import React from "react";
-import Course, {Group, SemesterType} from "../types/types";
-import {COURSE, GROUP} from "../types/dndTypes";
+import Course, {SemesterType} from "../types/types";
+import {COMPOSITE_GROUP, COURSE, COURSE_GROUP} from "../types/dndTypes";
 import {useAppDispatch} from "../redux/hooks";
 import {moveCourse, moveGroup} from "../redux/data/data.actions";
 
@@ -19,8 +19,8 @@ export interface CourseDrop {
 }
 
 export interface MultipleCourseDrop {
-    type: typeof GROUP
-    payload: {id:string},
+    type: typeof COMPOSITE_GROUP | typeof COURSE_GROUP
+    payload: { id: string },
     sourceId: string,
 }
 
@@ -29,8 +29,8 @@ const DroppableCourseList = ({semester, index}: Props) => {
     const dispatch = useAppDispatch()
 
     const [, drop] = useDrop<CourseDrop | MultipleCourseDrop, any, any>(() => ({
-        accept: [COURSE, GROUP],
-        drop: (dragObject,_) => {
+        accept: [COURSE, COMPOSITE_GROUP, COURSE_GROUP],
+        drop: (dragObject, _) => {
             console.log(dragObject)
             if (dragObject.type === COURSE) {
                 dispatch(moveCourse({
@@ -38,11 +38,17 @@ const DroppableCourseList = ({semester, index}: Props) => {
                     sourceId: dragObject.sourceId,
                     destinationId: "sem" + index,
                 }))
-            }else if(dragObject.type === GROUP){
-                    dispatch(moveGroup({
-                        groupId:dragObject.payload.id,
-                        destinationId:"sem" + index
-                    }))
+            } else if (dragObject.type === COMPOSITE_GROUP) {
+                dispatch(moveGroup({
+                    groupId: dragObject.payload.id,
+                    destinationId: "sem" + index
+                }))
+            }
+            else if (dragObject.type === COURSE_GROUP) {
+                dispatch(moveGroup({
+                    groupId: dragObject.payload.id,
+                    destinationId: "sem" + index
+                }))
             }
         }
     }))

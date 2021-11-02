@@ -4,8 +4,20 @@
     "id": "001",
     "title": "Einführung in die Wirtschaftsinformatik",
     "courses": [
-      "0010001",
-      "0010002"
+      {
+        "kusssId": "24354",
+        "id": "0010001",
+        "title": "Einführung in die Wirtschaftsinformatik",
+        "ects": 3,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "24357",
+        "id": "0010002",
+        "title": "Einführung in die Wirtschaftsinformatik",
+        "ects": 3,
+        "sign": "UE"
+      }
     ]
   },
   {
@@ -13,8 +25,20 @@
     "id": "002",
     "title": "Grundlagen der Betriebswirtschaftslehre und des integrierten Managements",
     "courses": [
-      "0020001",
-      "0020002"
+      {
+        "kusssId": "47278",
+        "id": "0020001",
+        "title": "Grundlagen der Betriebswirtschaftslehre",
+        "ects": 3,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "47279",
+        "id": "0020002",
+        "title": "Grundlagen des integrierten Managements",
+        "ects": 3,
+        "sign": "KS"
+      }
     ]
   },
   {
@@ -22,8 +46,20 @@
     "id": "003",
     "title": "Grundlagen der Informatik",
     "courses": [
-      "0030001",
-      "0030002"
+      {
+        "kusssId": "37494",
+        "id": "0030001",
+        "title": "Einführung in die Softwareentwicklung",
+        "ects": 3,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "37495",
+        "id": "0030002",
+        "title": "Einführung in die Softwareentwicklung",
+        "ects": 3,
+        "sign": "UE"
+      }
     ]
   },
   {
@@ -31,8 +67,20 @@
     "id": "004",
     "title": "Algorithmen und Datenstrukturen",
     "courses": [
-      "0040001",
-      "0040002"
+      {
+        "kusssId": "24361",
+        "id": "0040001",
+        "title": "Algorithmen und Datenstrukturen",
+        "ects": 3,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "24363",
+        "id": "0040002",
+        "title": "Algorithmen und Datenstrukturen",
+        "ects": 3,
+        "sign": "UE"
+      }
     ]
   },
   {
@@ -40,8 +88,20 @@
     "id": "005",
     "title": "Datenmodellierung",
     "courses": [
-      "0050001",
-      "0050002"
+      {
+        "kusssId": "24367",
+        "id": "0050001",
+        "title": "Datenmodellierung",
+        "ects": 3,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "24376",
+        "id": "0050002",
+        "title": "Datenmodellierung",
+        "ects": 3,
+        "sign": "UE"
+      }
     ]
   },
   {
@@ -49,8 +109,20 @@
     "id": "006",
     "title": "Prozess- und Kommunikationsmodellierung",
     "courses": [
-      "0060001",
-      "0060002"
+      {
+        "kusssId": "24378",
+        "id": "0060001",
+        "title": "Prozess- und Kommunikationsmodellierung",
+        "ects": 3,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "24381",
+        "id": "0060002",
+        "title": "Prozess- und Kommunikationsmodellierung",
+        "ects": 3,
+        "sign": "UE"
+      }
     ]
   },
   {
@@ -58,8 +130,20 @@
     "id": "007",
     "title": "Soziale und geschlechterspezifische Aspekte der IT",
     "courses": [
-      "0070001",
-      "0070002"
+      {
+        "kusssId": "24437",
+        "id": "0070001",
+        "title": "Soziale Auswirkungen der IT",
+        "ects": 3,
+        "sign": "KS"
+      },
+      {
+        "kusssId": "30355",
+        "id": "0070002",
+        "title": "Einführung in IKT, Gesellschaft, Gender und Diversity",
+        "ects": 3,
+        "sign": "KS"
+      }
     ]
   },
   {
@@ -67,8 +151,20 @@
     "id": "008",
     "title": "Unternehmensrechnung",
     "courses": [
-      "0080001",
-      "0080002"
+      {
+        "kusssId": "47281",
+        "id": "0080001",
+        "title": "Grundlagen der Kostenrechnung",
+        "ects": 3,
+        "sign": "KS"
+      },
+      {
+        "kusssId": "47282",
+        "id": "0080002",
+        "title": "Buchhaltung nach UGB",
+        "ects": 3,
+        "sign": "KS"
+      }
     ]
   },
   {
@@ -76,8 +172,20 @@
     "id": "009",
     "title": "Leistungserstellung und -verwertung",
     "courses": [
-      "0090001",
-      "0090002"
+      {
+        "kusssId": "47284",
+        "id": "0090001",
+        "title": "Einführung in Marketing",
+        "ects": 3,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "47285",
+        "id": "0090002",
+        "title": "Grundlagen des Supply Chain Management",
+        "ects": 3,
+        "sign": "UE"
+      }
     ]
   },
   {
@@ -85,8 +193,20 @@
     "id": "010",
     "title": "Grundlagen des Rechts",
     "courses": [
-      "0100001",
-      "0100002"
+      {
+        "kusssId": "24431",
+        "id": "0100001",
+        "title": "Privatrecht für Wirtschaftsinformatik",
+        "ects": 4.5,
+        "sign": "KV"
+      },
+      {
+        "kusssId": "24432",
+        "id": "0100002",
+        "title": "Öffentliches Recht für Wirtschaftsinformatik",
+        "ects": 1.5,
+        "sign": "KV"
+      }
     ]
   },
   {
@@ -94,8 +214,20 @@
     "id": "011",
     "title": "Einführung in Informatik und Betriebssysteme",
     "courses": [
-      "0110001",
-      "0110002"
+      {
+        "kusssId": "24404",
+        "id": "0110001",
+        "title": "Betriebssysteme",
+        "ects": 3,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "24406",
+        "id": "0110002",
+        "title": "Einführung in die Informatik",
+        "ects": 3,
+        "sign": "VL"
+      }
     ]
   },
   {
@@ -103,8 +235,20 @@
     "id": "012",
     "title": "Vertiefung Softwareentwicklung",
     "courses": [
-      "0120001",
-      "0120002"
+      {
+        "kusssId": "24419",
+        "id": "0120001",
+        "title": "Softwareentwicklung 2",
+        "ects": 3,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "24420",
+        "id": "0120002",
+        "title": "Softwareentwicklung 2",
+        "ects": 3,
+        "sign": "UE"
+      }
     ]
   },
   {
@@ -112,8 +256,20 @@
     "id": "013",
     "title": "Fachsprache Englisch",
     "courses": [
-      "0130001",
-      "0130002"
+      {
+        "kusssId": "24434",
+        "id": "0130001",
+        "title": "Kommunikative Fertigkeiten Englisch",
+        "ects": 3,
+        "sign": "KS"
+      },
+      {
+        "kusssId": "24435",
+        "id": "0130002",
+        "title": "Fachsprache Englisch",
+        "ects": 3,
+        "sign": "SE"
+      }
     ]
   },
   {
@@ -121,8 +277,20 @@
     "id": "014",
     "title": "Mathematik und Logik",
     "courses": [
-      "0140001",
-      "0140002"
+      {
+        "kusssId": "24423",
+        "id": "0140001",
+        "title": "Mathematik und Logik",
+        "ects": 4.5,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "24424",
+        "id": "0140002",
+        "title": "Mathematik und Logik",
+        "ects": 1.5,
+        "sign": "UE"
+      }
     ]
   },
   {
@@ -130,8 +298,20 @@
     "id": "015",
     "title": "Formale Grundlagen",
     "courses": [
-      "0150001",
-      "0150002"
+      {
+        "kusssId": "24426",
+        "id": "0150001",
+        "title": "Formale Grundlagen der Wirtschaftsinformatik",
+        "ects": 4.5,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "24427",
+        "id": "0150002",
+        "title": "Formale Grundlagen der Wirtschaftsinformatik",
+        "ects": 1.5,
+        "sign": "UE"
+      }
     ]
   },
   {
@@ -139,7 +319,13 @@
     "id": "016",
     "title": "Statistik",
     "courses": [
-      "0160001"
+      {
+        "kusssId": "24429",
+        "id": "0160001",
+        "title": "Statistik",
+        "ects": 3,
+        "sign": "KV"
+      }
     ]
   },
   {
@@ -147,8 +333,20 @@
     "id": "017",
     "title": "IT-Project Engineering & Management",
     "courses": [
-      "0170001",
-      "0170002"
+      {
+        "kusssId": "24441",
+        "id": "0170001",
+        "title": "IT-Project Engineering & Management",
+        "ects": 3,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "24442",
+        "id": "0170002",
+        "title": "IT-Project Engineering & Management",
+        "ects": 3,
+        "sign": "UE"
+      }
     ]
   },
   {
@@ -156,8 +354,20 @@
     "id": "018",
     "title": "Informationsmanagement",
     "courses": [
-      "0180001",
-      "0180002"
+      {
+        "kusssId": "24444",
+        "id": "0180001",
+        "title": "Informationsmanagement",
+        "ects": 3,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "24445",
+        "id": "0180002",
+        "title": "Informationsmanagement",
+        "ects": 3,
+        "sign": "UE"
+      }
     ]
   },
   {
@@ -165,7 +375,13 @@
     "id": "019",
     "title": "IT-Projekt Wirtschaftsinformatik",
     "courses": [
-      "0190001"
+      {
+        "kusssId": "24484",
+        "id": "0190001",
+        "title": "IT-Projekt Wirtschaftsinformatik",
+        "ects": 6,
+        "sign": "PJ"
+      }
     ]
   },
   {
@@ -173,8 +389,20 @@
     "id": "020",
     "title": "Methoden und Konzepte des Software Engineering",
     "courses": [
-      "0200001",
-      "0200002"
+      {
+        "kusssId": "24448",
+        "id": "0200001",
+        "title": "Software Engineering",
+        "ects": 3,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "24449",
+        "id": "0200002",
+        "title": "Software Engineering",
+        "ects": 3,
+        "sign": "UE"
+      }
     ]
   },
   {
@@ -182,7 +410,13 @@
     "id": "021",
     "title": "Anwendungen des Software Engineering",
     "courses": [
-      "0210001"
+      {
+        "kusssId": "24451",
+        "id": "0210001",
+        "title": "Software Engineering",
+        "ects": 6,
+        "sign": "PR"
+      }
     ]
   },
   {
@@ -190,10 +424,34 @@
     "id": "022",
     "title": "Ausgewählte Aspekte der Wirtschaftsinformatik",
     "courses": [
-      "0220001",
-      "0220002",
-      "0220003",
-      "0220004"
+      {
+        "kusssId": "24498",
+        "id": "0220001",
+        "title": "Information Engineering",
+        "ects": 3,
+        "sign": "PS"
+      },
+      {
+        "kusssId": "24499",
+        "id": "0220002",
+        "title": "Software Engineering",
+        "ects": 3,
+        "sign": "PS"
+      },
+      {
+        "kusssId": "24506",
+        "id": "0220003",
+        "title": "Data & Knowledge Engineering",
+        "ects": 3,
+        "sign": "PS"
+      },
+      {
+        "kusssId": "24510",
+        "id": "0220004",
+        "title": "Communications Engineering",
+        "ects": 3,
+        "sign": "PS"
+      }
     ]
   },
   {
@@ -201,8 +459,20 @@
     "id": "023",
     "title": "Methoden und Konzepte des Data & Knowledge Engineering",
     "courses": [
-      "0230001",
-      "0230002"
+      {
+        "kusssId": "24454",
+        "id": "0230001",
+        "title": "Data & Knowledge Engineering",
+        "ects": 3,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "24455",
+        "id": "0230002",
+        "title": "Data & Knowledge Engineering",
+        "ects": 3,
+        "sign": "UE"
+      }
     ]
   },
   {
@@ -210,7 +480,13 @@
     "id": "024",
     "title": "Anwendungen des Data & Knowledge Engineering",
     "courses": [
-      "0270001"
+      {
+        "kusssId": "24457",
+        "id": "0240001",
+        "title": "Anwendungen des Data & Knowledge Engineering",
+        "ects": 6,
+        "sign": "PR"
+      }
     ]
   },
   {
@@ -218,8 +494,20 @@
     "id": "025",
     "title": "Methoden und Konzepte des Communications Engineering",
     "courses": [
-      "0240001",
-      "0240002"
+      {
+        "kusssId": "24460",
+        "id": "0250001",
+        "title": "Communications Engineering",
+        "ects": 3,
+        "sign": "VL"
+      },
+      {
+        "kusssId": "24461",
+        "id": "0250002",
+        "title": "Communications Engineering",
+        "ects": 3,
+        "sign": "UE"
+      }
     ]
   },
   {
@@ -227,8 +515,20 @@
     "id": "026",
     "title": "Anwendungen des Communications Engineering",
     "courses": [
-      "0250001",
-      "0250002"
+      {
+        "kusssId": "24464",
+        "id": "0260001",
+        "title": "Anwendungen des Communications Engineering",
+        "ects": 3,
+        "sign": "SE"
+      },
+      {
+        "kusssId": "24463",
+        "id": "0260002",
+        "title": "Communications Engineering",
+        "ects": 3,
+        "sign": "KT"
+      }
     ]
   },
   {
@@ -236,22 +536,90 @@
     "id": "027",
     "title": "Spezialisierungsfach Wirtschaftsinformatik (mit Bachelorarbeit)",
     "courses": [
-      "0260001"
+      {
+        "kusssId": "24521",
+        "id": "0270001",
+        "title": "Spezielle Wirtschaftsinformatik - Theorie und Praxis, inklusive Bachelorarbeit",
+        "ects": 12,
+        "sign": "PE"
+      }
     ]
   },
   {
     "color": "#ffde67",
     "id": "028",
     "title": "Wahlfach",
-    "courses": [
-      "0280001",
-      "0280002",
-      "0280003",
-      "0280004",
-      "0280005",
-      "0280006",
-      "0280007",
-      "0280008"
+    "groups": [
+      {
+        "id": "sub0280001",
+        "color": "#ffde67",
+        "title": "Wirtschaftsinformatik",
+        "courses": [
+          {
+            "kusssId": "",
+            "id": "0280001",
+            "title": "Strategische IT-Planung",
+            "ects": 6,
+            "sign": "KV"
+          },
+          {
+            "kusssId": "",
+            "id": "0280002",
+            "title": "Software Business",
+            "ects": 6,
+            "sign": "KV"
+          },
+          {
+            "kusssId": "",
+            "id": "0280003",
+            "title": "Service Engineering",
+            "ects": 6,
+            "sign": "KV"
+          },
+          {
+            "kusssId": "",
+            "id": "0280004",
+            "title": "Data Warehousing",
+            "ects": 3,
+            "sign": "UE"
+          },
+          {
+            "kusssId": "",
+            "id": "0280005",
+            "title": "Data Warehousing",
+            "ects": 3,
+            "sign": "VL"
+          },
+          {
+            "kusssId": "",
+            "id": "0280006",
+            "title": "Data Mining",
+            "ects": 3,
+            "sign": "UE"
+          }
+        ]
+      },
+      {
+        "color": "#ffde67",
+        "id": "sub0280002",
+        "title": "Wirtschaftswissenschaften",
+        "courses": [
+          {
+            "kusssId": "",
+            "id": "0280007",
+            "title": "Business Engineering",
+            "ects": 3,
+            "sign": "UE"
+          },
+          {
+            "kusssId": "",
+            "id": "0280008",
+            "title": "Business Engineering",
+            "ects": 3,
+            "sign": "VL"
+          }
+        ]
+      }
     ]
   }
 ]
