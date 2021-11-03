@@ -1,7 +1,8 @@
 import {X} from "lucide-react";
 import {
     Button,
-    createStyles, Fade,
+    createStyles,
+    Fade,
     FormControl,
     Grid,
     makeStyles,
@@ -10,7 +11,7 @@ import {
     Select,
     Typography
 } from "@material-ui/core";
-import {setCourseCredited, setStartSemester} from "../redux/data/data.actions";
+import {setExampleCurriculum, setStartSemester} from "../redux/data/data.actions";
 import React from "react";
 import {useAppDispatch, useAppSelector} from "../redux/hooks";
 
@@ -40,7 +41,8 @@ const useStyles = makeStyles(() =>
 const ConfigurationModal = ({open, setOpen}: { open: boolean, setOpen: (open: boolean) => void }) => {
 
 
-    const allCourses = useAppSelector((state) => state.data.initialConfig.courses)
+    const lastChosenExample = useAppSelector((state) => state.data.lastChosenExample)
+    const examples = useAppSelector((state) => state.data.initialConfig.examples)
     const semesterList = useAppSelector((state) => state.data.selectSemesterList)
     const startSemesterIndex = useAppSelector((state) => state.data.startSemesterIndex)
     const dispatch = useAppDispatch()
@@ -62,7 +64,7 @@ const ConfigurationModal = ({open, setOpen}: { open: boolean, setOpen: (open: bo
                             <X color={"black"}/>
                         </Button>
 
-                        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                        <div style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent:"space-evenly", height:"100%"}}>
                             <Grid>
                                 <Grid item>
                                     <Typography align={"center"}>Start Semester auswählen: </Typography>
@@ -98,27 +100,23 @@ const ConfigurationModal = ({open, setOpen}: { open: boolean, setOpen: (open: bo
 
                             <Grid>
                                 <Grid item>
-                                    <Typography align={"center"}>Kurse anrechnen:</Typography>
+                                    <Typography align={"center"}>Beispiel Plan auswählen:</Typography>
                                 </Grid>
                                 <Grid item>
                                     <FormControl>
                                         <Select
-                                            value={-1}
+                                            value={lastChosenExample}
                                             onChange={(e) => {
-                                                // console.log(e.target.value)
-                                                if (e.target.value === -1) return
-                                                dispatch(setCourseCredited({courseId: String(e.target.value)}))
+                                                dispatch(setExampleCurriculum({exampleIndex: Number(e.target.value)}))
                                             }}>
-                                            <MenuItem disabled value={-1}>-- auswählen --</MenuItem>
-                                            {allCourses.map((c) =>
-                                                <MenuItem key={c.id} value={c.id}>{c.title}</MenuItem>)}
+                                            {examples.map((e, index) => (
+                                                <MenuItem key={index}
+                                                    value={index}>{e.name + " - " + e.startsWith}
+                                                </MenuItem>
+                                            ))}
+                                            <MenuItem value={-1}>Selbst zusammenstellen</MenuItem>
                                         </Select>
                                     </FormControl>
-                                </Grid>
-                                <Grid item>
-                                    {// todo angerechnete kurse anzeigen
-                                    }
-                                    <div/>
                                 </Grid>
                             </Grid>
                         </div>

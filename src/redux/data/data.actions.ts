@@ -11,7 +11,7 @@ import {
     SET_COURSE_FINISHED,
     SET_COURSE_UNCREDITED,
     SET_COURSE_UNFINISHED,
-    SET_CUSTOM_STUDIES,
+    SET_CUSTOM_STUDIES, SET_EXAMPLE_CURRICULUM,
     SET_START_SEMESTER,
     SHOW_CONSTRAINT_INDICATORS,
     UNLOCK_DROPPABLES
@@ -42,6 +42,7 @@ export const setCourseUnfinished = createAction<{ courseId: string }>(SET_COURSE
 
 export const setCourseCredited = createAction<{ courseId: string }>(SET_COURSE_CREDITED)
 export const setCourseUncredited = createAction<{ courseId: string }>(SET_COURSE_UNCREDITED)
+export const setExampleCurriculum = createAction<{ exampleIndex: number }>(SET_EXAMPLE_CURRICULUM)
 
 export const setApplicationState = createAction<{ config: typeof initialConfig, curriculum: CurriculumType }>(SET_APPLICATION_STATE)
 

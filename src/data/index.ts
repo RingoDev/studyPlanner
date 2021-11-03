@@ -4,6 +4,9 @@ import dependencyConstraints from './dependencyConstraints.json'
 import xOutOfYConstraints from './xOutOfYConstraints.json'
 import groups from './groups.json'
 import competencies from './competencies.json'
+import WS6S from './examples/WS6Semester.json'
+import WS9S from './examples/WS9S.json'
+import SS6S from './examples/SS6S.json'
 import Course, {Group} from "../types/types";
 
 
@@ -76,6 +79,11 @@ interface InitialConfig {
         dependencyConstraints: typeof dependencyConstraints,
         xOutOfYConstraints: typeof xOutOfYConstraints
     }
+    examples: {
+        startsWith: "WS" | "SS"
+        name: string
+        curriculum: typeof SS6S
+    }[]
 }
 
 const initialConfig: InitialConfig = {
@@ -87,6 +95,28 @@ const initialConfig: InitialConfig = {
         steopConstraints: steopConstraints,
         dependencyConstraints: dependencyConstraints,
         xOutOfYConstraints: xOutOfYConstraints
-    }
+    },
+    examples: [
+        {
+            startsWith: "WS",
+            name: "Studienplan Vollzeit",
+            curriculum: WS6S
+        },
+        {
+            startsWith: "SS",
+            name: "Studienplan Vollzeit",
+            curriculum: SS6S
+        },
+        {
+            startsWith: "WS",
+            name: "Studienplan Berufsbegleitend",
+            curriculum: WS9S
+        },
+        {
+            startsWith: "SS",
+            name: "Studienplan Berufsbegleitend",
+            curriculum: SS6S
+        }
+    ]
 }
 export default initialConfig
