@@ -1,10 +1,11 @@
-import {useDrop} from 'react-dnd'
-import CourseList from "./courseList";
 import React from "react";
 import Course, {SemesterType} from "../types/types";
 import {COMPOSITE_GROUP, COURSE, COURSE_GROUP} from "../types/dndTypes";
-import {useAppDispatch} from "../redux/hooks";
-import {moveCourse, moveGroup} from "../redux/data/data.actions";
+import {Droppable} from "react-beautiful-dnd";
+import List from "@material-ui/core/List";
+import DraggableCourseItem from "./draggableCourseItem";
+import CustomStudies from "./customStudies";
+import {createStyles, makeStyles} from "@material-ui/core";
 
 
 interface Props {
@@ -24,41 +25,38 @@ export interface MultipleCourseDrop {
     sourceId: string,
 }
 
+const useStyles = makeStyles(() =>
+    createStyles({
+        list: {
+            padding: "0.5rem"
+        },
+    }),
+);
+
 const DroppableCourseList = ({semester, index}: Props) => {
 
-    const dispatch = useAppDispatch()
+    const classes = useStyles()
 
-    const [, drop] = useDrop<CourseDrop | MultipleCourseDrop, any, any>(() => ({
-        accept: [COURSE, COMPOSITE_GROUP, COURSE_GROUP],
-        drop: (dragObject, _) => {
-            console.log(dragObject)
-            if (dragObject.type === COURSE) {
-                dispatch(moveCourse({
-                    courseId: dragObject.payload.id,
-                    sourceId: dragObject.sourceId,
-                    destinationId: "sem" + index,
-                }))
-            } else if (dragObject.type === COMPOSITE_GROUP) {
-                dispatch(moveGroup({
-                    groupId: dragObject.payload.id,
-                    destinationId: "sem" + index
-                }))
-            }
-            else if (dragObject.type === COURSE_GROUP) {
-                dispatch(moveGroup({
-                    groupId: dragObject.payload.id,
-                    destinationId: "sem" + index
-                }))
-            }
-        }
-    }))
     return (
-        <div ref={drop} style={{
-            border: semester.dropColor ? "2px solid " + semester.dropColor : "2px solid black",
-            height: "100%"
-        }}>
-            <CourseList courses={semester.courses} id={"sem" + index}/>
-        </div>
+        <Droppable droppableId={"sem" + index} >
+            {provided => (
+                <div ref={provided.innerRef} style={{
+                    border: semester.dropColor ? "2px solid " + semester.dropColor : "2px solid black",
+                    height: "100%"
+                }}  {...provided.droppableProps} >
+                    <List disablePadding className={classes.list}>
+                        {semester.courses.map((c, index) => (
+                                <div key={c.id}>
+                                    <DraggableCourseItem course={c} index={index} containerId={"sem" + index}/>
+                                </div>
+                            )
+                        )}
+                        {provided.placeholder}
+                        <CustomStudies semesterIndex={index}/>
+                    </List>
+                </div>
+            )}
+        </Droppable>
     )
 }
 

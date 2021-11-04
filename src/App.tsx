@@ -62,7 +62,8 @@ const App = () => {
         <>
             <div style={{
                 height: "100%",
-                backgroundImage: "linear-gradient(180deg,#168aad 5%,#1e6091 20%,#1e6091 60%,#168aad 95%)"
+                // backgroundImage: "linear-gradient(180deg,#168aad 5%,#1e6091 20%,#1e6091 60%,#168aad 95%)"
+                background:"#4d4d4d"
             }}>
                 <AppBar position={"static"}>
                     <Toolbar className={classes.toolbar}>

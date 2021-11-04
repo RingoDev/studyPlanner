@@ -12,8 +12,10 @@ const Curriculum = () => {
     return (
         <>
             <div style={{
-                margin: "0 auto",
-                width: "80%",
+                margin: "0",
+                marginLeft:"auto",
+                marginRight:"1rem",
+                width: "90%",
                 display: "flex",
                 flexDirection: "row",
                 flexWrap: "wrap",
@@ -24,7 +26,7 @@ const Curriculum = () => {
                         <Semester semester={s} index={index}/>
                     </div>
                 ))}
-                <Button style={{flexBasis: "50%", minHeight: "20rem"}} onClick={() => dispatch(addSemester({}))}>Add Semester</Button>
+                <Button style={{flexBasis: "50%", minHeight: "20rem"}} onClick={() => dispatch(addSemester({}))}>Semester hinzufügen</Button>
             </div>
         </>
     )

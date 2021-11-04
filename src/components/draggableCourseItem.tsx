@@ -1,8 +1,6 @@
 import Course from "../types/types";
-import {useDrag} from "react-dnd";
 import CourseItem from "./courseItem";
-import {COURSE} from "../types/dndTypes";
-import {CourseDrop} from "./droppableCourseList";
+import {Draggable} from "react-beautiful-dnd";
 
 interface Props {
     course: Course
@@ -11,16 +9,22 @@ interface Props {
 }
 
 
-const DraggableCourseItem = ({course, containerId}: Props) => {
-    const [collected, drag,] = useDrag<CourseDrop, any, unknown>(() => ({
-        type: COURSE,
-        item: {type: COURSE, payload: course, sourceId: containerId}
-    }))
+const DraggableCourseItem = ({course, containerId, index}: Props) => {
+    // const [collected, drag,] = useDrag<CourseDrop, any, unknown>(() => ({
+    //     type: COURSE,
+    //     item: {type: COURSE, payload: course, sourceId: containerId}
+    // }))
+
 
     return (
-        <div ref={drag} {...collected} style={{cursor: "pointer"}}>
-            <CourseItem isInStorage={!containerId.startsWith("sem")} course={course}/>
-        </div>
+        <Draggable draggableId={"c_" + course.id} index={index}>
+            {(provided) => (
+                <div ref={provided.innerRef} style={{cursor: "pointer"}} {...provided.draggableProps} {...provided.dragHandleProps}
+                     >
+                    <CourseItem isInStorage={!containerId.startsWith("sem")} course={course}/>
+                </div>
+            )}
+        </Draggable>
     )
 }
 

@@ -29,7 +29,7 @@ interface INITIAL_STATE_TYPE {
 }
 
 
-const getCourseById = (id: string): Course => {
+const getCourseById = (id: string): Course | undefined => {
     for (let group of initialConfig.groups) {
         for (let course of getCoursesFromGroups([group])) {
             if (course.id === id) {
@@ -37,19 +37,7 @@ const getCourseById = (id: string): Course => {
             }
         }
     }
-
     console.warn("Could not find course with id: " + id)
-    return {
-        ects: 0,
-        id: "",
-        kusssId: "",
-        steop: false,
-        title: "",
-        sign: "*",
-        type: "course",
-        violations: [],
-        color: "#ffffff"
-    }
 }
 
 const offset = 10
@@ -221,10 +209,16 @@ const courseReducer = createReducer(initialState, (builder) => {
 
             state.storage = removeCoursesFromGroupList(state.storage, state.initialConfig.examples[payload.exampleIndex].curriculum.flatMap(s => s.courses))
             state.curriculum = {
-                semesters: state.initialConfig.examples[payload.exampleIndex].curriculum.map(item => ({
-                    courses: item.courses.map(id => (getCourseById(id))),
-                    customEcts: item.customECTs
-                }))
+                semesters: state.initialConfig.examples[payload.exampleIndex].curriculum.map(item => {
+                    const courses: Course[] = []
+                    for (let course of item.courses.map(id => getCourseById(id))) {
+                        if (course !== undefined) courses.push(course)
+                    }
+                    return {
+                        courses: courses,
+                        customEcts: item.customECTs
+                    }
+                })
             }
 
         })
@@ -261,6 +255,7 @@ const courseReducer = createReducer(initialState, (builder) => {
         })
         .addCase(moveGroup, (state, {payload}) => {
 
+            if (isStorageId(payload.destinationId)) return
             // todo if x out of y constraint exists on group or top group, only move as many courses to fulfill ects constraint
             console.log("moving group")
             // find semester

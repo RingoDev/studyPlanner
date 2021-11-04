@@ -43,7 +43,7 @@ const ConstraintIndicator = ({course}: { course: Course }) => {
                         if (typeof v.reason === "string") return <Typography key={index}>{v.reason}</Typography>
                         return (
                             <div key={index}>
-                                {v.reason.map(r => <Typography>{r}</Typography>)}
+                                {v.reason.map((r,innerIndex) => <Typography key={innerIndex}>{r}</Typography>)}
                             </div>
                         )
                     })}

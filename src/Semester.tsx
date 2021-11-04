@@ -41,7 +41,7 @@ const Semester = ({semester, index}: { semester: SemesterType, index: number }) 
     return (
         <div className={classes.test}>
             <SemesterName index={index}/>
-            <div style={{position: "relative", paddingLeft: "4rem", height: "100%"}}>
+            <div style={{ paddingLeft: "4rem", height: "100%"}}>
                 <div style={{height: "100%", display: "flex", flexDirection: "column"}}>
                     <DroppableCourseList semester={semester} index={index}/>
                     <div style={{textAlign: "center", fontSize: "1.75rem"}}>

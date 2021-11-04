@@ -10,6 +10,7 @@ import {useAppSelector} from "../redux/hooks";
 import {getCoursesFromGroups, getGroupWithIdFromGroups} from "../data";
 import {COURSE_GROUP} from "../types/dndTypes";
 import DraggableGroupItem from "./draggableGroupItem";
+import {Droppable} from "react-beautiful-dnd";
 
 
 const GroupItem = ({group, level}: { group: Group, index: number, level: number }) => {
@@ -76,27 +77,37 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
                 </ListItem>
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <div className={classes.collapsedDiv} style={{height: "100%"}}>
-                        <List component="div" disablePadding>
-                            {group.type === COURSE_GROUP ?
-                                group.courses.map((course, cIndex) => (
-                                    <div key={course.id}>
-                                        <DraggableCourseItem course={{
-                                            ...course,
-                                            color: allEcts - unbookedEcts >= maxEcts ? "#cccccc": group.color
-                                        }} index={cIndex} containerId={group.id}/>
-                                    </div>
-                                )) :
-                                group.groups.map((group, cIndex) => (
-                                    <div key={group.id}>
-                                        <DraggableGroupItem
-                                            level={level + 1}
-                                            group={{
-                                                ...group,
-                                                color: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color
-                                            }} index={cIndex} containerId={group.id}/>
-                                    </div>
-                                ))}
-                        </List>
+                        <Droppable droppableId={group.id} isDropDisabled>
+                            {provided => (
+                                <List component="div" disablePadding ref={provided.innerRef} {...provided.droppableProps}>
+                                    {group.type === COURSE_GROUP ?
+                                        group.courses.map((course, cIndex) => (
+                                            <div key={course.id}>
+                                                <DraggableCourseItem course={{
+                                                    ...course,
+                                                    color: allEcts - unbookedEcts >= maxEcts ? "#cccccc": group.color
+                                                }} index={cIndex} containerId={group.id}/>
+                                            </div>
+                                        ))
+
+                                        :
+                                        group.groups.map((group, cIndex) => (
+                                            <div key={group.id}>
+                                                <DraggableGroupItem
+                                                    level={level + 1}
+                                                    group={{
+                                                        ...group,
+                                                        color: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color
+                                                    }} index={cIndex} containerId={group.id}/>
+                                            </div>
+                                        ))}
+                                    {provided.placeholder}
+                                </List>
+
+
+                            )}
+
+                        </Droppable>
                     </div>
                 </Collapse>
             </div>

@@ -1,10 +1,9 @@
 import React from "react";
 import {useAppSelector} from "../redux/hooks";
-import {Check} from "lucide-react";
 
 const SemesterName = ({index}: { index: number }) => {
     const semesterName: string = useAppSelector((state) => (state.data.selectSemesterList[state.data.startSemesterIndex + index]))
-    const semesterIsDone: boolean = useAppSelector((state) => (state.data.currentSemesterIndex - state.data.startSemesterIndex) > index)
+    // const semesterIsDone: boolean = useAppSelector((state) => (state.data.currentSemesterIndex - state.data.startSemesterIndex) > index)
 
     return (
         <>
@@ -18,7 +17,7 @@ const SemesterName = ({index}: { index: number }) => {
                 transform: "rotate(270deg)",
                 textAlign: "right"
             }}>
-                {semesterIsDone ? <Check/> : null}
+                {/*{semesterIsDone ? <Check/> : null}*/}
                 {semesterName}
             </div>
         </>

@@ -1,66 +1,84 @@
 import React from 'react';
-import {
-    Container,
-    createStyles,
-    makeStyles,
-} from "@material-ui/core";
+import {Container, createStyles, makeStyles,} from "@material-ui/core";
 import Curriculum from "./Curriculum";
 import Storage from "./Storage";
-import {DndProvider} from "react-dnd";
-import {HTML5Backend} from "react-dnd-html5-backend";
+import {DragDropContext, DropResult} from "react-beautiful-dnd";
+import {moveCourse, moveGroup} from "./redux/data/data.actions";
+import {useAppDispatch} from "./redux/hooks";
+
+const useStyles = makeStyles(() =>
+    createStyles({
+        container: {
+            padding: "5vh 2rem",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            height: "90vh",
+        },
+        currContainer: {
+            flex: "1 1 70%",
+            overflowY: "auto",
+            '&::-webkit-scrollbar': {
+                width: '0.75em',
+                backgroundColor: '#555555',
+                outline: '1px solid #444444',
+                borderRadius: "1em"
+            },
+            '&::-webkit-scrollbar-thumb': {
+                backgroundColor: '#777777',
+                borderRadius: "1em"
+            }
+        },
+        storageContainer: {
+            flex: "0 1 25%",
+            borderRadius: "1em",
+            paddingLeft:"1rem",
+            padding:"0.5rem",
+            paddingBottom:"1.5rem",
+            backgroundColor: "#dddddd"
+        }
+    })
+)
 
 const Planner = () => {
 
-    const useStyles = makeStyles(() =>
-        createStyles({
-            container: {
-                padding: "2rem"
-            },
-            box: {
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: 400,
-                padding: "4rem",
-                backdropFilter: "blur(20px)",
-                boxShadow: "0 8px 32px 0 rgba( 31, 38, 135, 0.37 )",
-                borderRadius: "1rem",
-                minHeight: "50rem",
-                background: "rgba( 255, 255, 255, 0.3 )",
-                border: "1px solid rgba( 255, 255, 255, 0.18 )",
-            },
-        })
-    )
+    const dispatch = useAppDispatch()
 
     const classes = useStyles()
 
+    const handleDragEnd = ({destination, draggableId, source}: DropResult) => {
+        if (destination === undefined || destination === null) return
+
+        if (draggableId.startsWith("c_")) {
+            dispatch(moveCourse({
+                courseId: draggableId.slice(2),
+                sourceId: source.droppableId,
+                destinationId: destination.droppableId,
+            }))
+            return
+        } else if (draggableId.startsWith("g_")) {
+            dispatch(moveGroup({
+                destinationId: destination.droppableId,
+                groupId: draggableId.slice(2)
+            }))
+            return
+        } else {
+            console.error("wrong draggable id format: ", draggableId)
+        }
+    }
+
     return (
         <div className="App">
-
-            <DndProvider backend={HTML5Backend}>
+            <DragDropContext onDragEnd={handleDragEnd}>
                 <Container className={classes.container} maxWidth={"xl"}>
-                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                        <div style={{
-                            maxHeight: "90vh",
-                            height: "85vh",
-                            overflowY: "auto",
-                            flex: "0 1 25%",
-                            backgroundColor: "#dddddd"
-                        }}>
-                            <Storage/>
-                        </div>
-                        <div style={{
-                            flex: "1 1 70%",
-                            maxHeight: "90vh",
-                            height: "85vh",
-                            overflowY: "auto",
-                        }}>
-                            <Curriculum/>
-                        </div>
+                    <div className={classes.storageContainer}>
+                        <Storage/>
+                    </div>
+                    <div className={classes.currContainer}>
+                        <Curriculum/>
                     </div>
                 </Container>
-            </DndProvider>
+            </DragDropContext>
         </div>
     );
 }
