@@ -1,7 +1,16 @@
-import {ListItemIcon, Tooltip, Typography, withStyles} from "@material-ui/core";
+import {createStyles, ListItemIcon, makeStyles, Tooltip, Typography, withStyles} from "@material-ui/core";
 import {AlertCircle, XCircle} from "lucide-react";
 import React from "react";
 import Course from "../types/types";
+
+const useStyles = makeStyles(() => {
+    return createStyles({
+        icon: {
+            display: "flex",
+            justifyContent: "center"
+        }
+    })
+})
 
 const ConstraintIndicator = ({course}: { course: Course }) => {
 
@@ -18,23 +27,31 @@ const ConstraintIndicator = ({course}: { course: Course }) => {
         },
     }))(Tooltip);
 
+    const classes = useStyles()
+
     if (!course.violations || course.violations.length === 0) return <></>
 
+    let violations = course.violations;
+    const highViolations = violations.filter(v => v.severity === "HIGH")
+    if (highViolations.length > 0) violations = highViolations
 
     return (
-        <ListItemIcon>
+        <ListItemIcon className={classes.icon}>
             <HtmlTooltip arrow title={
                 <>
-                    {course.violations.map((v, index) => {
+                    {violations.map((v, index) => {
+                        if (typeof v.reason === "string") return <Typography key={index}>{v.reason}</Typography>
                         return (
-                            <Typography key={index}>{v.reason}</Typography>
+                            <div key={index}>
+                                {v.reason.map(r => <Typography>{r}</Typography>)}
+                            </div>
                         )
                     })}
                 </>
             }>
                 {
-                    course.violations.findIndex(v => v.severity === "HIGH") === -1 ?
-                        <AlertCircle color={"red"}/> :
+                    violations.findIndex(v => v.severity === "HIGH") === -1 ?
+                        <AlertCircle color={"orange"}/> :
                         <XCircle color={"red"}/>
                 }
             </HtmlTooltip>

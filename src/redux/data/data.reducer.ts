@@ -229,7 +229,6 @@ const courseReducer = createReducer(initialState, (builder) => {
 
         })
         .addCase(moveCourse, (state, {payload}) => {
-console.log(payload)
             if (isGroupId(payload.sourceId) && isStorageId(payload.destinationId)) {
                 // moving Course from storage to storage
                 // do nothing
@@ -373,13 +372,12 @@ console.log(payload)
                     course.violations = []
 
                     // checking semester constraint
-                    // there should only be a single semester constraint, if there are multiple we take only the first one for now todo make better
                     const courseSemesterSign = getSemesterConstraint(course.id);
                     if (courseSemesterSign) {
-                        if (!checkSemesterConstraint(state.startSemester, courseSemesterSign, i)) {// add violation to course
+                        if (!checkSemesterConstraint(state.startSemester, courseSemesterSign, i)) {
                             course.violations.push({
                                 severity: "HIGH",
-                                reason: "Can only be taken in " + courseSemesterSign
+                                reason: "Wird nur im " + courseSemesterSign + " angeboten"
                             })
                         }
                     }
@@ -390,14 +388,11 @@ console.log(payload)
                             // check that all steop courses are booked before this semester
 
                             const violatingSteopCourses = findCoursesNotBefore(state.initialConfig.constraints.steopConstraints.steop, i, state.curriculum.semesters)
-                            for (let foundCourse of violatingSteopCourses) {
+                            if (violatingSteopCourses.length > 0) {
                                 course.violations.push({
                                     severity: "HIGH",
-                                    reason: "Can not be booked because the required StEOP course: " +
-                                        foundCourse.sign +
-                                        " - " +
-                                        foundCourse.title +
-                                        " is not finished before this semester"
+                                    reason: ["Kann nicht belegt werden, da folgende StEOP Kurse nicht vor diesem Semester abgeschlossen sind:",
+                                        ...violatingSteopCourses.map(c => c.sign + " - " + c.title)]
                                 })
                             }
                         }
@@ -409,18 +404,14 @@ console.log(payload)
 
                         // check if prior courses are in same semester or before -- check if they are after
                         const violatingDependencies = findCoursesNotBefore(constraints.dependsOn, i + 1, state.curriculum.semesters)
-                        // console.log("violating dependencies:",violatingDependencies)
-                        for (let foundCourse of violatingDependencies) {
+
+                        if (violatingDependencies.length > 0) {
                             course.violations.push({
                                 severity: "LOW",
-                                reason: "Es wird empfohlen den Kurs " +
-                                    foundCourse.sign +
-                                    " - " +
-                                    foundCourse.title +
-                                    " im selben oder einem früheren Semester zu belegen"
+                                reason: ["Es wird empfohlen folgende Kurse im selben oder einem früheren Semester zu belegen:",
+                                    ...violatingDependencies.map(c => c.sign + " - " + c.title)]
                             })
                         }
-
                     }
                 }
             }

@@ -13,8 +13,7 @@ import {getCoursesFromGroups} from "./data";
 
 const Progress = () => {
 
-    // const curriculumCourses = useAppSelector(state => state.data.curriculum.semesters).flatMap(s => s.courses)
-    // const storage = useAppSelector(state => state.data.storage)
+    const curriculumCourses = useAppSelector(state => state.data.curriculum.semesters).flatMap(s => s.courses)
     const initialConfig = useAppSelector(state => state.data.initialConfig)
 
     const chartRef = useRef<Chart<"doughnut", number[], string>>(null)
@@ -64,11 +63,11 @@ const Progress = () => {
             for (let group of groups) {
 
                 const allCourses: Course[] = getCoursesFromGroups([group])
-                //     .map(c => {
-                //     const index = curriculumCourses.findIndex(course => course.id === c.id)
-                //     if (index !== -1) return curriculumCourses[index]
-                //     else return {...storage[storage.findIndex(course => course.id === c.id)], ects: 0}
-                // })
+                    .map(c => {
+                    const index = curriculumCourses.findIndex(course => course.id === c.id)
+                    if (index !== -1) return curriculumCourses[index]
+                    else return c
+                })
 
                 // if a x out of y constraint exists, use it to set the max ects of the competency
                 const constraint = initialConfig.constraints.xOutOfYConstraints.find(c => c.group === group.id)
@@ -86,7 +85,6 @@ const Progress = () => {
                 //     else return curriculumCourses[curriculumCourses.findIndex(course => course.id === id)]
                 // }))
             }
-
 
             result.push({
                 ...competency,

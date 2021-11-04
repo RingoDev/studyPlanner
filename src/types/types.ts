@@ -17,7 +17,7 @@ export default interface Course {
 
 export interface Violation {
     severity: "HIGH" | "MEDIUM" | "LOW"
-    reason: string
+    reason: string[] | string
 }
 
 export interface CurriculumType {
