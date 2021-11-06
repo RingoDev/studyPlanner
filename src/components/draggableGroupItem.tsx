@@ -7,11 +7,12 @@ interface Props {
     group: Group
     index: number
     containerId: string
-    level: number
+    level: number,
+    hide:boolean
 }
 
 
-const DraggableGroupItem = ({group, index, level}: Props) => {
+const DraggableGroupItem = ({group, index, level,hide}: Props) => {
 
     if (group.type === COURSE_GROUP && group.courses.length === 0) {
         return <></>
@@ -19,12 +20,20 @@ const DraggableGroupItem = ({group, index, level}: Props) => {
 
     return (
         <Draggable draggableId={"g_" + group.id} index={index}>
-            {(provided) => (
-                <div ref={provided.innerRef}
-                     style={{cursor: "pointer"}}{...provided.draggableProps} {...provided.dragHandleProps} >
-                    <GroupItem level={level} group={group} index={index}/>
-                </div>
-            )}
+            {(provided) => {
+                if(hide){
+                    return(
+                        <div ref={provided.innerRef}{...provided.draggableProps} {...provided.dragHandleProps} style={{display:"none"}}>
+                            <GroupItem level={level} group={group} index={index}/>
+                        </div>
+                    )
+                }
+                return (
+                    <div ref={provided.innerRef}{...provided.draggableProps} {...provided.dragHandleProps}>
+                        <GroupItem level={level} group={group} index={index}/>
+                    </div>
+                )
+            }}
         </Draggable>
     )
 }

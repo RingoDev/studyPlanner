@@ -1,7 +1,5 @@
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import {ChevronDown, ChevronUp} from "lucide-react";
-import {Collapse, createStyles, ListItemIcon, makeStyles} from "@material-ui/core";
+import {ListItemText, ListItem, Collapse, createStyles, ListItemIcon, makeStyles} from "@material-ui/core";
 import List from "@material-ui/core/List";
 import React, {useState} from "react";
 import {Group} from "../types/types";
@@ -41,7 +39,6 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
                 padding: "0.5rem"
             },
             div: {
-
                 marginBottom: "0.5rem"
             },
             item: {
@@ -79,13 +76,14 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
                     <div className={classes.collapsedDiv} style={{height: "100%"}}>
                         <Droppable droppableId={group.id} isDropDisabled>
                             {provided => (
-                                <List component="div" disablePadding ref={provided.innerRef} {...provided.droppableProps}>
+                                <List component="div" disablePadding
+                                      ref={provided.innerRef} {...provided.droppableProps}>
                                     {group.type === COURSE_GROUP ?
                                         group.courses.map((course, cIndex) => (
                                             <div key={course.id}>
                                                 <DraggableCourseItem course={{
                                                     ...course,
-                                                    color: allEcts - unbookedEcts >= maxEcts ? "#cccccc": group.color
+                                                    color: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color
                                                 }} index={cIndex} containerId={group.id}/>
                                             </div>
                                         ))
@@ -94,6 +92,7 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
                                         group.groups.map((group, cIndex) => (
                                             <div key={group.id}>
                                                 <DraggableGroupItem
+                                                    hide={false}
                                                     level={level + 1}
                                                     group={{
                                                         ...group,
@@ -103,10 +102,7 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
                                         ))}
                                     {provided.placeholder}
                                 </List>
-
-
                             )}
-
                         </Droppable>
                     </div>
                 </Collapse>

@@ -10,8 +10,10 @@ import {
     setApplicationState,
     setCourseFinished,
     setCourseUnfinished,
-    setCustomStudies, setExampleCurriculum,
-    setStartSemester, showConstraintIndicators,
+    setCustomStudies,
+    setExampleCurriculum,
+    setStartSemester,
+    showConstraintIndicators,
     unlockDroppables,
 } from "./data.actions";
 import initialConfig, {getCoursesFromGroups, getGroupWithIdFromGroups, InitialGroupType} from "../../data";
@@ -28,18 +30,6 @@ interface INITIAL_STATE_TYPE {
     lastChosenExample: number
 }
 
-
-const getCourseById = (id: string): Course | undefined => {
-    for (let group of initialConfig.groups) {
-        for (let course of getCoursesFromGroups([group])) {
-            if (course.id === id) {
-                return {...course, type: "course", color: group.color, violations: []}
-            }
-        }
-    }
-    console.warn("Could not find course with id: " + id)
-}
-
 const offset = 10
 const startYear = new Date().getFullYear() - offset / 2
 const selectOptions = 18
@@ -48,39 +38,14 @@ const selectSemesterList: string[] = Array.from(Array(selectOptions).keys()).map
         ? "WS" + (startYear + n / 2) + "/" + (startYear - 1999 + n / 2)
         : "SS" + (startYear + 1 + Math.floor(n / 2))))
 
-
 const getCurrentSemester = () => {
     if (new Date().getMonth() < 4) {
-        console.log("current semester ", offset - 1, selectSemesterList[offset - 1])
         return offset - 1
     } else if (new Date().getMonth() < 10) {
-        console.log("current semester ", offset, selectSemesterList[offset])
         return offset
     }
-    console.log("current semester ", offset + 1, selectSemesterList[offset + 1])
     return offset + 1
 }
-
-function configGroupsToGroups(groups: InitialGroupType[]): Group[] {
-
-    const allGroups: Group[] = []
-
-    for (let group of groups) {
-        if ("courses" in group) {
-            const courses = getCoursesFromGroups([group])
-            allGroups.push({...group, type: COURSE_GROUP, courses: courses, color: group.color})
-        } else if ("groups" in group) {
-            allGroups.push({
-                ...group,
-                type: COMPOSITE_GROUP,
-                groups: configGroupsToGroups(group.groups),
-                color: group.color
-            })
-        }
-    }
-    return allGroups
-}
-
 
 const initialState: INITIAL_STATE_TYPE = {
     initialConfig: initialConfig,
@@ -93,80 +58,6 @@ const initialState: INITIAL_STATE_TYPE = {
         semesters: Array.from([0, 1, 2, 3, 4, 5]).map(a => ({number: a, id: "00" + a, courses: [], customEcts: 0}))
     },
     lastChosenExample: -1
-}
-
-
-const removeCoursesFromGroupList = (groups: Group[], toRemove: string[]): Group[] => {
-    const result = []
-
-    for (let group of groups) {
-        if (group.type === COURSE_GROUP) {
-            result.push({
-                ...group,
-                courses: group.courses.filter(c => toRemove.findIndex(id => c.id === id) === -1)
-            })
-        } else if (group.type === COMPOSITE_GROUP) {
-            result.push({
-                ...group,
-                groups: removeCoursesFromGroupList(group.groups, toRemove)
-            })
-        }
-    }
-    return result
-}
-
-// uncomment for example curriculum
-
-//
-// console.log(JSON.stringify(initialConfig.constraints.dependencyConstraints.map(c => {
-//     return {
-//         course: c.course.slice(0, 3) + "-" + c.course.slice(4),
-//         dependsOn: c.dependsOn.map(id => id.slice(0, 3) + "-" + id.slice(4))
-//     }
-// })))
-
-function moveCourseFromStorageToCurriculum(curriculum: CurriculumType, groups: Group[], groupId: string, courseId: string, semesterIndex: number) {
-
-    for (let group of groups) {
-        if (group.id === groupId && group.type === COURSE_GROUP) {
-            const courseIndex = group.courses.findIndex(c => c.id === courseId)
-            if (courseIndex !== -1) {
-                // remove course from Storage
-                const course = group.courses.splice(courseIndex, 1)[0]
-
-                // add course to semester
-                curriculum.semesters[semesterIndex].courses.splice(0, 0, course);
-            }
-            return
-        } else if (groupId.startsWith(group.id) && group.type === COMPOSITE_GROUP) {
-            // we must go deeper
-            moveCourseFromStorageToCurriculum(curriculum, group.groups, groupId, courseId, semesterIndex)
-        }
-    }
-}
-
-function moveCourseFromCurriculumToStorage(curriculum: CurriculumType, groups: Group[], groupId: string, courseId: string, semesterIndex: number) {
-    for (let group of groups) {
-        if (group.id === groupId && group.type === COURSE_GROUP) {
-            const courseIndex = curriculum.semesters[semesterIndex].courses.findIndex(c => c.id === courseId)
-            if (courseIndex !== -1) {
-
-                // remove course from semester list set finished attribute false
-                const course = {
-                    ...curriculum.semesters[semesterIndex].courses.splice(courseIndex, 1)[0],
-                    finished: false,
-                    violations: []
-                }
-
-                // add course to storage
-                group.courses.splice(0, 0, course);
-            }
-            return
-        } else if (groupId.startsWith(group.id) && group.type === COMPOSITE_GROUP) {
-            // we must go deeper
-            moveCourseFromCurriculumToStorage(curriculum, group.groups, groupId, courseId, semesterIndex)
-        }
-    }
 }
 
 // checking Course Constraints after most actions
@@ -192,8 +83,6 @@ const courseReducer = createReducer(initialState, (builder) => {
                 return
             }
 
-            console.log("setting example curriculum")
-
             // set start semester to correct semester type
             if (state.startSemester !== state.initialConfig.examples[payload.exampleIndex].startsWith) {
                 if (state.startSemester === "WS") {
@@ -211,7 +100,7 @@ const courseReducer = createReducer(initialState, (builder) => {
             state.curriculum = {
                 semesters: state.initialConfig.examples[payload.exampleIndex].curriculum.map(item => {
                     const courses: Course[] = []
-                    for (let course of item.courses.map(id => getCourseById(id))) {
+                    for (let course of item.courses.map(id => getCourseById(id, state.initialConfig.groups))) {
                         if (course !== undefined) courses.push(course)
                     }
                     return {
@@ -220,7 +109,6 @@ const courseReducer = createReducer(initialState, (builder) => {
                     }
                 })
             }
-
         })
         .addCase(moveCourse, (state, {payload}) => {
             if (isGroupId(payload.sourceId) && isStorageId(payload.destinationId)) {
@@ -233,18 +121,18 @@ const courseReducer = createReducer(initialState, (builder) => {
                 const sourceSemesterIndex = Number(payload.sourceId.slice(3))
                 const destinationSemesterIndex = Number(payload.destinationId.slice(3))
                 const sourceCourseIndex = state.curriculum.semesters[sourceSemesterIndex].courses.findIndex(c => c.id === payload.courseId)
-                const destinationCourseIndex = state.curriculum.semesters[destinationSemesterIndex].courses.findIndex(c => c.id === payload.courseId)
+                // const destinationCourseIndex = state.curriculum.semesters[destinationSemesterIndex].courses.findIndex(c => c.id === payload.courseId)
 
                 // remove course from semester list
                 const course = state.curriculum.semesters[sourceSemesterIndex].courses.splice(sourceCourseIndex, 1)[0]
 
                 // add course to semester
-                state.curriculum.semesters[destinationSemesterIndex].courses.splice(destinationCourseIndex, 0, course);
+                state.curriculum.semesters[destinationSemesterIndex].courses.splice(payload.destinationIndex, 0, course);
 
             } else if (isGroupId(payload.sourceId) && isSemesterId(payload.destinationId)) {
                 // find semester
                 const semesterIndex = Number(payload.destinationId.slice(3))
-                moveCourseFromStorageToCurriculum(state.curriculum, state.storage, payload.sourceId, payload.courseId, semesterIndex)
+                moveCourseFromStorageToCurriculum(state.curriculum, state.storage, payload.sourceId, payload.courseId, semesterIndex, payload.destinationIndex)
 
             } else if (isStorageId(payload.destinationId)) {
                 // find semester
@@ -257,14 +145,13 @@ const courseReducer = createReducer(initialState, (builder) => {
 
             if (isStorageId(payload.destinationId)) return
             // todo if x out of y constraint exists on group or top group, only move as many courses to fulfill ects constraint
-            console.log("moving group")
             // find semester
             const semesterIndex = Number(payload.destinationId.slice(3))
 
             const group = getGroupWithIdFromGroups(state.storage, payload.groupId)
             if (group !== undefined) {
                 for (let id of getCoursesFromGroups([group]).map(c => c.id)) {
-                    moveCourseFromStorageToCurriculum(state.curriculum, state.storage, getGroupIdOfCourseId(id), id, semesterIndex)
+                    moveCourseFromStorageToCurriculum(state.curriculum, state.storage, getGroupIdOfCourseId(id), id, semesterIndex, payload.destinationIndex)
                 }
             }
         })
@@ -287,12 +174,10 @@ const courseReducer = createReducer(initialState, (builder) => {
         })
 
         .addCase(removeSemester, (state, {payload}) => {
-
-            // add courses to storage with reset violations
-            // state.storage.push(...state.curriculum.semesters[payload.semesterIndex].courses)
-
-            // remove semester
-            state.curriculum.semesters.splice(payload.semesterIndex, 1)
+            for (let id of state.curriculum.semesters[payload.semesterIndex].courses.map(c => c.id)) {
+                moveCourseFromCurriculumToStorage(state.curriculum, state.storage, getGroupIdOfCourseId(id), id, payload.semesterIndex)
+            }
+            state.curriculum.semesters.splice(payload.semesterIndex,1)
         })
         // .addCase(showConstraintIndicators, (state, {payload}) => {
         //     const course = initialConfig.groups.flatMap(g => g.courses).find(c => c.id === payload.courseId)
@@ -357,101 +242,172 @@ const courseReducer = createReducer(initialState, (builder) => {
             console.log(action)
         }))
         .addMatcher(checkCourseConstraintsMatcher, (state, {payload}) => {
-            console.log("Checking constraints")
-
-            // todo set violations in storage to empty list -- only if needed
-
             for (let i = 0; i < state.curriculum.semesters.length; i++) {
                 for (let course of state.curriculum.semesters[i].courses) {
-
                     course.violations = []
-
-                    // checking semester constraint
-                    const courseSemesterSign = getSemesterConstraint(course.id);
-                    if (courseSemesterSign) {
-                        if (!checkSemesterConstraint(state.startSemester, courseSemesterSign, i)) {
-                            course.violations.push({
-                                severity: "HIGH",
-                                reason: "Wird nur im " + courseSemesterSign + " angeboten"
-                            })
-                        }
-                    }
-
-                    // checking steop constraint
-                    if (!courseIsSteop(course.id)) {
-                        if (!allowedBeforeSteopFinished(course.id)) {
-                            // check that all steop courses are booked before this semester
-
-                            const violatingSteopCourses = findCoursesNotBefore(state.initialConfig.constraints.steopConstraints.steop, i, state.curriculum.semesters)
-                            if (violatingSteopCourses.length > 0) {
-                                course.violations.push({
-                                    severity: "HIGH",
-                                    reason: ["Kann nicht belegt werden, da folgende StEOP Kurse nicht vor diesem Semester abgeschlossen sind:",
-                                        ...violatingSteopCourses.map(c => c.sign + " - " + c.title)]
-                                })
-                            }
-                        }
-                    }
-
-                    // checking dependency constraints
-                    const constraints = state.initialConfig.constraints.dependencyConstraints.find(c => c.course === course.id)
-                    if (constraints !== undefined && constraints.dependsOn.length !== 0) {
-
-                        // check if prior courses are in same semester or before -- check if they are after
-                        const violatingDependencies = findCoursesNotBefore(constraints.dependsOn, i + 1, state.curriculum.semesters)
-
-                        if (violatingDependencies.length > 0) {
-                            course.violations.push({
-                                severity: "LOW",
-                                reason: ["Es wird empfohlen folgende Kurse im selben oder einem früheren Semester zu belegen:",
-                                    ...violatingDependencies.map(c => c.sign + " - " + c.title)]
-                            })
-                        }
-                    }
+                    checkSemesterConstraints(state, course, i);
+                    checkSteopConstraints(state, course, i);
+                    checkDependencyConstraints(state, course, i);
                 }
             }
-
-            for (let constraint of state.initialConfig.constraints.xOutOfYConstraints) {
-                const group = state.initialConfig.groups.find(g => g.id === constraint.group);
-                if (!group) continue;
-
-                console.log("Checking x out of y constraint for group: " + group.id)
-                // check if x or less ects of this group are booked
-                // if not, every single one of them gets a new constraint added
-
-                const maxEcts = constraint.maxEcts
-                // const Y = constraint.y
-                let ectsCount = 0;
-                let foundCourses: [semesterIndex: number, courseIndex: number][] = []
-
-                for (let i = 0; i < state.curriculum.semesters.length; i++) {
-                    for (let j = 0; j < state.curriculum.semesters[i].courses.length; j++) {
-                        if (getCoursesFromGroups([group]).findIndex(c => c.id === state.curriculum.semesters[i].courses[j].id) !== -1) {
-                            ectsCount += state.curriculum.semesters[i].courses[j].ects;
-                            foundCourses.push([i, j])
-                        }
-                    }
-                }
-
-                console.log("ectsCount: " + ectsCount, "maxEcts: " + maxEcts, "foundCourses", foundCourses)
-
-                if (ectsCount > maxEcts) {
-                    // violation, more courses than constraint allows
-                    for (let indices of foundCourses) {
-
-                        state.curriculum.semesters[indices[0]].courses[indices[1]].violations.push({
-                            severity: "HIGH",
-                            reason: "Es können nur " + maxEcts + " ECTs "
-                                + " der Gruppe "
-                                + group.title
-                                + " belegt werden."
-                        })
-                    }
-                }
-
-            }
+            checkXOutOfYConstraints(state);
         })
 })
+
+function removeCoursesFromGroupList(groups: Group[], toRemove: string[]): Group[] {
+    const result = []
+
+    for (let group of groups) {
+        if (group.type === COURSE_GROUP) {
+            result.push({
+                ...group,
+                courses: group.courses.filter(c => toRemove.findIndex(id => c.id === id) === -1)
+            })
+        } else if (group.type === COMPOSITE_GROUP) {
+            result.push({
+                ...group,
+                groups: removeCoursesFromGroupList(group.groups, toRemove)
+            })
+        }
+    }
+    return result
+}
+
+function moveCourseFromStorageToCurriculum(curriculum: CurriculumType, groups: Group[], groupId: string, courseId: string, semesterIndex: number, destinationIndex: number) {
+
+    for (let group of groups) {
+        if (group.id === groupId && group.type === COURSE_GROUP) {
+            const courseIndex = group.courses.findIndex(c => c.id === courseId)
+            if (courseIndex !== -1) {
+                // remove course from Storage
+                const course = group.courses.splice(courseIndex, 1)[0]
+
+                // add course to semester
+                curriculum.semesters[semesterIndex].courses.splice(destinationIndex, 0, course);
+            }
+            return
+        } else if (groupId.startsWith(group.id) && group.type === COMPOSITE_GROUP) {
+            // we must go deeper
+            moveCourseFromStorageToCurriculum(curriculum, group.groups, groupId, courseId, semesterIndex, destinationIndex)
+        }
+    }
+}
+
+function moveCourseFromCurriculumToStorage(curriculum: CurriculumType, groups: Group[], groupId: string, courseId: string, semesterIndex: number) {
+    for (let group of groups) {
+        if (group.id === groupId && group.type === COURSE_GROUP) {
+            const courseIndex = curriculum.semesters[semesterIndex].courses.findIndex(c => c.id === courseId)
+            if (courseIndex !== -1) {
+
+                // remove course from semester list set finished attribute false
+                const course = {
+                    ...curriculum.semesters[semesterIndex].courses.splice(courseIndex, 1)[0],
+                    finished: false,
+                    violations: []
+                }
+
+                // add course to storage
+                group.courses.splice(0, 0, course);
+            }
+            return
+        } else if (groupId.startsWith(group.id) && group.type === COMPOSITE_GROUP) {
+            // we must go deeper
+            moveCourseFromCurriculumToStorage(curriculum, group.groups, groupId, courseId, semesterIndex)
+        }
+    }
+}
+
+function checkDependencyConstraints(state: INITIAL_STATE_TYPE, course: Course, i: number) {
+
+    // checking dependency constraints
+    const constraints = state.initialConfig.constraints.dependencyConstraints.find(c => c.course === course.id)
+    if (constraints !== undefined && constraints.dependsOn.length !== 0) {
+
+        // check if prior courses are in same semester or before -- check if they are after
+        const violatingDependencies = findCoursesNotBefore(
+            constraints.dependsOn,
+            i + 1,
+            state.curriculum.semesters,
+            state.initialConfig.groups)
+
+        if (violatingDependencies.length > 0) {
+            course.violations.push({
+                severity: "LOW",
+                reason: ["Es wird empfohlen folgende Kurse im selben oder einem früheren Semester zu belegen:",
+                    ...violatingDependencies.map(c => c.sign + " - " + c.title)]
+            })
+        }
+    }
+}
+
+function checkSteopConstraints(state: INITIAL_STATE_TYPE, course: Course, semesterIndex: number) {
+    // checking steop constraint
+    if (!courseIsSteop(course.id) && !allowedBeforeSteopFinished(course.id)) {
+        // check that all steop courses are booked before this semester
+
+        const violatingSteopCourses = findCoursesNotBefore(
+            state.initialConfig.constraints.steopConstraints.steop,
+            semesterIndex,
+            state.curriculum.semesters,
+            state.initialConfig.groups)
+        if (violatingSteopCourses.length > 0) {
+            course.violations.push({
+                severity: "HIGH",
+                reason: ["Kann nicht belegt werden, da folgende StEOP Kurse nicht vor diesem Semester abgeschlossen sind:",
+                    ...violatingSteopCourses.map(c => c.sign + " - " + c.title)]
+            })
+        }
+    }
+}
+
+function checkSemesterConstraints(state: INITIAL_STATE_TYPE, course: Course, semesterIndex: number) {
+    const courseSemesterSign = getSemesterConstraint(course.id);
+    if (courseSemesterSign) {
+        if (!checkSemesterConstraint(state.startSemester, courseSemesterSign, semesterIndex)) {
+            course.violations.push({
+                severity: "HIGH",
+                reason: "Wird nur im " + courseSemesterSign + " angeboten"
+            })
+        }
+    }
+}
+
+function checkXOutOfYConstraints(state: INITIAL_STATE_TYPE) {
+    for (let constraint of state.initialConfig.constraints.xOutOfYConstraints) {
+        const group = state.initialConfig.groups.find(g => g.id === constraint.group);
+        if (!group) continue;
+
+        // check if x or less ects of this group are booked
+        // if not, every single one of them gets a new constraint added
+        const maxEcts = constraint.maxEcts
+        // const Y = constraint.y
+        let ectsCount = 0;
+        let foundCourses: [semesterIndex: number, courseIndex: number][] = []
+
+        for (let i = 0; i < state.curriculum.semesters.length; i++) {
+            for (let j = 0; j < state.curriculum.semesters[i].courses.length; j++) {
+                if (getCoursesFromGroups([group]).findIndex(c => c.id === state.curriculum.semesters[i].courses[j].id) !== -1) {
+                    ectsCount += state.curriculum.semesters[i].courses[j].ects;
+                    foundCourses.push([i, j])
+                }
+            }
+        }
+        if (ectsCount > maxEcts) {
+            // violation, more courses than constraint allows
+            for (let indices of foundCourses) {
+                state.curriculum.semesters[indices[0]].courses[indices[1]].violations.push({
+                    severity: "HIGH",
+                    reason: "Es können nur " + maxEcts + " ECTs "
+                        + " der Gruppe "
+                        + group.title
+                        + " belegt werden."
+                })
+            }
+        }
+    }
+}
+
+
 
 function courseIsSteop(courseId: string): boolean {
     return initialConfig.constraints.steopConstraints.steop.findIndex(c => c === courseId) !== -1
@@ -464,10 +420,10 @@ function courseIsInSemester(courseId: string, semester: SemesterType): boolean {
 }
 
 // returns an array of courses that are not booked before the semester i
-function findCoursesNotBefore(idList: string[], semesterIndex: number, semesters: SemesterType[]): Course[] {
+function findCoursesNotBefore(idList: string[], semesterIndex: number, semesters: SemesterType[], groups: InitialGroupType[]): Course[] {
     const result = []
     for (let id of idList) {
-        const course = getCourseById(id);
+        const course = getCourseById(id, groups);
         if (!course) continue;
 
         let found = false
@@ -478,23 +434,51 @@ function findCoursesNotBefore(idList: string[], semesterIndex: number, semesters
             }
         }
         if (!found) {
-            // we didnt find the steop course --bad
-            // console.log("Found non booked course: " + course.title)
             result.push(course)
         }
     }
     return result
 }
 
+function configGroupsToGroups(groups: InitialGroupType[]): Group[] {
+
+    const allGroups: Group[] = []
+
+    for (let group of groups) {
+        if ("courses" in group) {
+            const courses = getCoursesFromGroups([group])
+            allGroups.push({...group, type: COURSE_GROUP, courses: courses, color: group.color})
+        } else if ("groups" in group) {
+            allGroups.push({
+                ...group,
+                type: COMPOSITE_GROUP,
+                groups: configGroupsToGroups(group.groups),
+                color: group.color
+            })
+        }
+    }
+    return allGroups
+}
+
 function allowedBeforeSteopFinished(courseId: string): boolean {
     return initialConfig.constraints.steopConstraints.beforeSteopFinished.findIndex(s => s === courseId) !== -1
+}
+
+function getCourseById (id: string, groups: InitialGroupType[]): Course | undefined {
+    for (let group of groups) {
+        for (let course of getCoursesFromGroups([group])) {
+            if (course.id === id) {
+                return {...course, type: "course", color: group.color, violations: []}
+            }
+        }
+    }
+    console.warn("Could not find course with id: " + id)
 }
 
 function getSemesterConstraint(courseId: string): "SS" | "WS" | undefined {
     let courseSemesterSign: "SS" | "WS" | undefined = initialConfig.constraints.semesterConstraints.WS.find(id => id === courseId) ? "WS" : undefined;
     if (!courseSemesterSign) courseSemesterSign = initialConfig.constraints.semesterConstraints.SS.find(id => id === courseId) ? "SS" : undefined;
     return courseSemesterSign
-
 }
 
 function checkSemesterConstraint(startSemester: "WS" | "SS", semesterSign: "WS" | "SS", index: number): boolean {
@@ -502,31 +486,11 @@ function checkSemesterConstraint(startSemester: "WS" | "SS", semesterSign: "WS" 
     else return (semesterSign === "WS" && index % 2 === 1) || (semesterSign === "SS" && index % 2 === 0)
 }
 
-// function arrayMove<T>(oldIndex: number, newIndex: number, list: T[]) {
-//
-//     // copy array
-//     const newList = list.slice();
-//
-//     // remove from old Index
-//     const object = newList.splice(oldIndex, 1)[0]
-//
-//     // insert at different Index
-//     newList.splice(newIndex, 0, object)
-//
-//     return newList
-// }
-//
-// function findGroupIdOfCourse(courseId: string): string | undefined {
-//     const groupIndex = initialConfig.groups.findIndex(g => g.courses.findIndex(id => id === courseId) !== -1)
-//     if (groupIndex === -1) return;
-//     return initialConfig.groups[groupIndex].id
-// }
-
 function getGroupIdOfCourseId(id: string) {
     return id.slice(0, id.length - 4)
 }
 
-function isSemesterId(id: string) {
+export function isSemesterId(id: string) {
     return id.startsWith("sem") && !isNaN(Number(id.slice(3)))
 }
 
@@ -535,8 +499,7 @@ function isGroupId(id: string) {
 }
 
 function isStorageId(id: string) {
-    return id === "storage"
+    return id === "storage" || id === "pseudo_storage"
 }
-
 
 export default courseReducer

@@ -8,15 +8,18 @@ import {Droppable} from "react-beautiful-dnd";
 interface Props {
     id: string
     groups: Group[]
+    hideItems: boolean
 }
 
 
 const useStyles = makeStyles(() =>
     createStyles({
         list: {
-            padding: "1rem 0.5rem",
+            padding: "0 0.5rem",
             height: "100%",
             overflowY: "auto",
+            // width: "18vw",
+            // margin: "0 auto",
             '&::-webkit-scrollbar': {
                 width: '0.75em',
                 backgroundColor: '#cccccc',
@@ -31,22 +34,26 @@ const useStyles = makeStyles(() =>
 );
 
 
-const DroppableGroupList = ({groups, id}: Props) => {
+const DroppableGroupList = ({groups, id, hideItems}: Props) => {
     const classes = useStyles()
 
     return (
         <>
-            <Droppable droppableId={id} isDropDisabled={false}>
+            <Droppable droppableId={id} isDropDisabled>
                 {(provided) => (
                     <List ref={provided.innerRef} disablePadding className={classes.list} {...provided.droppableProps}>
-                        {groups.map((g, index) => <DraggableGroupItem
-                            containerId={"storage"}
-                            key={g.id}
-                            group={g}
-                            index={index}
-                            level={0}/>
-                        )}
-                        <div style={{display: "none", visibility: 'hidden', height: 0}}>   {provided.placeholder}</div>
+                        {
+                            // hideItems ?
+                            //     <></> :
+                                groups.map((g, index) => <DraggableGroupItem
+                                    hide={hideItems}
+                                    containerId={"storage"}
+                                    key={g.id}
+                                    group={g}
+                                    index={index}
+                                    level={0}/>
+                                )}
+                        {provided.placeholder}
                     </List>
                 )}
             </Droppable>

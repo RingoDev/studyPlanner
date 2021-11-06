@@ -28,7 +28,10 @@ export interface MultipleCourseDrop {
 const useStyles = makeStyles(() =>
     createStyles({
         list: {
-            padding: "0.5rem"
+            padding: "0.5rem",
+            // width: "18vw",
+            //
+            // margin: "0 auto",
         },
     }),
 );
@@ -38,10 +41,10 @@ const DroppableCourseList = ({semester, index}: Props) => {
     const classes = useStyles()
 
     return (
-        <Droppable droppableId={"sem" + index} >
+        <Droppable droppableId={"sem" + index}>
             {provided => (
                 <div ref={provided.innerRef} style={{
-                    border: semester.dropColor ? "2px solid " + semester.dropColor : "2px solid black",
+                    border: semester.dropColor ? "2px solid " + semester.dropColor : "2px solid #888888",
                     height: "100%"
                 }}  {...provided.droppableProps} >
                     <List disablePadding className={classes.list}>

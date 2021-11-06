@@ -20,8 +20,8 @@ import {createAction} from "@reduxjs/toolkit"
 import initialConfig from "../../data";
 import {CurriculumType} from "../../types/types";
 
-export const moveCourse = createAction<{ sourceId: string, destinationId: string, courseId: string }>(MOVE_COURSE);
-export const moveGroup = createAction<{ destinationId: string, groupId: string }>(MOVE_GROUP);
+export const moveCourse = createAction<{ sourceId: string, destinationId: string, courseId: string, destinationIndex:number }>(MOVE_COURSE);
+export const moveGroup = createAction<{ destinationId: string, groupId: string,destinationIndex:number }>(MOVE_GROUP);
 // export const moveCourseInList = createAction<{ listId: string, courseId: string, sourceIndex: number, destinationIndex: number }>(MOVE_COURSE_IN_LIST);
 
 export const addSemester = createAction<{}>(ADD_SEMESTER);
