@@ -13,9 +13,11 @@ const CourseItem = ({course, isInStorage}: { course: Course, isInStorage: boolea
     const useStyles = makeStyles(() => {
 
         return createStyles({
+            itemContainer: {
+                paddingBottom: "0.375rem"
+            },
             item: {
                 backgroundColor: course.finished ? Color(course.color).alpha(0.3).string() : course.color,
-                marginBottom: "0.375rem",
                 padding: "0.5rem"
             },
             nestedlighten: {
@@ -28,21 +30,23 @@ const CourseItem = ({course, isInStorage}: { course: Course, isInStorage: boolea
 
 
     return (
-        <ListItem className={classes.item}>
-            <ListItemText>
-                {course.kusssId !== "" ? <KusssLink
-                    id={course.kusssId}>{course.sign + " - " + course.title}</KusssLink> : (course.sign + " - " + course.title)}
-            </ListItemText>
-            {
-                isInStorage ?
-                    null :
-                    <>
-                        <ConstraintIndicator course={course}/>
-                        <CourseOptions course={course}/>
-                    </>
-            }
+        <div className={classes.itemContainer}>
+            <ListItem className={classes.item}>
+                <ListItemText>
+                    {course.kusssId !== "" ? <KusssLink
+                        id={course.kusssId}>{course.sign + " - " + course.title}</KusssLink> : (course.sign + " - " + course.title)}
+                </ListItemText>
+                {
+                    isInStorage ?
+                        null :
+                        <>
+                            <ConstraintIndicator course={course}/>
+                            <CourseOptions course={course}/>
+                        </>
+                }
 
-        </ListItem>
+            </ListItem>
+        </div>
     )
 }
 export default CourseItem

@@ -39,7 +39,7 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
                 padding: "0.5rem"
             },
             div: {
-                marginBottom: "0.5rem"
+                padding: 0.25/(4**level) + "rem 0"
             },
             item: {
                 backgroundColor: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color,
@@ -92,7 +92,6 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
                                         group.groups.map((group, cIndex) => (
                                             <div key={group.id}>
                                                 <DraggableGroupItem
-                                                    hide={false}
                                                     level={level + 1}
                                                     group={{
                                                         ...group,

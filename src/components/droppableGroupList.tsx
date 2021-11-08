@@ -8,7 +8,6 @@ import {Droppable} from "react-beautiful-dnd";
 interface Props {
     id: string
     groups: Group[]
-    hideItems: boolean
 }
 
 
@@ -34,7 +33,7 @@ const useStyles = makeStyles(() =>
 );
 
 
-const DroppableGroupList = ({groups, id, hideItems}: Props) => {
+const DroppableGroupList = ({groups, id}: Props) => {
     const classes = useStyles()
 
     return (
@@ -43,16 +42,13 @@ const DroppableGroupList = ({groups, id, hideItems}: Props) => {
                 {(provided) => (
                     <List ref={provided.innerRef} disablePadding className={classes.list} {...provided.droppableProps}>
                         {
-                            // hideItems ?
-                            //     <></> :
-                                groups.map((g, index) => <DraggableGroupItem
-                                    hide={hideItems}
-                                    containerId={"storage"}
-                                    key={g.id}
-                                    group={g}
-                                    index={index}
-                                    level={0}/>
-                                )}
+                            groups.map((g, index) => <DraggableGroupItem
+                                containerId={"storage"}
+                                key={g.id}
+                                group={g}
+                                index={index}
+                                level={0}/>
+                            )}
                         {provided.placeholder}
                     </List>
                 )}

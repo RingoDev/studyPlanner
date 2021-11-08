@@ -61,7 +61,7 @@ const initialState: INITIAL_STATE_TYPE = {
 }
 
 // checking Course Constraints after most actions
-const checkCourseConstraintsMatcher = (action: AnyAction) => !setCustomStudies.match(action) && !lockDroppables.match(action) && !showConstraintIndicators.match(action)
+const checkCourseConstraintsMatcher = (action: AnyAction) => (!setCustomStudies.match(action) && !lockDroppables.match(action) && !showConstraintIndicators.match(action))
 
 const courseReducer = createReducer(initialState, (builder) => {
     builder
@@ -177,7 +177,7 @@ const courseReducer = createReducer(initialState, (builder) => {
             for (let id of state.curriculum.semesters[payload.semesterIndex].courses.map(c => c.id)) {
                 moveCourseFromCurriculumToStorage(state.curriculum, state.storage, getGroupIdOfCourseId(id), id, payload.semesterIndex)
             }
-            state.curriculum.semesters.splice(payload.semesterIndex,1)
+            state.curriculum.semesters.splice(payload.semesterIndex, 1)
         })
         // .addCase(showConstraintIndicators, (state, {payload}) => {
         //     const course = initialConfig.groups.flatMap(g => g.courses).find(c => c.id === payload.courseId)
@@ -408,7 +408,6 @@ function checkXOutOfYConstraints(state: INITIAL_STATE_TYPE) {
 }
 
 
-
 function courseIsSteop(courseId: string): boolean {
     return initialConfig.constraints.steopConstraints.steop.findIndex(c => c === courseId) !== -1
 }
@@ -464,7 +463,7 @@ function allowedBeforeSteopFinished(courseId: string): boolean {
     return initialConfig.constraints.steopConstraints.beforeSteopFinished.findIndex(s => s === courseId) !== -1
 }
 
-function getCourseById (id: string, groups: InitialGroupType[]): Course | undefined {
+function getCourseById(id: string, groups: InitialGroupType[]): Course | undefined {
     for (let group of groups) {
         for (let course of getCoursesFromGroups([group])) {
             if (course.id === id) {
@@ -498,7 +497,7 @@ function isGroupId(id: string) {
     return /^\d\d\d(-\d\d\d)*$/.test(id)
 }
 
-function isStorageId(id: string) {
+export function isStorageId(id: string | null | undefined) {
     return id === "storage" || id === "pseudo_storage"
 }
 

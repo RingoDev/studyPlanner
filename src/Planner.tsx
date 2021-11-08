@@ -2,10 +2,9 @@ import React, {useState} from 'react';
 import {Container, createStyles, makeStyles,} from "@material-ui/core";
 import Curriculum from "./Curriculum";
 import Storage from "./Storage";
-import {DragDropContext, DragStart, DropResult} from "react-beautiful-dnd";
+import {DragDropContext, DropResult} from "react-beautiful-dnd";
 import {moveCourse, moveGroup} from "./redux/data/data.actions";
 import {useAppDispatch} from "./redux/hooks";
-import {isSemesterId} from "./redux/data/data.reducer";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -50,11 +49,11 @@ const Planner = () => {
 
     const [showPseudoDroppable, setShowPseudoDroppable] = useState<boolean>(false)
 
-    const handleDragStart = ({source}: DragStart) => {
-        if (isSemesterId(source.droppableId)) {
-            // create pseudo droppable over storage to be able to catch course drops back to storage
-            setShowPseudoDroppable(true)
-        }
+    const handleDragStart = () => {
+        setShowPseudoDroppable(true)
+        // if (isSemesterId(source.droppableId)) {
+        //     create pseudo droppable over storage to be able to catch course drops back to storage
+        // }
     }
 
     const handleDragEnd = ({destination, draggableId, source}: DropResult) => {

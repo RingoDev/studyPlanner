@@ -22,13 +22,15 @@ const Storage = ({showPseudoDroppable}: Props) => {
             pseudo: {
                 border: "outline 4px dashed #cccccc",
                 position: "absolute",
-                top: 0,
-                left: 0,
+                top: "-1.5rem",
+                left: "-1rem",
                 zIndex: showPseudoDroppable ? 2 : -1,
-                height: "100%",
-                width: "calc(100% - 0.5em)",
+                height: "calc(100% + 3rem)",
+                width: "calc(100% + 1.5rem)",
                 backgroundColor:  "#ffffff88",
-                transition: "color 5s"
+                transition: "color 5s",
+                backdropFilter: "blur(5px)",
+                borderRadius: "1em",
             }
         })
     )
@@ -38,7 +40,7 @@ const Storage = ({showPseudoDroppable}: Props) => {
 
     return (
         <div className={classes.container}>
-            <DroppableGroupList groups={storage} id={"storage"} hideItems={false}/>
+            <DroppableGroupList groups={storage} id={"storage"}/>
             <Droppable droppableId={"pseudo_storage"}>{
                 provided => {
                     return <div ref={provided.innerRef} {...provided.droppableProps} className={classes.pseudo}/>
