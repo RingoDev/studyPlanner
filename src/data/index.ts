@@ -4,9 +4,10 @@ import dependencyConstraints from './dependencyConstraints.json'
 import xOutOfYConstraints from './xOutOfYConstraints.json'
 import groups from './groups.json'
 import competencies from './competencies.json'
-import WS6S from './examples/WS6Semester.json'
+import WS6S from './examples/WS6S.json'
 import WS9S from './examples/WS9S.json'
 import SS6S from './examples/SS6S.json'
+import SS9S from './examples/SS9S.json'
 import Course, {Group} from "../types/types";
 
 
@@ -115,7 +116,7 @@ const initialConfig: InitialConfig = {
         {
             startsWith: "SS",
             name: "Studienplan Berufsbegleitend",
-            curriculum: SS6S
+            curriculum: SS9S
         }
     ]
 }

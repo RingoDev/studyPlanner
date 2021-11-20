@@ -2,11 +2,11 @@ import {ChevronDown, ChevronUp} from "lucide-react";
 import {ListItemText, ListItem, Collapse, createStyles, ListItemIcon, makeStyles} from "@material-ui/core";
 import List from "@material-ui/core/List";
 import React, {useState} from "react";
-import {Group} from "../types/types";
+import {Group} from "../../types/types";
 import DraggableCourseItem from "./draggableCourseItem";
-import {useAppSelector} from "../redux/hooks";
-import {getCoursesFromGroups, getGroupWithIdFromGroups} from "../data";
-import {COURSE_GROUP} from "../types/dndTypes";
+import {useAppSelector} from "../../redux/hooks";
+import {getCoursesFromGroups, getGroupWithIdFromGroups} from "../../data";
+import {COURSE_GROUP} from "../../types/dndTypes";
 import DraggableGroupItem from "./draggableGroupItem";
 import {Droppable} from "react-beautiful-dnd";
 
@@ -16,18 +16,29 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
     const groups = useAppSelector((state) => state.data.initialConfig.groups)
     const xOutOfYConstraints = useAppSelector((state) => state.data.initialConfig.constraints.xOutOfYConstraints)
 
-    const groupWithSameId = getGroupWithIdFromGroups(groups, group.id)
-    const getMaxCourses = groupWithSameId !== undefined ? getCoursesFromGroups([groupWithSameId]).length || 0 : 0
-
-    const unbookedEcts = getCoursesFromGroups([group]).map(c => c.ects).reduce((e1, e2) => e1 + e2, 0)
-
-    const maxEcts = xOutOfYConstraints.find(c => c.group === group.id)?.maxEcts || 0
-
-
-    const allEcts = xOutOfYConstraints.find(c => c.group === group.id)?.allEcts || 0
-
-
     const [open, setOpen] = useState(false)
+
+
+    const groupWithSameId = getGroupWithIdFromGroups(groups, group.id)
+    const allGroupCourses = groupWithSameId !== undefined ? getCoursesFromGroups([groupWithSameId]) : []
+    const getMaxCourses = allGroupCourses.length
+
+    const unbookedEcts = getCoursesFromGroups([group])
+        .map(c => c.ects)
+        .reduce((e1, e2) => e1 + e2, 0)
+
+    const allEcts = allGroupCourses
+        .map(c => c.ects)
+        .reduce((e1, e2) => e1 + e2, 0)
+
+    const maxEcts = xOutOfYConstraints
+        .find(c => c.group === group.id)?.maxEcts || allEcts
+
+    // console.log("all ects: " + allEcts + " for group: " + groupWithSameId?.title)
+    // console.log("max ects: " + maxEcts + " for group: " + groupWithSameId?.title)
+    // console.log("unbooked ects: " + unbookedEcts + " for group: " + groupWithSameId?.title)
+
+    const ectsThresholdReached = allEcts - unbookedEcts >= maxEcts
 
     const useStyles = makeStyles(() =>
         createStyles({
@@ -39,13 +50,13 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
                 padding: "0.5rem"
             },
             div: {
-                padding: 0.25/(4**level) + "rem 0"
+                padding: 0.25 / (4 ** level) + "rem 0"
             },
             item: {
-                backgroundColor: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color,
+                backgroundColor: ectsThresholdReached ? "#cccccc" : group.color,
                 marginBottom: "0.375rem",
                 '&:hover': {
-                    backgroundColor: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color,
+                    backgroundColor: ectsThresholdReached ? "#cccccc" : group.color,
                 }
             },
             nested: {
@@ -83,11 +94,10 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
                                             <div key={course.id}>
                                                 <DraggableCourseItem course={{
                                                     ...course,
-                                                    color: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color
+                                                    color: ectsThresholdReached ? "#cccccc" : group.color
                                                 }} index={cIndex} containerId={group.id}/>
                                             </div>
                                         ))
-
                                         :
                                         group.groups.map((group, cIndex) => (
                                             <div key={group.id}>
@@ -95,7 +105,7 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
                                                     level={level + 1}
                                                     group={{
                                                         ...group,
-                                                        color: allEcts - unbookedEcts >= maxEcts ? "#cccccc" : group.color
+                                                        color: ectsThresholdReached ? "#cccccc" : group.color
                                                     }} index={cIndex} containerId={group.id}/>
                                             </div>
                                         ))}

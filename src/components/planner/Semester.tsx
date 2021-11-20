@@ -1,10 +1,10 @@
 import React from "react";
-import {SemesterType} from "./types/types";
-import {useAppDispatch, useAppSelector} from "./redux/hooks";
+import {SemesterType} from "../../types/types";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {Button, createStyles, makeStyles} from "@material-ui/core";
-import {removeSemester} from "./redux/data/data.actions";
-import SemesterName from "./components/semesterName";
-import DroppableCourseList from "./components/droppableCourseList";
+import {removeSemester} from "../../redux/data/data.actions";
+import SemesterName from "./semesterName";
+import DroppableCourseList from "./droppableCourseList";
 
 
 const useStyles = makeStyles(() =>

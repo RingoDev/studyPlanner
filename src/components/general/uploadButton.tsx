@@ -2,10 +2,10 @@ import {Upload} from "lucide-react";
 import {Button} from "@material-ui/core";
 import React from "react";
 import {useFilePicker} from "use-file-picker";
-import {useAppDispatch} from "../redux/hooks";
-import {setApplicationState} from "../redux/data/data.actions";
-import initialConfig from "../data";
-import {CurriculumType} from "../types/types";
+import {useAppDispatch} from "../../redux/hooks";
+import {setApplicationState} from "../../redux/data/data.actions";
+import initialConfig from "../../data";
+import {CurriculumType} from "../../types/types";
 
 const UploadButton = () => {
 

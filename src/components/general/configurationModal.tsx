@@ -11,9 +11,9 @@ import {
     Select,
     Typography
 } from "@material-ui/core";
-import {setExampleCurriculum, setStartSemester} from "../redux/data/data.actions";
+import {setExampleCurriculum, setStartSemester} from "../../redux/data/data.actions";
 import React from "react";
-import {useAppDispatch, useAppSelector} from "../redux/hooks";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 
 const useStyles = makeStyles(() =>
     createStyles({

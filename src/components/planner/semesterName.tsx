@@ -1,5 +1,5 @@
 import React from "react";
-import {useAppSelector} from "../redux/hooks";
+import {useAppSelector} from "../../redux/hooks";
 
 const SemesterName = ({index}: { index: number }) => {
     const semesterName: string = useAppSelector((state) => (state.data.selectSemesterList[state.data.startSemesterIndex + index]))

@@ -1,4 +1,4 @@
-import {Group} from "../types/types";
+import {Group} from "../../types/types";
 import List from "@material-ui/core/List";
 import React from "react";
 import {createStyles, makeStyles} from "@material-ui/core";

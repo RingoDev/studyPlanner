@@ -5,13 +5,13 @@ import {
     makeStyles,
 } from "@material-ui/core";
 import {Chart, Doughnut} from "react-chartjs-2";
-import {useAppSelector} from "./redux/hooks";
+import {useAppSelector} from "../../redux/hooks";
 import {ChartData} from "chart.js";
-import Course, {Competency} from "./types/types";
+import Course, {Competency} from "../../types/types";
 import Color from "color";
-import {getCoursesFromGroups} from "./data";
+import {getCoursesFromGroups} from "../../data";
 
-const Progress = () => {
+const ProgressPage = () => {
 
     const curriculumCourses = useAppSelector(state => state.data.curriculum.semesters).flatMap(s => s.courses)
     const initialConfig = useAppSelector(state => state.data.initialConfig)
@@ -213,4 +213,4 @@ const Progress = () => {
     );
 }
 
-export default Progress;
+export default ProgressPage;

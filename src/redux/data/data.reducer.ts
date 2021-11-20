@@ -250,7 +250,7 @@ const courseReducer = createReducer(initialState, (builder) => {
                     checkDependencyConstraints(state, course, i);
                 }
             }
-            checkXOutOfYConstraints(state);
+                checkXOutOfYConstraints(state);
         })
 })
 

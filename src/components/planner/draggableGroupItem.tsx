@@ -1,9 +1,9 @@
-import {Group} from "../types/types";
-import {COURSE_GROUP} from "../types/dndTypes";
+import {Group} from "../../types/types";
+import {COURSE_GROUP} from "../../types/dndTypes";
 import GroupItem from "./groupItem";
 import {Draggable, DraggableStateSnapshot} from "react-beautiful-dnd";
 import {CSSProperties} from "react";
-import {isStorageId} from "../redux/data/data.reducer";
+import {isStorageId} from "../../redux/data/data.reducer";
 
 interface Props {
     group: Group

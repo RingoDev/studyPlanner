@@ -3,9 +3,9 @@ import React from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import KusssLink from "./kusssLink";
-import Course from "../types/types";
+import Course from "../../types/types";
 import ConstraintIndicator from "./constraintIndicator";
-import CourseOptions from "./courseOptions";
+import CourseStateOption from "./courseStateOption";
 import Color from "color";
 
 const CourseItem = ({course, isInStorage}: { course: Course, isInStorage: boolean }) => {
@@ -41,7 +41,7 @@ const CourseItem = ({course, isInStorage}: { course: Course, isInStorage: boolea
                         null :
                         <>
                             <ConstraintIndicator course={course}/>
-                            <CourseOptions course={course}/>
+                            <CourseStateOption course={course}/>
                         </>
                 }
 

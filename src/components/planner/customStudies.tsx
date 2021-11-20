@@ -2,8 +2,8 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import {Button, createStyles, makeStyles} from "@material-ui/core";
 import React from "react";
-import {useAppDispatch, useAppSelector} from "../redux/hooks";
-import {setCustomStudies} from "../redux/data/data.actions";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {setCustomStudies} from "../../redux/data/data.actions";
 import {Minus, Plus} from "lucide-react";
 
 

@@ -1,6 +1,6 @@
 import React from "react";
-import {useAppSelector} from "./redux/hooks";
-import DroppableGroupList from "./components/droppableGroupList";
+import {useAppSelector} from "../../redux/hooks";
+import DroppableGroupList from "./droppableGroupList";
 import {createStyles, makeStyles} from "@material-ui/core";
 import {Droppable} from "react-beautiful-dnd";
 

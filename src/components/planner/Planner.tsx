@@ -3,8 +3,8 @@ import {Container, createStyles, makeStyles,} from "@material-ui/core";
 import Curriculum from "./Curriculum";
 import Storage from "./Storage";
 import {DragDropContext, DropResult} from "react-beautiful-dnd";
-import {moveCourse, moveGroup} from "./redux/data/data.actions";
-import {useAppDispatch} from "./redux/hooks";
+import {moveCourse, moveGroup} from "../../redux/data/data.actions";
+import {useAppDispatch} from "../../redux/hooks";
 
 const useStyles = makeStyles(() =>
     createStyles({

@@ -1,6 +1,6 @@
 import React from "react";
-import Course, {SemesterType} from "../types/types";
-import {COMPOSITE_GROUP, COURSE, COURSE_GROUP} from "../types/dndTypes";
+import Course, {SemesterType} from "../../types/types";
+import {COMPOSITE_GROUP, COURSE, COURSE_GROUP} from "../../types/dndTypes";
 import {Droppable} from "react-beautiful-dnd";
 import List from "@material-ui/core/List";
 import DraggableCourseItem from "./draggableCourseItem";

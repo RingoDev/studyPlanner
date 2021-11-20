@@ -1,12 +1,12 @@
 import { Button, ListItemIcon} from "@material-ui/core";
 import React, {useRef,} from "react";
-import Course from "../types/types";
+import Course from "../../types/types";
 import {Check, X} from "lucide-react";
-import {useAppDispatch} from "../redux/hooks";
-import {setCourseFinished, setCourseUnfinished} from "../redux/data/data.actions";
+import {useAppDispatch} from "../../redux/hooks";
+import {setCourseFinished, setCourseUnfinished} from "../../redux/data/data.actions";
 
 
-const CourseOptions = ({course}: { course: Course }) => {
+const CourseStateOption = ({course}: { course: Course }) => {
 
 
     const dispatch = useAppDispatch()
@@ -51,4 +51,4 @@ const CourseOptions = ({course}: { course: Course }) => {
     )
 }
 
-export default CourseOptions
+export default CourseStateOption
