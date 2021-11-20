@@ -1,7 +1,7 @@
-import { Button, ListItemIcon} from "@material-ui/core";
+import {Button, ListItemIcon} from "@material-ui/core";
 import React, {useRef,} from "react";
 import Course from "../../types/types";
-import {Check, X} from "lucide-react";
+import {Check, X, Square, CheckSquare} from "lucide-react";
 import {useAppDispatch} from "../../redux/hooks";
 import {setCourseFinished, setCourseUnfinished} from "../../redux/data/data.actions";
 
@@ -25,28 +25,9 @@ const CourseStateOption = ({course}: { course: Course }) => {
 
     return (
         <ListItemIcon>
-            <Button ref={ref} onClick={toggleFinished}> {course.finished ? <X/> : <Check/>}</Button>
-            {/*<StyledMenu*/}
-            {/*    anchorEl={ref.current}*/}
-            {/*    open={open}*/}
-            {/*    onClose={() => setOpen(false)}*/}
-            {/*>*/}
-            {/*    {*/}
-            {/*        course.finished ? <MenuItem disableRipple onClick={() => handleFinish(false)}>*/}
-            {/*                Abschließen*/}
-            {/*                <X/>*/}
-            {/*            </MenuItem>*/}
-            {/*            : <MenuItem disableRipple onClick={() => handleFinish(true)}>*/}
-            {/*                Abschließen*/}
-            {/*                <Check/>*/}
-            {/*            </MenuItem>*/}
-            {/*    }*/}
-
-            {/*    <MenuItem disableRipple onClick={() => setOpen(false)}>*/}
-            {/*        Anrechnen*/}
-            {/*        <Check/>*/}
-            {/*    </MenuItem>*/}
-            {/*</StyledMenu>*/}
+            <Button ref={ref} onClick={toggleFinished}>
+                {course.finished ? <CheckSquare/> : <Square/>}
+            </Button>
         </ListItemIcon>
     )
 }
