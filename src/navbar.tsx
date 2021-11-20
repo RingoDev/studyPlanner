@@ -3,7 +3,7 @@ import Color from "color";
 import {Link, useLocation} from "react-router-dom";
 import {Download, Settings} from "lucide-react";
 import UploadButton from "./components/general/uploadButton";
-import React, {useState} from "react";
+import React from "react";
 import {useAppSelector} from "./redux/hooks";
 
 const useStyles = makeStyles(() =>
