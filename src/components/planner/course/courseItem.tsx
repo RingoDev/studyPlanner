@@ -3,7 +3,7 @@ import React from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import KusssLink from "./kusssLink";
-import Course from "../../types/types";
+import Course from "../../../types/types";
 import ConstraintIndicator from "./constraintIndicator";
 import CourseStateOption from "./courseStateOption";
 import Color from "color";
@@ -14,6 +14,8 @@ const CourseItem = ({course, isInStorage}: { course: Course, isInStorage: boolea
 
         return createStyles({
             itemContainer: {
+                paddingLeft: "0.5rem",
+                paddingRight: "0.5rem",
                 paddingBottom: "0.375rem"
             },
             item: {

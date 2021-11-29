@@ -1,8 +1,8 @@
-import Course from "../../types/types";
+import Course from "../../../types/types";
 import CourseItem from "./courseItem";
 import {Draggable, DraggableStateSnapshot} from "react-beautiful-dnd";
 import {CSSProperties} from "react";
-import {isStorageId} from "../../redux/data/data.reducer";
+import {isStorageId} from "../../../redux/data/data.reducer";
 
 interface Props {
     course: Course

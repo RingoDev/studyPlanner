@@ -1,7 +1,7 @@
 import {createStyles, ListItemIcon, makeStyles, Tooltip, Typography, withStyles} from "@material-ui/core";
 import {AlertCircle, XCircle} from "lucide-react";
 import React from "react";
-import Course from "../../types/types";
+import Course from "../../../types/types";
 
 const useStyles = makeStyles(() => {
     return createStyles({

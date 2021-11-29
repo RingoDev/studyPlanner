@@ -14,7 +14,7 @@ interface Props {
 const useStyles = makeStyles(() =>
     createStyles({
         list: {
-            padding: "0 0.5rem",
+            padding: "0 0rem",
             height: "100%",
             overflowY: "auto",
             // width: "18vw",

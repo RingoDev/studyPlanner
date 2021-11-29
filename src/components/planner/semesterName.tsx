@@ -1,8 +1,12 @@
 import React from "react";
 import {useAppSelector} from "../../redux/hooks";
+import {getSemesterName} from "../../redux/data/data.reducer";
 
 const SemesterName = ({index}: { index: number }) => {
-    const semesterName: string = useAppSelector((state) => (state.data.selectSemesterList[state.data.startSemesterIndex + index]))
+    // const semesterName: string = useAppSelector((state) => (state.data.selectSemesterList[state.data.startSemesterIndex + index]))
+    const startSemesterIndex = useAppSelector((state) => (state.data.startSemesterIndex))
+    const semesterName: string = getSemesterName(index, startSemesterIndex)
+
     // const semesterIsDone: boolean = useAppSelector((state) => (state.data.currentSemesterIndex - state.data.startSemesterIndex) > index)
 
     return (

@@ -3,7 +3,7 @@ import Course, {SemesterType} from "../../types/types";
 import {COMPOSITE_GROUP, COURSE, COURSE_GROUP} from "../../types/dndTypes";
 import {Droppable} from "react-beautiful-dnd";
 import List from "@material-ui/core/List";
-import DraggableCourseItem from "./draggableCourseItem";
+import DraggableCourseItem from "./course/draggableCourseItem";
 import CustomStudies from "./customStudies";
 import {createStyles, makeStyles} from "@material-ui/core";
 
@@ -28,7 +28,7 @@ export interface MultipleCourseDrop {
 const useStyles = makeStyles(() =>
     createStyles({
         list: {
-            padding: "0.5rem",
+            paddingTop: "0.5rem",
             // width: "18vw",
             //
             // margin: "0 auto",

@@ -1,9 +1,9 @@
 import {ChevronDown, ChevronUp} from "lucide-react";
-import {ListItemText, ListItem, Collapse, createStyles, ListItemIcon, makeStyles} from "@material-ui/core";
+import {Collapse, createStyles, ListItem, ListItemIcon, ListItemText, makeStyles} from "@material-ui/core";
 import List from "@material-ui/core/List";
 import React, {useState} from "react";
 import {Group} from "../../types/types";
-import DraggableCourseItem from "./draggableCourseItem";
+import DraggableCourseItem from "./course/draggableCourseItem";
 import {useAppSelector} from "../../redux/hooks";
 import {getCoursesFromGroups, getGroupWithIdFromGroups} from "../../data";
 import {COURSE_GROUP} from "../../types/dndTypes";
@@ -50,9 +50,14 @@ const GroupItem = ({group, level}: { group: Group, index: number, level: number 
                 padding: "0.5rem"
             },
             div: {
-                padding: 0.25 / (4 ** level) + "rem 0"
+                paddingTop: 0.25 / (4 ** level) + "rem",
+                paddingBottom: 0.25 / (4 ** level) + "rem",
+                paddingLeft: "0.5rem",
+                paddingRight: "0.5rem",
             },
             item: {
+
+                // paddingBottom: "0.375rem",
                 backgroundColor: ectsThresholdReached ? "#cccccc" : group.color,
                 marginBottom: "0.375rem",
                 '&:hover': {

@@ -3,7 +3,6 @@ import Course, {CurriculumType, Group, SemesterType} from "../../types/types";
 import {
     addSemester,
     hideConstraintIndicators,
-    lockDroppables,
     moveCourse,
     moveGroup,
     removeSemester,
@@ -14,7 +13,6 @@ import {
     setExampleCurriculum,
     setStartSemester,
     showConstraintIndicators,
-    unlockDroppables,
 } from "./data.actions";
 import initialConfig, {getCoursesFromGroups, getGroupWithIdFromGroups, InitialGroupType} from "../../data";
 import {COMPOSITE_GROUP, COURSE_GROUP} from "../../types/dndTypes";
@@ -30,28 +28,38 @@ interface INITIAL_STATE_TYPE {
     lastChosenExample: number
 }
 
-const offset = 10
-const startYear = new Date().getFullYear() - offset / 2
-const selectOptions = 18
+
+const yearOffset = 4
+const monthOffset = yearOffset * 2
+export const startYear = new Date().getFullYear() - yearOffset
+const selectOptions = monthOffset + 12
 const selectSemesterList: string[] = Array.from(Array(selectOptions).keys()).map(n =>
     (n % 2 === 0
         ? "WS" + (startYear + n / 2) + "/" + (startYear - 1999 + n / 2)
         : "SS" + (startYear + 1 + Math.floor(n / 2))))
 
+
+export function getSemesterName(index: number, startSemesterIndex: number) {
+    const n = index + startSemesterIndex
+    if (n % 2 === 0)
+        return "WS" + (startYear + n / 2) + "/" + (startYear - 1999 + n / 2)
+    else return "SS" + (startYear + 1 + Math.floor(n / 2))
+}
+
 const getCurrentSemester = () => {
     if (new Date().getMonth() < 4) {
-        return offset - 1
+        return monthOffset - 1
     } else if (new Date().getMonth() < 10) {
-        return offset
+        return monthOffset
     }
-    return offset + 1
+    return monthOffset + 1
 }
 
 const initialState: INITIAL_STATE_TYPE = {
     initialConfig: initialConfig,
     selectSemesterList: selectSemesterList,
     startSemester: "WS",
-    startSemesterIndex: 0,
+    startSemesterIndex: monthOffset,
     currentSemesterIndex: getCurrentSemester(),
     storage: configGroupsToGroups(initialConfig.groups),
     curriculum: {
@@ -61,7 +69,7 @@ const initialState: INITIAL_STATE_TYPE = {
 }
 
 // checking Course Constraints after most actions
-const checkCourseConstraintsMatcher = (action: AnyAction) => (!setCustomStudies.match(action) && !lockDroppables.match(action) && !showConstraintIndicators.match(action))
+const checkCourseConstraintsMatcher = (action: AnyAction) => (!setCustomStudies.match(action) && !showConstraintIndicators.match(action))
 
 const courseReducer = createReducer(initialState, (builder) => {
     builder
@@ -144,30 +152,36 @@ const courseReducer = createReducer(initialState, (builder) => {
         .addCase(moveGroup, (state, {payload}) => {
 
             if (isStorageId(payload.destinationId)) return
-            // todo if x out of y constraint exists on group or top group, only move as many courses to fulfill ects constraint
             // find semester
             const semesterIndex = Number(payload.destinationId.slice(3))
-
             const group = getGroupWithIdFromGroups(state.storage, payload.groupId)
-            if (group !== undefined) {
-                for (let id of getCoursesFromGroups([group]).map(c => c.id)) {
+            if (group === undefined) return
+
+            // if x out of y constraint exists on group or top group, only move as many courses to fulfill ects constraint
+            const constraint = getXOutOfYConstraint(payload.groupId, state.initialConfig.constraints.xOutOfYConstraints)
+
+            const courses = getCoursesFromGroups([group])
+
+            if (constraint === undefined) {
+                for (let id of courses.map(c => c.id)) {
                     moveCourseFromStorageToCurriculum(state.curriculum, state.storage, getGroupIdOfCourseId(id), id, semesterIndex, payload.destinationIndex)
                 }
+                return
             }
-        })
-        .addCase(lockDroppables, (state, {payload}) => {
-            // disable drop on course in storage with id != sourceId
-            state.storage.map(group => {
-                if (group.id !== payload.draggableId) {
-                    console.log("disabling drop on group", group.title)
-                    return {...group, dropDisabled: true}
-                }
-                return {group}
-            })
-            // disable drop on storage
-        })
-        .addCase(unlockDroppables, () => {
 
+            // we found a xOutOfYConstraint
+            // move only courses to the curriculum until constraint is at its limit or violated
+            // todo added courses ects should not start at 0 but rather at the current ectscount f courses of this gruop in the curriculum
+            const maxEcts = constraint.maxEcts
+            for (let i = 0, addedCoursesEcts = 0; i < courses.length && addedCoursesEcts < maxEcts; i++, addedCoursesEcts += courses[i].ects) {
+                moveCourseFromStorageToCurriculum(
+                    state.curriculum,
+                    state.storage,
+                    getGroupIdOfCourseId(courses[i].id),
+                    courses[i].id,
+                    semesterIndex,
+                    payload.destinationIndex)
+            }
         })
         .addCase(addSemester, (state) => {
             state.curriculum.semesters.push({courses: [], customEcts: 0})
@@ -250,7 +264,7 @@ const courseReducer = createReducer(initialState, (builder) => {
                     checkDependencyConstraints(state, course, i);
                 }
             }
-                checkXOutOfYConstraints(state);
+            checkXOutOfYConstraints(state);
         })
 })
 
@@ -495,6 +509,31 @@ export function isSemesterId(id: string) {
 
 function isGroupId(id: string) {
     return /^\d\d\d(-\d\d\d)*$/.test(id)
+}
+
+
+function getXOutOfYConstraint(groupId: string, allConstraints: { maxEcts: number, group: string }[]) {
+    const constraints: { maxEcts: number, group: string }[] = []
+
+    const groupIds = splitGroupIds(groupId)
+
+    for (let id of groupIds) {
+        const constraint = allConstraints.find(c => c.group === id);
+        if (constraint !== undefined) constraints.push(constraint);
+    }
+
+    if (constraints.length === 0) return undefined
+    return constraints.reduce((c1, c2) => c1.maxEcts < c2.maxEcts ? c1 : c2)
+}
+
+function splitGroupIds(groupId: string) {
+    const result = []
+
+    for (let i = 0; i < groupId.split("-").length; i++) {
+        result.push(groupId.slice(0, 3 + (i * 4)))
+    }
+    console.log("result of splitting: " + groupId + " is ", result)
+    return result
 }
 
 export function isStorageId(id: string | null | undefined) {

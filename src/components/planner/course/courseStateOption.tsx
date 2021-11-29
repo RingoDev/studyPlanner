@@ -1,9 +1,9 @@
 import {Button, ListItemIcon} from "@material-ui/core";
 import React, {useRef,} from "react";
-import Course from "../../types/types";
+import Course from "../../../types/types";
 import {CheckSquare, Square} from "lucide-react";
-import {useAppDispatch} from "../../redux/hooks";
-import {setCourseFinished, setCourseUnfinished} from "../../redux/data/data.actions";
+import {useAppDispatch} from "../../../redux/hooks";
+import {setCourseFinished, setCourseUnfinished} from "../../../redux/data/data.actions";
 
 
 const CourseStateOption = ({course}: { course: Course }) => {
