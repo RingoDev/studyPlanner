@@ -1,9 +1,5 @@
 import React, {useRef} from 'react';
-import {
-    Container,
-    createStyles,
-    makeStyles,
-} from "@material-ui/core";
+import {Container, createStyles, makeStyles,} from "@material-ui/core";
 import {Chart, Doughnut} from "react-chartjs-2";
 import {useAppSelector} from "../../redux/hooks";
 import {ChartData} from "chart.js";
@@ -64,10 +60,10 @@ const ProgressPage = () => {
 
                 const allCourses: Course[] = getCoursesFromGroups([group])
                     .map(c => {
-                    const index = curriculumCourses.findIndex(course => course.id === c.id)
-                    if (index !== -1) return curriculumCourses[index]
-                    else return c
-                })
+                        const index = curriculumCourses.findIndex(course => course.id === c.id)
+                        if (index !== -1) return curriculumCourses[index]
+                        else return c
+                    })
 
                 // if a x out of y constraint exists, use it to set the max ects of the competency
                 const constraint = initialConfig.constraints.xOutOfYConstraints.find(c => c.group === group.id)
@@ -187,12 +183,14 @@ const ProgressPage = () => {
     return (
         <div className="App">
             <Container className={classes.container} maxWidth={"xl"}>
-                <div style={{position: "relative", height: "50vh"}}>
+                <div style={{position: "relative", height: "65vh", paddingTop: "5rem"}}>
                     <Doughnut ref={chartRef} options={{
                         maintainAspectRatio: false,
                         cutout: "50%",
                         plugins: {
                             legend: {
+                                display: false,
+
                                 position: "left",
 
                                 labels: {
