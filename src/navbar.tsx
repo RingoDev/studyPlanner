@@ -1,10 +1,12 @@
 import {AppBar, Button, createStyles, makeStyles, Toolbar} from "@material-ui/core";
 import Color from "color";
 import {Link, useLocation} from "react-router-dom";
-import {Download, Settings} from "lucide-react";
+import {Download, FileText, Settings} from "lucide-react";
 import UploadButton from "./components/general/uploadButton";
 import React from "react";
 import {useAppSelector} from "./redux/hooks";
+import {PDFDownloadLink} from "@react-pdf/renderer";
+import PdfDocument from "./components/pdf/main";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -23,7 +25,7 @@ const Navbar = ({setShowModal}: Props) => {
 
     const location = useLocation()
 
-
+    const startSemesterIndex = useAppSelector((state) => (state.data.startSemesterIndex))
     const curriculum = useAppSelector(state => state.data.curriculum)
     const initialConfig = useAppSelector(state => state.data.initialConfig)
 
@@ -53,6 +55,13 @@ const Navbar = ({setShowModal}: Props) => {
                 </div>
                 <div>
                     <Button onClick={download}><Download/></Button>
+                    <Button>
+                        <PDFDownloadLink fileName={"plan.pdf"}
+                                         document={<PdfDocument startSemesterIndex={startSemesterIndex}
+                                                                curriculum={curriculum}/>}>
+                            <FileText color={"black"}/>
+                        </PDFDownloadLink>
+                    </Button>
                     <UploadButton/>
                     <Button onClick={() => setShowModal(true)}><Settings/></Button>
                 </div>
