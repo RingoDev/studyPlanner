@@ -508,7 +508,7 @@ export function isSemesterId(id: string) {
 }
 
 function isGroupId(id: string) {
-    return /^\d\d\d(-\d\d\d)*$/.test(id)
+    return /^\d\d\d(-\d\d\d)*$/.test(id);
 }
 
 

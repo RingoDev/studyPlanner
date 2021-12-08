@@ -1,7 +1,8 @@
 import {Group} from "../../types/types";
-import List from "@material-ui/core/List";
+import List from "@mui/material/List";
 import React from "react";
-import {createStyles, makeStyles} from "@material-ui/core";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import DraggableGroupItem from "./draggableGroupItem";
 import {Droppable} from "react-beautiful-dnd";
 

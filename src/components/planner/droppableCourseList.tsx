@@ -2,10 +2,11 @@ import React from "react";
 import Course, {SemesterType} from "../../types/types";
 import {COMPOSITE_GROUP, COURSE, COURSE_GROUP} from "../../types/dndTypes";
 import {Droppable} from "react-beautiful-dnd";
-import List from "@material-ui/core/List";
+import List from "@mui/material/List";
 import DraggableCourseItem from "./course/draggableCourseItem";
 import CustomStudies from "./customStudies";
-import {createStyles, makeStyles} from "@material-ui/core";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 
 
 interface Props {

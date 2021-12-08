@@ -1,6 +1,8 @@
 import {ChevronDown, ChevronUp} from "lucide-react";
-import {Collapse, createStyles, ListItem, ListItemIcon, ListItemText, makeStyles} from "@material-ui/core";
-import List from "@material-ui/core/List";
+import {Collapse, ListItem, ListItemIcon, ListItemText} from "@mui/material";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
+import List from "@mui/material/List";
 import React, {useState} from "react";
 import {Group} from "../../types/types";
 import DraggableCourseItem from "./course/draggableCourseItem";

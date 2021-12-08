@@ -1,4 +1,4 @@
-import {Button, ListItemIcon} from "@material-ui/core";
+import {Button, ListItemIcon} from "@mui/material";
 import React, {useRef,} from "react";
 import Course from "../../../types/types";
 import {CheckSquare, Square} from "lucide-react";

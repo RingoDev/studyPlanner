@@ -1,5 +1,5 @@
 import {Upload} from "lucide-react";
-import {Button} from "@material-ui/core";
+import {Button} from "@mui/material";
 import React from "react";
 import {useFilePicker} from "use-file-picker";
 import {useAppDispatch} from "../../redux/hooks";

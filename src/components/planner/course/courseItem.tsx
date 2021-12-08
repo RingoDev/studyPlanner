@@ -1,7 +1,8 @@
-import {createStyles, makeStyles} from "@material-ui/core";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import React from "react";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 import KusssLink from "./kusssLink";
 import Course from "../../../types/types";
 import ConstraintIndicator from "./constraintIndicator";

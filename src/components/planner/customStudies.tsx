@@ -1,6 +1,8 @@
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import {Button, createStyles, makeStyles} from "@material-ui/core";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import {Button} from "@mui/material";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import React from "react";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {setCustomStudies} from "../../redux/data/data.actions";

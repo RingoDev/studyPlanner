@@ -1,16 +1,7 @@
 import {X} from "lucide-react";
-import {
-    Button,
-    createStyles,
-    Fade,
-    FormControl,
-    Grid,
-    makeStyles,
-    MenuItem,
-    Modal,
-    Select,
-    Typography
-} from "@material-ui/core";
+import {Button, Fade, FormControl, Grid, MenuItem, Modal, Select, Typography} from "@mui/material";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import {setExampleCurriculum, setStartSemester} from "../../redux/data/data.actions";
 import React from "react";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";

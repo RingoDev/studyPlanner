@@ -1,7 +1,9 @@
 import React from "react";
 import {SemesterType} from "../../types/types";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {Button, createStyles, makeStyles} from "@material-ui/core";
+import {Button} from "@mui/material";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import {removeSemester} from "../../redux/data/data.actions";
 import SemesterName from "./semesterName";
 import DroppableCourseList from "./droppableCourseList";

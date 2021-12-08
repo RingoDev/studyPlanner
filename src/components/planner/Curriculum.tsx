@@ -1,6 +1,6 @@
 import React from "react";
 import Semester from "./Semester";
-import {Button} from "@material-ui/core";
+import {Button} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {addSemester} from "../../redux/data/data.actions";
 

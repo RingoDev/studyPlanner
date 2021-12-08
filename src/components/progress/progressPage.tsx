@@ -1,5 +1,7 @@
 import React, {useRef} from 'react';
-import {Container, createStyles, makeStyles,} from "@material-ui/core";
+import {Container} from "@mui/material";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import {Chart, Doughnut} from "react-chartjs-2";
 import {useAppSelector} from "../../redux/hooks";
 import {ChartData} from "chart.js";

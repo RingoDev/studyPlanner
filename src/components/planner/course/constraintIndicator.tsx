@@ -1,4 +1,7 @@
-import {createStyles, ListItemIcon, makeStyles, Tooltip, Typography, withStyles} from "@material-ui/core";
+import {ListItemIcon, Tooltip, Typography} from "@mui/material";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
+import withStyles from '@mui/styles/withStyles';
 import {AlertCircle, XCircle} from "lucide-react";
 import React from "react";
 import Course from "../../../types/types";
