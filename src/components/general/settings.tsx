@@ -12,7 +12,6 @@ const Settings = () => {
     const startSemesterIndex = useAppSelector((state) => state.data.startSemesterIndex)
     const dispatch = useAppDispatch()
 
-
     const SettingsContainer = styled('div')(() => ({
         borderRadius: "2rem",
         padding: "2rem",
@@ -21,7 +20,6 @@ const Settings = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "flex-start",
-        height: "100%",
         "> div": {
             display: "flex",
             alignItems: "center"
@@ -32,15 +30,12 @@ const Settings = () => {
     }))
 
     return (
-        <Box sx={{height: "100%", padding: "5rem",}}>
+        <Box sx={{height: "100%", padding: "5rem"}}>
             <SettingsContainer>
                 <Box>
                     <Typography align={"center"}>Studium:</Typography>
                     <FormControl>
-                        <Select
-                            value={0}
-                            onChange={() => {
-                            }}>
+                        <Select value={0}>
                             <MenuItem value={0}>Bachelorstudium Wirtschaftsinformatik</MenuItem>
                             <MenuItem value={1}>Masterstudium Wirtschaftsinformatik</MenuItem>
                         </Select>
@@ -49,12 +44,9 @@ const Settings = () => {
                 <Box>
                     <Typography align={"center"}>Start des Studiums:</Typography>
                     <FormControl>
-                        <Select
-                            value={startSemesterIndex}
-                            onChange={((e) => dispatch(setStartSemester({startSemesterIndex: e.target.value as number})))}>
-                            {semesterList.map((n, index) => (
-                                <MenuItem key={n} value={index}>{n}</MenuItem>
-                            ))}
+                        <Select value={startSemesterIndex}
+                                onChange={((e) => dispatch(setStartSemester({startSemesterIndex: e.target.value as number})))}>
+                            {semesterList.map((n, index) => <MenuItem key={n} value={index}>{n}</MenuItem>)}
                         </Select>
                     </FormControl>
                 </Box>
@@ -67,8 +59,8 @@ const Settings = () => {
                                 dispatch(setExampleCurriculum({exampleIndex: Number(e.target.value)}))
                             }}>
                             {examples.map((e, index) => (
-                                <MenuItem key={index}
-                                          value={index}>{e.name + " - " + e.startsWith}
+                                <MenuItem key={index} value={index}>
+                                    {e.name + " - " + e.startsWith}
                                 </MenuItem>
                             ))}
                             <MenuItem value={-1}>Selbst zusammenstellen</MenuItem>

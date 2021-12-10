@@ -1,5 +1,5 @@
 import {Redirect, Route, Switch} from "react-router-dom";
-import Planner from "./components/planner/Planner";
+import Planner from "./components/planner/planner";
 import ProgressPage from "./components/progress/progressPage";
 import React from "react";
 import Navbar from "./components/navbar/navbar";

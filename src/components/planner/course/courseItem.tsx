@@ -1,5 +1,3 @@
-import createStyles from '@mui/styles/createStyles';
-import makeStyles from '@mui/styles/makeStyles';
 import React from "react";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -8,48 +6,33 @@ import Course from "../../../types/types";
 import ConstraintIndicator from "./constraintIndicator";
 import CourseStateOption from "./courseStateOption";
 import Color from "color";
+import {Box} from "@mui/material";
+import {styled} from "@mui/material/styles";
 
 const CourseItem = ({course, isInStorage}: { course: Course, isInStorage: boolean }) => {
 
-    const useStyles = makeStyles(() => {
-
-        return createStyles({
-            itemContainer: {
-                paddingLeft: "0.5rem",
-                paddingRight: "0.5rem",
-                paddingBottom: "0.375rem"
-            },
-            item: {
-                backgroundColor: course.finished ? Color(course.color).alpha(0.3).string() : course.color,
-                padding: "0.5rem"
-            },
-            nestedlighten: {
-                paddingLeft: "1rem",
-            },
-        })
-    })
-
-    const classes = useStyles()
-
+    const StyledListItem = styled(ListItem)(() => ({
+        backgroundColor: course.finished ? Color(course.color).alpha(0.3).string() : course.color,
+        padding: "0.5rem"
+    }))
 
     return (
-        <div className={classes.itemContainer}>
-            <ListItem className={classes.item}>
+        <Box sx={{padding: "0 0.5rem 0.375rem 0.5rem"}}>
+            <StyledListItem>
                 <ListItemText>
-                    {course.kusssId !== "" ? <KusssLink
-                        id={course.kusssId}>{course.sign + " - " + course.title}</KusssLink> : (course.sign + " - " + course.title)}
+                    {course.kusssId !== ""
+                        ? <KusssLink id={course.kusssId}>{course.sign + " - " + course.title}</KusssLink>
+                        : (course.sign + " - " + course.title)}
                 </ListItemText>
-                {
-                    isInStorage ?
-                        null :
-                        <>
-                            <ConstraintIndicator course={course}/>
-                            <CourseStateOption course={course}/>
-                        </>
+                {isInStorage ?
+                    null :
+                    <>
+                        <ConstraintIndicator course={course}/>
+                        <CourseStateOption course={course}/>
+                    </>
                 }
-
-            </ListItem>
-        </div>
+            </StyledListItem>
+        </Box>
     )
 }
 export default CourseItem

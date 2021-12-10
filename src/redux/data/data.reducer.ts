@@ -15,7 +15,7 @@ import {
     showConstraintIndicators,
 } from "./data.actions";
 import initialConfig, {getCoursesFromGroups, getGroupWithIdFromGroups, InitialGroupType} from "../../data";
-import {COMPOSITE_GROUP, COURSE_GROUP} from "../../types/dndTypes";
+import {COMPOSITE_GROUP, COURSE_GROUP, PSEUDO_STORAGE, STORAGE} from "../../types/dndTypes";
 
 interface INITIAL_STATE_TYPE {
     initialConfig: typeof initialConfig
@@ -537,7 +537,7 @@ function splitGroupIds(groupId: string) {
 }
 
 export function isStorageId(id: string | null | undefined) {
-    return id === "storage" || id === "pseudo_storage"
+    return id === STORAGE || id === PSEUDO_STORAGE
 }
 
 export default courseReducer

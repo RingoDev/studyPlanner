@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Curriculum from "./Curriculum";
-import Storage from "./Storage";
+import Storage from "./storage";
 import {DragDropContext, DropResult} from "react-beautiful-dnd";
 import {moveCourse, moveGroup} from "../../redux/data/data.actions";
 import {useAppDispatch} from "../../redux/hooks";
@@ -13,12 +13,14 @@ const MainContainer = styled("div")(() => ({
     flexDirection: "row",
     justifyContent: "space-between",
     height: "90vh",
-    maxWidth: "1536px",
+    // maxWidth: "1536px",
+    maxWidth: "1636px",
+    margin: "auto"
 
 }))
 
-const StorageContainer = styled("div")(() => ({
-    flex: "0 1 25%",
+const StorageWrapper = styled("div")(() => ({
+    flex: "0 1 20%",
     borderRadius: "1em",
     paddingLeft: "1rem",
     padding: "0.5rem",
@@ -27,8 +29,8 @@ const StorageContainer = styled("div")(() => ({
     backgroundColor: "#dddddd"
 }))
 
-const CurriculumContainer = styled("div")(() => ({
-    flex: "1 1 70%",
+const CurriculumWrapper = styled("div")(() => ({
+    flex: "1 1 75%",
     overflowY: "auto",
     '&::-webkit-scrollbar': {
         width: '0.75em',
@@ -42,18 +44,13 @@ const CurriculumContainer = styled("div")(() => ({
     }
 }))
 
-
 const Planner = () => {
 
     const dispatch = useAppDispatch()
-
     const [showPseudoDroppable, setShowPseudoDroppable] = useState<boolean>(false)
 
     const handleDragStart = () => {
         setShowPseudoDroppable(true)
-        // if (isSemesterId(source.droppableId)) {
-        //     create pseudo droppable over storage to be able to catch course drops back to storage
-        // }
     }
 
     const handleDragEnd = ({destination, draggableId, source}: DropResult) => {
@@ -66,32 +63,28 @@ const Planner = () => {
                 destinationId: destination.droppableId,
                 destinationIndex: destination.index
             }))
-            return
         } else if (draggableId.startsWith("g_")) {
             dispatch(moveGroup({
                 destinationId: destination.droppableId,
                 groupId: draggableId.slice(2),
                 destinationIndex: destination.index
             }))
-            return
         } else {
             console.error("wrong draggable id format: ", draggableId)
         }
     }
 
     return (
-        <div className="App">
-            <DragDropContext onDragEnd={handleDragEnd} onBeforeDragStart={handleDragStart}>
-                <MainContainer>
-                    <StorageContainer>
-                        <Storage showPseudoDroppable={showPseudoDroppable}/>
-                    </StorageContainer>
-                    <CurriculumContainer>
-                        <Curriculum/>
-                    </CurriculumContainer>
-                </MainContainer>
-            </DragDropContext>
-        </div>
+        <DragDropContext onDragEnd={handleDragEnd} onBeforeDragStart={handleDragStart}>
+            <MainContainer>
+                <StorageWrapper>
+                    <Storage showPseudoDroppable={showPseudoDroppable}/>
+                </StorageWrapper>
+                <CurriculumWrapper>
+                    <Curriculum/>
+                </CurriculumWrapper>
+            </MainContainer>
+        </DragDropContext>
     );
 }
 

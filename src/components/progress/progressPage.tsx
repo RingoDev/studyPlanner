@@ -1,10 +1,8 @@
 import React, {useRef} from 'react';
 import {Container} from "@mui/material";
-import createStyles from '@mui/styles/createStyles';
-import makeStyles from '@mui/styles/makeStyles';
 import {Chart, Doughnut} from "react-chartjs-2";
 import {useAppSelector} from "../../redux/hooks";
-import {ChartData} from "chart.js";
+import {ChartData, ChartOptions} from "chart.js";
 import Course, {Competency} from "../../types/types";
 import Color from "color";
 import {getCoursesFromGroups} from "../../data";
@@ -15,31 +13,6 @@ const ProgressPage = () => {
     const initialConfig = useAppSelector(state => state.data.initialConfig)
 
     const chartRef = useRef<Chart<"doughnut", number[], string>>(null)
-
-    const useStyles = makeStyles(() =>
-        createStyles({
-            container: {
-                padding: "2rem",
-                height: "100%"
-            },
-            box: {
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: 400,
-                padding: "4rem",
-                backdropFilter: "blur(20px)",
-                boxShadow: "0 8px 32px 0 rgba( 31, 38, 135, 0.37 )",
-                borderRadius: "1rem",
-                minHeight: "50rem",
-                background: "rgba( 255, 255, 255, 0.3 )",
-                border: "1px solid rgba( 255, 255, 255, 0.18 )",
-            },
-        })
-    )
-
-    const classes = useStyles()
 
     const generateCompetencies = (): Competency[] => {
 
@@ -74,14 +47,7 @@ const ProgressPage = () => {
                 } else {
                     allCoursesEcts += allCourses.map(c => c.ects).reduce((x1, x2) => x1 + x2, 0)
                 }
-
                 finishedCoursesEcts += allCourses.filter(c => c.finished).map(c => c.ects).reduce((x1, x2) => x1 + x2, 0)
-
-                // courses.push(...group.courses.map(id => {
-                //     const index = storage.findIndex(course => course.id === id)
-                //     if (index !== -1) return storage[index]
-                //     else return curriculumCourses[curriculumCourses.findIndex(course => course.id === id)]
-                // }))
             }
 
             result.push({
@@ -182,31 +148,31 @@ const ProgressPage = () => {
         }
     }
 
+    const chartOptions: ChartOptions<"doughnut"> = {
+        maintainAspectRatio: false,
+        cutout: "50%",
+        plugins: {
+            legend: {
+                display: false,
+                position: "left",
+                labels: {
+                    font: {size: 24},
+                    color: "black",
+                    filter: (legendItem) => {
+                        if (legendItem.text === "Fehlende Kurse") return false
+                        return legendItem.text !== ""
+                    }
+                }
+            },
+            tooltip: {filter: (tooltip) => tooltip.label !== ""}
+        }
+    }
+
     return (
         <div className="App">
-            <Container className={classes.container} maxWidth={"xl"}>
+            <Container sx={{padding: "2rem", height: "100%"}} maxWidth={"xl"}>
                 <div style={{position: "relative", height: "65vh", paddingTop: "5rem"}}>
-                    <Doughnut ref={chartRef} options={{
-                        maintainAspectRatio: false,
-                        cutout: "50%",
-                        plugins: {
-                            legend: {
-                                display: false,
-
-                                position: "left",
-
-                                labels: {
-                                    font: {size: 24},
-                                    color: "black",
-                                    filter: (legendItem) => {
-                                        if (legendItem.text === "Fehlende Kurse") return false
-                                        return legendItem.text !== ""
-                                    }
-                                }
-                            },
-                            tooltip: {filter: (tooltip) => tooltip.label !== ""}
-                        }
-                    }} data={generateData}/>
+                    <Doughnut ref={chartRef} options={chartOptions} data={generateData}/>
                 </div>
             </Container>
         </div>
