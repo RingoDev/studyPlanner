@@ -47,7 +47,7 @@ const ProgressPage = () => {
                 } else {
                     allCoursesEcts += allCourses.map(c => c.ects).reduce((x1, x2) => x1 + x2, 0)
                 }
-                finishedCoursesEcts += allCourses.filter(c => c.finished).map(c => c.ects).reduce((x1, x2) => x1 + x2, 0)
+                finishedCoursesEcts += allCourses.filter(c => c.grade !== undefined).map(c => c.ects).reduce((x1, x2) => x1 + x2, 0)
             }
 
             result.push({

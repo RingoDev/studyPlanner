@@ -1,26 +1,38 @@
 import React from "react";
 import {SemesterType} from "../../types/types";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {Button, Typography} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 import {removeSemester} from "../../redux/data/data.actions";
 import SemesterName from "./semesterName";
 import DroppableCourseList from "./droppableCourseList";
 import {styled} from "@mui/material/styles";
 
-const SemesterContainer = styled("div")(() => ({
+const SemesterContainer = styled("div")(({theme}) => ({
     position: "relative",
     padding: "3rem 1rem 1rem 1rem",
     height: "100%",
     display: "flex",
     flexDirection: "column",
-    background: "rgba( 255, 255, 255, 0.5 )",
+    background: theme.palette.secondary.light,
+    borderRadius: "1rem",
 }))
 
-const ListContainer = styled("div")(() => ({
+const ListContainer = styled("div")(({theme}) => ({
     paddingLeft: "4rem",
     height: "100%",
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    [theme.breakpoints.down("md")]: {
+        paddingLeft: "0"
+    }
+}))
+
+const StyledButton = styled(Button)(({theme}) => ({
+    color: theme.palette.text.primary,
+    backgroundColor: theme.palette.primary.light,
+    ":hover": {
+        backgroundColor: theme.palette.primary.main
+    }
 }))
 
 const Semester = ({semester, index}: { semester: SemesterType, index: number }) => {
@@ -33,12 +45,14 @@ const Semester = ({semester, index}: { semester: SemesterType, index: number }) 
             <SemesterName index={index}/>
             <ListContainer>
                 <DroppableCourseList semester={semester} index={index}/>
-                <Typography align={"center"} fontSize={"1.75rem"}>
-                    {customECTsCounter + semester.courses.reduce(((prev, course) => prev + course.ects), 0)} ECTS
-                </Typography>
-                <Button style={{zIndex: 2}} onClick={() => dispatch(removeSemester({semesterIndex: index}))}>
-                    Semester entfernen
-                </Button>
+                <Box sx={{display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
+                    <Typography align={"center"} fontSize={"1.75rem"}>
+                        {customECTsCounter + semester.courses.reduce(((prev, course) => prev + course.ects), 0)} ECTS
+                    </Typography>
+                    <StyledButton onClick={() => dispatch(removeSemester({semesterIndex: index}))}>
+                        Semester entfernen
+                    </StyledButton>
+                </Box>
             </ListContainer>
         </SemesterContainer>
     )

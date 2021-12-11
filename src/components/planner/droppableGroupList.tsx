@@ -11,7 +11,7 @@ interface Props {
     groups: Group[]
 }
 
-const StyledList = styled(List)(() => ({
+const StyledList = styled(List)(({theme}) => ({
     padding: "0 0rem",
     height: "100%",
     overflowY: "auto",
@@ -21,7 +21,7 @@ const StyledList = styled(List)(() => ({
         borderRadius: "1em"
     },
     '&::-webkit-scrollbar-thumb': {
-        backgroundColor: '#777777',
+        backgroundColor: theme.palette.primary.light,
         borderRadius: "1em"
     }
 }))

@@ -4,34 +4,33 @@ import ProgressPage from "./components/progress/progressPage";
 import React from "react";
 import Navbar from "./components/navbar/navbar";
 import Settings from "./components/general/settings";
-import {Box} from "@mui/material";
+import {styled} from "@mui/material/styles";
 
-const App = () => {
+const StyledApp = styled("div")(({theme}) => ({
+    height: "100%",
+    background: theme.palette.secondary.dark
+}))
 
-    return (
-        <>
-            <Navbar/>
-            <Box sx={{
-                height: "100%",
-                background: "#4d4d4d"
-            }}>
-                <Switch>
-                    <Route exact path="/">
-                        <Redirect to="/plan"/>
-                    </Route>
-                    <Route path={"/progress"}>
-                        <ProgressPage/>
-                    </Route>
-                    <Route path={"/plan"}>
-                        <Planner/>
-                    </Route>
-                    <Route path={"/settings"}>
-                        <Settings/>
-                    </Route>
-                </Switch>
-            </Box>
-        </>
+const App = () => (
+    <>
+        <Navbar/>
+        <StyledApp>
+            <Switch>
+                <Route exact path="/">
+                    <Redirect to="/plan"/>
+                </Route>
+                <Route path={"/progress"}>
+                    <ProgressPage/>
+                </Route>
+                <Route path={"/plan"}>
+                    <Planner/>
+                </Route>
+                <Route path={"/settings"}>
+                    <Settings/>
+                </Route>
+            </Switch>
+        </StyledApp>
+    </>
+)
 
-    )
-}
 export default App

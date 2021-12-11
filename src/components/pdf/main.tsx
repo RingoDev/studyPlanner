@@ -27,7 +27,7 @@ const PdfDocument = ({curriculum, startSemesterIndex}: Props) => {
         <Document>
             <Page size="A4" style={styles.page}>
                 {curriculum.semesters.map((semester, index) => (
-                    <View wrap={false} style={styles.section}>
+                    <View key={index} wrap={false} style={styles.section}>
                         <View style={tableStyles.table}>
                             <View style={{...tableStyles.tableRow, ...tableStyles.tableHead}}>
                                 <View style={{...tableStyles.tableCell, ...tableStyles.description}}>

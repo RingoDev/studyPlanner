@@ -16,7 +16,7 @@ const DroppableCourseList = ({semester, index}: Props) => (
     <Droppable droppableId={"sem" + index}>
         {provided => (
             <Box ref={provided.innerRef}
-                 sx={{border: "2px solid #888888", height: "100%"}}
+                 sx={{border: "2px solid #cccccc", height: "100%"}}
                  {...provided.droppableProps} >
                 <List disablePadding sx={{paddingTop: "0.5rem",}}>
                     {semester.courses.map((c, index) =>

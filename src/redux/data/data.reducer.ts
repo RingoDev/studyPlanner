@@ -7,8 +7,7 @@ import {
     moveGroup,
     removeSemester,
     setApplicationState,
-    setCourseFinished,
-    setCourseUnfinished,
+    setCourseGrade,
     setCustomStudies,
     setExampleCurriculum,
     setStartSemester,
@@ -42,7 +41,8 @@ const selectSemesterList: string[] = Array.from(Array(selectOptions).keys()).map
 export function getSemesterName(index: number, startSemesterIndex: number) {
     const n = index + startSemesterIndex
     if (n % 2 === 0)
-        return "WS" + (startYear + n / 2) + "/" + (startYear - 1999 + n / 2)
+        return "WS" + (startYear + n / 2)
+    //+ "/" + (startYear - 1999 + n / 2)
     else return "SS" + (startYear + 1 + Math.floor(n / 2))
 }
 
@@ -147,7 +147,7 @@ const courseReducer = createReducer(initialState, (builder) => {
                 const semesterIndex = Number(payload.sourceId.slice(3))
                 moveCourseFromCurriculumToStorage(state.curriculum, state.storage, getGroupIdOfCourseId(payload.courseId), payload.courseId, semesterIndex)
             }
-            console.log("Successfully moved curse with id " + payload.courseId + " from list " + payload.sourceId + " to " + payload.destinationId)
+            console.debug("Successfully moved curse with id " + payload.courseId + " from list " + payload.sourceId + " to " + payload.destinationId)
         })
         .addCase(moveGroup, (state, {payload}) => {
 
@@ -225,28 +225,52 @@ const courseReducer = createReducer(initialState, (builder) => {
             state.curriculum.semesters[payload.semesterIndex].customEcts = payload.ects;
         })
 
-        .addCase(setCourseFinished, (state, {payload}) => {
+        .addCase(setCourseGrade, (state, {payload}) => {
 
-            for (let j = 0; j < state.curriculum.semesters.length; j++) {
-                for (let k = 0; k < state.curriculum.semesters[j].courses.length; k++) {
-                    if (state.curriculum.semesters[j].courses[k].id === payload.courseId) {
-                        state.curriculum.semesters[j].courses[k].finished = true;
+            for (let semester of state.curriculum.semesters) {
+                for (let course of semester.courses) {
+                    if (course.id === payload.courseId) {
+                        course.grade = payload.grade;
                         return
                     }
                 }
             }
+            // for (let j = 0; j < state.curriculum.semesters.length; j++) {
+            //     for (let k = 0; k < state.curriculum.semesters[j].courses.length; k++) {
+            //         if (state.curriculum.semesters[j].courses[k].id === payload.courseId) {
+            //             if (payload.grade === 0) {
+            //                 state.curriculum.semesters[j].courses[k].grade = undefined;
+            //             } else {
+            //                 state.curriculum.semesters[j].courses[k].grade = payload.grade;
+            //             }
+            //             return
+            //         }
+            //     }
+            // }
         })
-        .addCase(setCourseUnfinished, (state, {payload}) => {
-
-            for (let j = 0; j < state.curriculum.semesters.length; j++) {
-                for (let k = 0; k < state.curriculum.semesters[j].courses.length; k++) {
-                    if (state.curriculum.semesters[j].courses[k].id === payload.courseId) {
-                        state.curriculum.semesters[j].courses[k].finished = false;
-                        return
-                    }
-                }
-            }
-        })
+        // .addCase(setCourseFinished, (state, {payload}) => {
+        //
+        //     for (let j = 0; j < state.curriculum.semesters.length; j++) {
+        //         for (let k = 0; k < state.curriculum.semesters[j].courses.length; k++) {
+        //             if (state.curriculum.semesters[j].courses[k].id === payload.courseId) {
+        //                 state.curriculum.semesters[j].courses[k].finished = true;
+        //                 // state.curriculum.semesters[j].courses[k].finished = true;
+        //                 return
+        //             }
+        //         }
+        //     }
+        // })
+        // .addCase(setCourseUnfinished, (state, {payload}) => {
+        //
+        //     for (let j = 0; j < state.curriculum.semesters.length; j++) {
+        //         for (let k = 0; k < state.curriculum.semesters[j].courses.length; k++) {
+        //             if (state.curriculum.semesters[j].courses[k].id === payload.courseId) {
+        //                 state.curriculum.semesters[j].courses[k].finished = false;
+        //                 return
+        //             }
+        //         }
+        //     }
+        // })
         .addCase(setApplicationState, (state, {payload}) => {
             state.storage = removeCoursesFromGroupList(configGroupsToGroups(state.initialConfig.groups),
                 payload.curriculum.semesters.flatMap(s => s.courses).map(c => c.id))
@@ -532,7 +556,6 @@ function splitGroupIds(groupId: string) {
     for (let i = 0; i < groupId.split("-").length; i++) {
         result.push(groupId.slice(0, 3 + (i * 4)))
     }
-    console.log("result of splitting: " + groupId + " is ", result)
     return result
 }
 

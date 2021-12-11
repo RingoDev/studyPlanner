@@ -5,14 +5,14 @@ import KusssLink from "./kusssLink";
 import Course from "../../../types/types";
 import ConstraintIndicator from "./constraintIndicator";
 import CourseStateOption from "./courseStateOption";
-import Color from "color";
 import {Box} from "@mui/material";
 import {styled} from "@mui/material/styles";
 
 const CourseItem = ({course, isInStorage}: { course: Course, isInStorage: boolean }) => {
 
     const StyledListItem = styled(ListItem)(() => ({
-        backgroundColor: course.finished ? Color(course.color).alpha(0.3).string() : course.color,
+        // backgroundColor: course.grade ? Color(course.color).alpha(0.3).string() : course.color,
+        backgroundColor: course.color,
         padding: "0.5rem"
     }))
 

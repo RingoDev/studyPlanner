@@ -5,10 +5,21 @@ import React from "react";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {setCustomStudies} from "../../redux/data/data.actions";
 import {Minus, Plus} from "lucide-react";
+import {styled} from "@mui/material/styles";
 
 interface Props {
     semesterIndex: number,
 }
+
+const StyledButton = styled(Button)(({theme}) => ({
+    minWidth: "32px",
+    color: theme.palette.text.primary
+}))
+
+const StyledText = styled(ListItemText)(() => ({
+    minWidth: "32px",
+    textAlign: "center"
+}))
 
 const CustomStudies = ({semesterIndex}: Props) => {
 
@@ -24,16 +35,16 @@ const CustomStudies = ({semesterIndex}: Props) => {
                 <ListItemText>
                     Freie Studienleistungen
                 </ListItemText>
-                <Button onClick={() => dispatch(setCustomStudies({
+                <StyledButton onClick={() => dispatch(setCustomStudies({
                     semesterIndex,
                     ects: Math.max(counter - 0.5, 0)
-                }))}><Minus/></Button>
-                <ListItemText sx={{textAlign: "center"}}>
+                }))}><Minus size={16}/></StyledButton>
+                <StyledText>
                     {counter}
-                </ListItemText>
-                <Button onClick={() => dispatch(setCustomStudies({
+                </StyledText>
+                <StyledButton onClick={() => dispatch(setCustomStudies({
                     semesterIndex, ects: counter + 0.5
-                }))}><Plus/></Button>
+                }))}><Plus size={16}/></StyledButton>
             </ListItem>
         </Box>
     )

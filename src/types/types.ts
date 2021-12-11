@@ -1,6 +1,8 @@
 import {COMPOSITE_GROUP, COURSE_GROUP} from "./dndTypes";
 import Color from "color";
 
+export type Grade = 0 | 1 | 2 | 3 | 4
+
 export default interface Course {
     type: "course"
     id: string
@@ -12,7 +14,7 @@ export default interface Course {
     violations: Violation[]
     color: string
     credited?: boolean
-    finished?: boolean
+    grade?: Grade
 }
 
 export interface Violation {

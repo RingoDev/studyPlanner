@@ -25,20 +25,15 @@ const ConstraintIndicator = ({course}: { course: Course }) => {
     const highViolations = violations.filter(v => v.severity === "HIGH")
     if (highViolations.length > 0) violations = highViolations
 
+    const ToolTipText = violations.map((v, index) => (
+        typeof v.reason === "string"
+            ? <Typography key={index}>{v.reason}</Typography>
+            : v.reason.map((r, inner) => <Typography key={index + "-" + inner}>{r}</Typography>)
+    ))
+
     return (
         <ListItemIcon sx={{display: "flex", justifyContent: "center"}}>
-            <HtmlTooltip arrow title={
-                <>
-                    {violations.map((v, index) => {
-                        if (typeof v.reason === "string") return <Typography key={index}>{v.reason}</Typography>
-                        return (
-                            <div key={index}>
-                                {v.reason.map((r, innerIndex) => <Typography key={innerIndex}>{r}</Typography>)}
-                            </div>
-                        )
-                    })}
-                </>
-            }>
+            <HtmlTooltip arrow title={ToolTipText}>
                 {violations.findIndex(v => v.severity === "HIGH") === -1
                     ? <AlertCircle color={"orange"}/>
                     : <XCircle color={"red"}/>

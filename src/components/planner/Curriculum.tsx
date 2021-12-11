@@ -19,13 +19,20 @@ const CurriculumContainer = styled("div")(() => ({
 const SemesterWrapper = styled("div")(() => ({
     flexBasis: "50%",
     minHeight: "20rem",
-    padding: "1rem"
+    padding: "1rem",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexGrow: 1,
+    "> *": {
+        flexGrow: 1
+    }
 }))
 
 
 const StyledButton = styled(Button)(() => ({
     flexBasis: "50%",
-    minHeight: "20rem"
+    height: "100%"
 }))
 
 const Curriculum = () => {
@@ -40,7 +47,10 @@ const Curriculum = () => {
                     <Semester semester={s} index={index}/>
                 </SemesterWrapper>
             ))}
-            <StyledButton onClick={() => dispatch(addSemester({}))}>Semester hinzufügen</StyledButton>
+            <SemesterWrapper>
+                <StyledButton sx={{borderRadius: "1rem"}} onClick={() => dispatch(addSemester({}))}>Semester
+                    hinzufügen</StyledButton>
+            </SemesterWrapper>
         </CurriculumContainer>
     )
 }
