@@ -13,7 +13,6 @@ const MainContainer = styled("div")(() => ({
     flexDirection: "row",
     justifyContent: "space-between",
     height: "90vh",
-    // maxWidth: "1536px",
     maxWidth: "1636px",
     margin: "auto"
 

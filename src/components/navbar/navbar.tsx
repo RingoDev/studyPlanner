@@ -1,11 +1,12 @@
-import {AppBar, Box, Button, Toolbar, Typography} from "@mui/material";
+import {AppBar, Button, CircularProgress, Toolbar, Typography} from "@mui/material";
 import {NavLink} from "react-router-dom";
-import {Settings} from "lucide-react";
+import {Download, FileText, Settings, Upload} from "lucide-react";
 import UploadButton from "../general/uploadButton";
 import React from "react";
 import {styled} from "@mui/material/styles";
-import PdfDownloadButton from "./pdfDownloadButton";
-import DownloadButton from "./downloadButton";
+import DownloadPDFLink from "./downloadPDFLink";
+import DownloadLink from "./downloadLink";
+import MobileNavbar from "./mobileNavbar";
 
 
 const MyNavLink = styled(NavLink)(({theme}) => ({
@@ -22,27 +23,37 @@ const StyledToolbar = styled(Toolbar)(() => ({
     }
 }))
 
-const Navbar = () => {
+const StyledLinkContainer = styled("div")(({theme}) => ({
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+        display: "unset"
+    }
+}))
 
+
+const Navbar = () => {
     return (
         <AppBar position={"static"}>
             <StyledToolbar>
-                <Box>
+                <StyledLinkContainer>
                     <MyNavLink to={"/plan"}>
                         <Button><Typography>Planung</Typography></Button>
                     </MyNavLink>
                     <MyNavLink to={"/progress"}>
                         <Button><Typography>Übersicht</Typography></Button>
                     </MyNavLink>
-                </Box>
-                <Box>
-                    <DownloadButton/>
-                    <UploadButton/>
-                    <PdfDownloadButton/>
+                </StyledLinkContainer>
+                <StyledLinkContainer>
+                    <DownloadLink><Button><Download/></Button></DownloadLink>
+                    <UploadButton><Upload/></UploadButton>
+                    <DownloadPDFLink loadingComponent={<Button><CircularProgress/></Button>}>
+                        <Button><FileText/></Button>
+                    </DownloadPDFLink>
                     <MyNavLink to={"/settings"}>
                         <Button><Settings/></Button>
                     </MyNavLink>
-                </Box>
+                </StyledLinkContainer>
+                <MobileNavbar/>
             </StyledToolbar>
         </AppBar>
     )

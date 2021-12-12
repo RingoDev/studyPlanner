@@ -1,4 +1,3 @@
-import {Upload} from "lucide-react";
 import {Button} from "@mui/material";
 import React from "react";
 import {useFilePicker} from "use-file-picker";
@@ -7,7 +6,7 @@ import {setApplicationState} from "../../redux/data/data.actions";
 import initialConfig from "../../data";
 import {CurriculumType} from "../../types/types";
 
-const UploadButton = () => {
+const UploadButton: React.FC = ({children}) => {
 
     const dispatch = useAppDispatch()
 
@@ -24,14 +23,7 @@ const UploadButton = () => {
         })
     }
 
-
-    return (
-        <>
-            <Button onClick={openFileSelector}>
-                <Upload/>
-            </Button>
-        </>
-    )
+    return <Button onClick={openFileSelector}>{children}</Button>
 }
 
 export default UploadButton

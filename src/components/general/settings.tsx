@@ -4,6 +4,44 @@ import React from "react";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {styled} from "@mui/material/styles";
 
+const SettingsContainer = styled('div')(() => ({
+    borderRadius: "2rem",
+    padding: "2rem",
+    backgroundColor: "#dddddd",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    "> div": {
+        display: "flex",
+        alignItems: "center"
+    },
+    "> div > *": {
+        padding: "0.5rem",
+    }
+}))
+
+const OuterContainer = styled("div")(({theme}) => ({
+    height: "100%",
+    padding: "5rem",
+    [theme.breakpoints.down("md")]: {
+        padding: "2rem"
+    },
+    [theme.breakpoints.down("sm")]: {
+        padding: "0.5rem"
+    }
+}))
+
+const FormBox = styled("div")(({theme}) => ({
+    display: "flex",
+    [theme.breakpoints.down("md")]: {
+        flexDirection: "column"
+    },
+    // [theme.breakpoints.down("sm")]: {
+    //     padding:"0.5rem"
+    // }
+}))
+
 const Settings = () => {
 
     const lastChosenExample = useAppSelector((state) => state.data.lastChosenExample)
@@ -12,27 +50,11 @@ const Settings = () => {
     const startSemesterIndex = useAppSelector((state) => state.data.startSemesterIndex)
     const dispatch = useAppDispatch()
 
-    const SettingsContainer = styled('div')(() => ({
-        borderRadius: "2rem",
-        padding: "2rem",
-        backgroundColor: "#dddddd",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "flex-start",
-        "> div": {
-            display: "flex",
-            alignItems: "center"
-        },
-        "> div > *": {
-            padding: "0.5rem",
-        }
-    }))
 
     return (
-        <Box sx={{height: "100%", padding: "5rem"}}>
+        <OuterContainer>
             <SettingsContainer>
-                <Box>
+                <FormBox>
                     <Typography align={"center"}>Studium:</Typography>
                     <FormControl>
                         <Select value={0}>
@@ -40,7 +62,7 @@ const Settings = () => {
                             <MenuItem value={1}>Masterstudium Wirtschaftsinformatik</MenuItem>
                         </Select>
                     </FormControl>
-                </Box>
+                </FormBox>
                 <Box>
                     <Typography align={"center"}>Start des Studiums:</Typography>
                     <FormControl>
@@ -68,7 +90,7 @@ const Settings = () => {
                     </FormControl>
                 </Box>
             </SettingsContainer>
-        </Box>
+        </OuterContainer>
     )
 }
 
