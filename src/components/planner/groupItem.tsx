@@ -1,86 +1,100 @@
-import {ChevronDown, ChevronUp} from "lucide-react";
-import {Box, Collapse, ListItem, ListItemIcon, ListItemText} from "@mui/material";
-import React, {useState} from "react";
-import {Group} from "../../types/types";
-import {useAppSelector} from "../../redux/hooks";
-import {getCoursesFromGroups, getGroupWithIdFromGroups} from "../../data";
-import {COURSE_GROUP} from "../../types/dndTypes";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import {
+  Box,
+  Collapse,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import React, { useState } from "react";
+import { Group } from "../../types/types";
+import { useAppSelector } from "../../redux/hooks";
+import { getCoursesFromGroups, getGroupWithIdFromGroups } from "../../data";
+import { COURSE_GROUP } from "../../types/dndTypes";
 import CollapsedList from "./collapsedList";
-import {styled} from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Color from "color";
 
 interface Props {
-    group: Group,
-    index: number,
-    level: number
+  group: Group;
+  index: number;
+  level: number;
 }
 
 const StyledListIcon = styled(ListItemIcon)(() => ({
-    minWidth: "36px",
-    flexDirection: "column",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
-}))
+  minWidth: "36px",
+  flexDirection: "column",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+}));
 
-const GroupItem = ({group, level}: Props) => {
+const GroupItem = ({ group, level }: Props) => {
+  const groups = useAppSelector((state) => state.data.initialConfig.groups);
+  const xOutOfYConstraints = useAppSelector(
+    (state) => state.data.initialConfig.constraints.xOutOfYConstraints
+  );
 
-    const groups = useAppSelector((state) => state.data.initialConfig.groups)
-    const xOutOfYConstraints = useAppSelector((state) => state.data.initialConfig.constraints.xOutOfYConstraints)
+  const [open, setOpen] = useState(false);
 
-    const [open, setOpen] = useState(false)
+  const groupWithSameId = getGroupWithIdFromGroups(groups, group.id);
+  const allGroupCourses =
+    groupWithSameId !== undefined
+      ? getCoursesFromGroups([groupWithSameId])
+      : [];
+  const getMaxCourses = allGroupCourses.length;
 
+  const unbookedEcts = getCoursesFromGroups([group])
+    .map((c) => c.ects)
+    .reduce((e1, e2) => e1 + e2, 0);
 
-    const groupWithSameId = getGroupWithIdFromGroups(groups, group.id)
-    const allGroupCourses = groupWithSameId !== undefined ? getCoursesFromGroups([groupWithSameId]) : []
-    const getMaxCourses = allGroupCourses.length
+  const allEcts = allGroupCourses
+    .map((c) => c.ects)
+    .reduce((e1, e2) => e1 + e2, 0);
 
-    const unbookedEcts = getCoursesFromGroups([group])
-        .map(c => c.ects)
-        .reduce((e1, e2) => e1 + e2, 0)
+  const maxEcts =
+    xOutOfYConstraints.find((c) => c.group === group.id)?.maxEcts || allEcts;
 
-    const allEcts = allGroupCourses
-        .map(c => c.ects)
-        .reduce((e1, e2) => e1 + e2, 0)
+  // console.log("all ects: " + allEcts + " for group: " + groupWithSameId?.title)
+  // console.log("max ects: " + maxEcts + " for group: " + groupWithSameId?.title)
+  // console.log("unbooked ects: " + unbookedEcts + " for group: " + groupWithSameId?.title)
 
-    const maxEcts = xOutOfYConstraints
-        .find(c => c.group === group.id)?.maxEcts || allEcts
+  const ectsThresholdReached = allEcts - unbookedEcts >= maxEcts;
 
-    // console.log("all ects: " + allEcts + " for group: " + groupWithSameId?.title)
-    // console.log("max ects: " + maxEcts + " for group: " + groupWithSameId?.title)
-    // console.log("unbooked ects: " + unbookedEcts + " for group: " + groupWithSameId?.title)
+  const StyledListItem = styled(ListItem)(() => ({
+    backgroundColor: ectsThresholdReached ? "#cccccc" : group.color,
+    marginBottom: "0.375rem",
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: ectsThresholdReached
+        ? "#cccccc"
+        : Color(group.color).alpha(0.8).string(),
+    },
+  }));
 
-    const ectsThresholdReached = allEcts - unbookedEcts >= maxEcts
+  return (
+    <Box sx={{ padding: 0.25 / 4 ** level + "rem 0.5rem" }}>
+      <StyledListItem onClick={() => setOpen(!open)}>
+        <ListItemText>{group.title}</ListItemText>
+        <StyledListIcon>
+          {group.type === COURSE_GROUP
+            ? group.courses.length
+            : getCoursesFromGroups([group]).length}
+          /{getMaxCourses}
+        </StyledListIcon>
+        <StyledListIcon>
+          {open ? <ChevronUp /> : <ChevronDown />}
+        </StyledListIcon>
+      </StyledListItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <CollapsedList
+          group={group}
+          level={level}
+          fullyBooked={ectsThresholdReached}
+        />
+      </Collapse>
+    </Box>
+  );
+};
 
-    const StyledListItem = styled(ListItem)(() => ({
-        backgroundColor: ectsThresholdReached ? "#cccccc" : group.color,
-        marginBottom: "0.375rem",
-        cursor: "pointer",
-        '&:hover': {
-            backgroundColor: ectsThresholdReached ? "#cccccc" : Color(group.color).alpha(0.8).string(),
-        }
-    }))
-
-    return (
-        <Box sx={{padding: 0.25 / (4 ** level) + "rem 0.5rem"}}>
-            <StyledListItem onClick={() => setOpen(!open)}>
-                <ListItemText>
-                    {group.title}
-                </ListItemText>
-                <StyledListIcon>
-                    {group.type === COURSE_GROUP ?
-                        group.courses.length :
-                        getCoursesFromGroups([group]).length}/{getMaxCourses}
-                </StyledListIcon>
-                <StyledListIcon>
-                    {open ? <ChevronUp/> : <ChevronDown/>}
-                </StyledListIcon>
-            </StyledListItem>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-                <CollapsedList group={group} level={level} fullyBooked={ectsThresholdReached}/>
-            </Collapse>
-        </Box>
-    )
-}
-
-export default GroupItem
+export default GroupItem;
