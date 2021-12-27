@@ -6,7 +6,7 @@ interface Props {
 }
 
 const HighlightSearchText: React.FC<Props> = ({ text, searchText }) => {
-  if (!searchText.trim()) {
+  if (searchText.trim().length === 0) {
     return <span>{text}</span>;
   }
   const regex = new RegExp(`(${searchText})`, "gi");

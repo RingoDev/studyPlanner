@@ -22,7 +22,7 @@ const Search = () => {
         // if global search text is already empty -> don't set
         dispatch(setSearchText({ text: "" }));
       }
-    } else dispatch(setSearchText({ text: "" }));
+    } else dispatch(setSearchText({ text: e.target.value as string }));
   };
 
   return (
