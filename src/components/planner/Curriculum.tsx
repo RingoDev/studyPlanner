@@ -12,6 +12,7 @@ const CurriculumContainer = styled("div")(() => ({
   width: "90%",
   display: "flex",
   flexDirection: "row",
+  // flexDirection: "column",
   flexWrap: "wrap",
   justifyContent: "space-evenly",
 }));

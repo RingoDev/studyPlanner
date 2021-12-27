@@ -14,6 +14,7 @@ import { COURSE_GROUP } from "../../types/dndTypes";
 import CollapsedList from "./collapsedList";
 import { styled } from "@mui/material/styles";
 import Color from "color";
+import HighlightSearchText from "./HighlightSearch";
 
 interface Props {
   group: Group;
@@ -34,6 +35,8 @@ const GroupItem = ({ group, level }: Props) => {
   const xOutOfYConstraints = useAppSelector(
     (state) => state.data.initialConfig.constraints.xOutOfYConstraints
   );
+
+  const searchText = useAppSelector((state) => state.data.searchText);
 
   const [open, setOpen] = useState(false);
 
@@ -75,7 +78,9 @@ const GroupItem = ({ group, level }: Props) => {
   return (
     <Box sx={{ padding: 0.25 / 4 ** level + "rem 0.5rem" }}>
       <StyledListItem onClick={() => setOpen(!open)}>
-        <ListItemText>{group.title}</ListItemText>
+        <ListItemText>
+          <HighlightSearchText searchText={searchText} text={group.title} />
+        </ListItemText>
         <StyledListIcon>
           {group.type === COURSE_GROUP
             ? group.courses.length

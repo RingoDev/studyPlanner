@@ -10,6 +10,7 @@ import {
   setCourseGrade,
   setCustomStudies,
   setExampleCurriculum,
+  setSearchText,
   setStartSemester,
   showConstraintIndicators,
 } from "./data.actions";
@@ -34,6 +35,7 @@ interface INITIAL_STATE_TYPE {
   storage: Group[];
   curriculum: CurriculumType;
   lastChosenExample: number;
+  searchText: string;
 }
 
 const yearOffset = 4;
@@ -80,6 +82,7 @@ const initialState: INITIAL_STATE_TYPE = {
     })),
   },
   lastChosenExample: -1,
+  searchText: "",
 };
 
 // checking Course Constraints after most actions
@@ -142,11 +145,6 @@ const courseReducer = createReducer(initialState, (builder) => {
         courses: [],
       }));
 
-      const x = [...Array(10)].map((value) => {
-        console.log(value);
-        console.log("hi");
-        return 2;
-      });
       // state.curriculum.semesters =
       // state.initialConfig.examples[payload.exampleIndex].curriculum.length
 
@@ -306,6 +304,10 @@ const courseReducer = createReducer(initialState, (builder) => {
     })
     .addCase(addSemester, (state) => {
       state.curriculum.semesters.push({ courses: [], customEcts: 0 });
+    })
+
+    .addCase(setSearchText, (state, { payload }) => {
+      state.searchText = payload.text.trim();
     })
 
     .addCase(removeSemester, (state, { payload }) => {
@@ -701,13 +703,22 @@ function configGroupsToGroups(groups: InitialGroupType[]): Group[] {
         type: COURSE_GROUP,
         courses: courses,
         color: group.color,
+        matches: (search) => {
+          if (group.title.search(search) !== -1) return true;
+          return courses.some((c) => c.matches(search));
+        },
       });
     } else if ("groups" in group) {
+      const myGroups = configGroupsToGroups(group.groups);
       allGroups.push({
         ...group,
         type: COMPOSITE_GROUP,
-        groups: configGroupsToGroups(group.groups),
+        groups: myGroups,
         color: group.color,
+        matches: (search) => {
+          if (group.title.search(search) !== -1) return true;
+          return myGroups.some((g) => g.matches(search));
+        },
       });
     }
   }

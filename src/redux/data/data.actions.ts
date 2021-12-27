@@ -11,6 +11,7 @@ import {
   SET_COURSE_UNFINISHED,
   SET_CUSTOM_STUDIES,
   SET_EXAMPLE_CURRICULUM,
+  SET_SEARCH_TEXT,
   SET_START_SEMESTER,
   SHOW_CONSTRAINT_INDICATORS,
 } from "./data.types";
@@ -18,19 +19,17 @@ import { createAction } from "@reduxjs/toolkit";
 import initialConfig from "../../data";
 import { CurriculumType } from "../../types/types";
 
-export const moveCourse =
-  createAction<{
-    sourceId: string;
-    destinationId: string;
-    courseId: string;
-    destinationIndex: number;
-  }>(MOVE_COURSE);
-export const moveGroup =
-  createAction<{
-    destinationId: string;
-    groupId: string;
-    destinationIndex: number;
-  }>(MOVE_GROUP);
+export const moveCourse = createAction<{
+  sourceId: string;
+  destinationId: string;
+  courseId: string;
+  destinationIndex: number;
+}>(MOVE_COURSE);
+export const moveGroup = createAction<{
+  destinationId: string;
+  groupId: string;
+  destinationIndex: number;
+}>(MOVE_GROUP);
 
 export const addSemester = createAction<{}>(ADD_SEMESTER);
 export const removeSemester =
@@ -71,3 +70,7 @@ export const setApplicationState = createAction<{
   config: typeof initialConfig;
   curriculum: CurriculumType;
 }>(SET_APPLICATION_STATE);
+
+export const setSearchText = createAction<{
+  text: string;
+}>(SET_SEARCH_TEXT);

@@ -7,14 +7,16 @@ import ConstraintIndicator from "./constraintIndicator";
 import CourseStateOption from "./courseStateOption";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import HighlightSearchText from "../HighlightSearch";
+import { useAppSelector } from "../../../redux/hooks";
 
-const CourseItem = ({
-  course,
-  isInStorage,
-}: {
+interface Props {
   course: Course;
   isInStorage: boolean;
-}) => {
+}
+
+const CourseItem = ({ course, isInStorage }: Props) => {
+  const searchText = useAppSelector((state) => state.data.searchText);
   const StyledListItem = styled(ListItem)(() => ({
     // backgroundColor: course.grade ? Color(course.color).alpha(0.3).string() : course.color,
     backgroundColor: course.color,
@@ -27,7 +29,10 @@ const CourseItem = ({
         <ListItemText>
           {course.kusssId !== "" ? (
             <KusssLink id={course.kusssId}>
-              {course.sign + " - " + course.title}
+              <HighlightSearchText
+                searchText={searchText}
+                text={course.sign + " - " + course.title}
+              />
             </KusssLink>
           ) : (
             course.sign + " - " + course.title

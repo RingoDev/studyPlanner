@@ -58,7 +58,8 @@ const CourseStateOption = ({ course }: { course: Course }) => {
       >
         {grades.map((n) => {
           const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
-            padding: "none",
+            padding: "0",
+            minHeight: "0",
             width: "32px",
             height: "32px",
             display: "flex",

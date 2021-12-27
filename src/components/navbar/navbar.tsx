@@ -13,6 +13,7 @@ import { styled } from "@mui/material/styles";
 import DownloadPDFLink from "./downloadPDFLink";
 import DownloadLink from "./downloadLink";
 import MobileNavbar from "./mobileNavbar";
+import Search from "./search";
 
 const MyNavLink = styled(NavLink)(({ theme }) => ({
   textDecoration: "none",
@@ -50,6 +51,9 @@ const Navbar = () => {
               <Typography>Übersicht</Typography>
             </Button>
           </MyNavLink>
+        </StyledLinkContainer>
+        <StyledLinkContainer>
+          <Search />
         </StyledLinkContainer>
         <StyledLinkContainer>
           <DownloadLink>

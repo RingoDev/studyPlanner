@@ -4,26 +4,33 @@ import Storage from "./storage";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { moveCourse, moveGroup } from "../../redux/data/data.actions";
 import { useAppDispatch } from "../../redux/hooks";
-import { styled } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 
-const MainContainer = styled("div")(() => ({
-  padding: "5vh 2rem",
+const MainContainer = styled("div")(({ theme }) => ({
+  padding: "0",
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
   height: "90vh",
   maxWidth: "1636px",
   margin: "auto",
+  [theme.breakpoints.up("md")]: {
+    padding: "5vh 2rem",
+  },
 }));
 
-const StorageWrapper = styled("div")(() => ({
-  flex: "0 1 20%",
-  borderRadius: "1em",
-  paddingLeft: "1rem",
-  padding: "0.5rem",
-  paddingTop: "1.5rem",
-  paddingBottom: "1.5rem",
-  backgroundColor: "#dddddd",
+const StorageWrapper = styled("div")(({ theme }) => ({
+  display: "none",
+  [theme.breakpoints.up("md")]: {
+    display: "block",
+    flex: "0 1 20%",
+    borderRadius: "1em",
+    paddingLeft: "1rem",
+    padding: "0.5rem",
+    paddingTop: "1.5rem",
+    paddingBottom: "1.5rem",
+    backgroundColor: "#dddddd",
+  },
 }));
 
 const CurriculumWrapper = styled("div")(() => ({

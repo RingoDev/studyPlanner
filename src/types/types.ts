@@ -15,6 +15,7 @@ export default interface Course {
   color: string;
   credited?: boolean;
   grade?: Grade;
+  matches: (search: string) => boolean;
 }
 
 export interface Violation {
@@ -33,6 +34,7 @@ export interface CourseGroup {
   title: string;
   color: string;
   dropDisabled?: boolean;
+  matches: (search: string) => boolean;
 }
 
 export interface CompositeGroup {
@@ -42,6 +44,7 @@ export interface CompositeGroup {
   title: string;
   color: string;
   dropDisabled?: boolean;
+  matches: (search: string) => boolean;
 }
 
 export type Group = CourseGroup | CompositeGroup;

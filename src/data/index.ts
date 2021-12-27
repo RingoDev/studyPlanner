@@ -65,6 +65,10 @@ export function getCoursesFromGroups(
           color: group.color,
           violations: [],
           kusssId: course.kusssId,
+          matches: (search) => {
+            if (course.sign.search(search) !== -1) return true;
+            return course.title.search(search) !== -1;
+          },
         });
       }
     }

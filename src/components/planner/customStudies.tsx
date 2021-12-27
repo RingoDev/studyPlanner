@@ -19,6 +19,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 const StyledText = styled(ListItemText)(() => ({
   minWidth: "32px",
   textAlign: "center",
+  flexGrow: 0,
 }));
 
 const CustomStudies = ({ semesterIndex }: Props) => {

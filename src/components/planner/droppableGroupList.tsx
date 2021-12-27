@@ -5,6 +5,7 @@ import DraggableGroupItem from "./draggableGroupItem";
 import { Droppable } from "react-beautiful-dnd";
 import { STORAGE } from "../../types/dndTypes";
 import { styled } from "@mui/material/styles";
+import { useAppSelector } from "../../redux/hooks";
 
 interface Props {
   id: string;
@@ -27,6 +28,8 @@ const StyledList = styled(List)(({ theme }) => ({
 }));
 
 const DroppableGroupList = ({ groups, id }: Props) => {
+  const searchText = useAppSelector((state) => state.data.searchText);
+
   return (
     <Droppable droppableId={id} isDropDisabled>
       {(provided) => (
@@ -36,13 +39,17 @@ const DroppableGroupList = ({ groups, id }: Props) => {
           {...provided.droppableProps}
         >
           {groups.map((g, index) => (
-            <DraggableGroupItem
-              containerId={STORAGE}
-              key={g.id}
-              group={g}
-              index={index}
-              level={0}
-            />
+            <>
+              {g.matches(searchText) ? (
+                <DraggableGroupItem
+                  containerId={STORAGE}
+                  key={g.id}
+                  group={g}
+                  index={index}
+                  level={0}
+                />
+              ) : null}
+            </>
           ))}
           {provided.placeholder}
         </StyledList>

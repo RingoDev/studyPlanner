@@ -9,12 +9,15 @@ import { styled } from "@mui/material/styles";
 
 const SemesterContainer = styled("div")(({ theme }) => ({
   position: "relative",
-  padding: "3rem 1rem 1rem 1rem",
+  padding: "1rem",
   height: "100%",
   display: "flex",
   flexDirection: "column",
   background: theme.palette.secondary.light,
   borderRadius: "1rem",
+  [theme.breakpoints.up("md")]: {
+    padding: "3rem 1rem 1rem 1rem",
+  },
 }));
 
 const ListContainer = styled("div")(({ theme }) => ({
