@@ -44,7 +44,11 @@ const DraggableCourseItem: React.FC<Props> = ({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          style={getStyle(provided.draggableProps.style, snapshot)}
+          style={{
+            ...getStyle(provided.draggableProps.style, snapshot),
+            // due to rounding errors of the placeholder element messing up flex layout
+            maxWidth: "99.99%",
+          }}
         >
           <CourseItem
             isInStorage={!containerId.startsWith("sem")}

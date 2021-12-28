@@ -23,13 +23,8 @@ const StorageWrapper = styled("div")(({ theme }) => ({
   display: "none",
   [theme.breakpoints.up("md")]: {
     display: "block",
-    flex: "0 1 20%",
-    borderRadius: "1em",
-    paddingLeft: "1rem",
-    padding: "0.5rem",
-    paddingTop: "1.5rem",
-    paddingBottom: "1.5rem",
-    backgroundColor: "#dddddd",
+    flex: "1 1 20%",
+    padding: "1rem",
   },
 }));
 

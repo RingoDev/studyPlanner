@@ -10,20 +10,25 @@ interface Props {
 }
 
 const StorageContainer = styled("div")(() => ({
-  height: "100%",
   borderRadius: "1em",
+  paddingLeft: "1rem",
+  padding: "0.5rem",
+  paddingTop: "1.5rem",
+  paddingBottom: "1.5rem",
+  backgroundColor: "#dddddd",
+  height: "100%",
   position: "relative",
 }));
 
 const PseudoStorage = styled("div")(() => ({
   border: "outline 4px dashed #cccccc",
   position: "absolute",
-  top: "-1.5rem",
-  left: "-1rem",
-  height: "calc(100% + 3rem)",
-  width: "calc(100% + 1.5rem)",
+  // top: "-1.5rem",
+  top: 0,
+  left: 0,
+  height: "100%",
+  width: "100%",
   backgroundColor: "#ffffff88",
-  transition: "color 5s",
   backdropFilter: "blur(5px)",
   borderRadius: "1em",
 }));

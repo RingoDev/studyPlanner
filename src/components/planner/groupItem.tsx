@@ -76,7 +76,7 @@ const GroupItem = ({ group, level }: Props) => {
   }));
 
   return (
-    <Box sx={{ padding: 0.25 / 4 ** level + "rem 0.5rem" }}>
+    <Box sx={{ padding: 0.25 / 4 ** level + "rem 0.5rem", maxWidth: "20rem" }}>
       <StyledListItem onClick={() => setOpen(!open)}>
         <ListItemText>
           <HighlightSearchText searchText={searchText} text={group.title} />
