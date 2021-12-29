@@ -14,6 +14,7 @@ import DownloadPDFLink from "./downloadPDFLink";
 import DownloadLink from "./downloadLink";
 import MobileNavbar from "./mobileNavbar";
 import Search from "./search";
+import PlanningProgress from "./planningProgress";
 
 const MyNavLink = styled(NavLink)(({ theme }) => ({
   textDecoration: "none",
@@ -22,25 +23,37 @@ const MyNavLink = styled(NavLink)(({ theme }) => ({
   },
 }));
 
-const StyledToolbar = styled(Toolbar)(() => ({
+const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: "space-between",
+
+  [theme.breakpoints.up("md")]: {
+    height: "80px",
+  },
   "*": {
     color: "black",
   },
 }));
 
-const StyledLinkContainer = styled("div")(({ theme }) => ({
+const ActionContainer = styled("div")(({ theme }) => ({
   display: "none",
   [theme.breakpoints.up("md")]: {
     display: "unset",
   },
 }));
 
+const StyledSearchContainer = styled(ActionContainer)(({ theme }) => ({
+  minWidth: "30rem",
+}));
+
+const StyledAppbar = styled(AppBar)(({ theme }) => ({
+  backgroundColor: theme.palette.secondary.light,
+}));
+
 const Navbar = () => {
   return (
-    <AppBar position={"static"}>
+    <StyledAppbar position={"static"}>
       <StyledToolbar>
-        <StyledLinkContainer>
+        <ActionContainer>
           <MyNavLink to={"/plan"}>
             <Button>
               <Typography>Planung</Typography>
@@ -51,11 +64,14 @@ const Navbar = () => {
               <Typography>Übersicht</Typography>
             </Button>
           </MyNavLink>
-        </StyledLinkContainer>
-        <StyledLinkContainer>
+        </ActionContainer>
+        <StyledSearchContainer>
           <Search />
-        </StyledLinkContainer>
-        <StyledLinkContainer>
+        </StyledSearchContainer>
+        <ActionContainer>
+          <PlanningProgress />
+        </ActionContainer>
+        <ActionContainer>
           <DownloadLink>
             <Button>
               <Download />
@@ -80,10 +96,10 @@ const Navbar = () => {
               <Settings />
             </Button>
           </MyNavLink>
-        </StyledLinkContainer>
+        </ActionContainer>
         <MobileNavbar />
       </StyledToolbar>
-    </AppBar>
+    </StyledAppbar>
   );
 };
 

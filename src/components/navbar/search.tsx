@@ -9,7 +9,7 @@ const Search = () => {
   const dispatch = useAppDispatch();
   const searchText = useAppSelector((state) => state.data.searchText);
 
-  const [internSearchText, setInternSearchText] = useState<string>();
+  const [internSearchText, setInternSearchText] = useState<string>("");
   const handleChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
@@ -25,8 +25,15 @@ const Search = () => {
     } else dispatch(setSearchText({ text: e.target.value as string }));
   };
 
+  // const StyledSearch = styled(TextField)(({ theme }) => ({
+  //   backgroundColor: theme.palette.secondary.light,
+  // }));
+
   return (
     <TextField
+      color={"secondary"}
+      size={"small"}
+      fullWidth
       onChange={handleChange}
       value={internSearchText}
       label="Suche"

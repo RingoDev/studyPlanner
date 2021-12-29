@@ -32,9 +32,9 @@ const ListContainer = styled("div")(({ theme }) => ({
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.text.secondary,
-  backgroundColor: theme.palette.primary.light,
+  backgroundColor: theme.palette.secondary.light,
   ":hover": {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.main,
   },
 }));
 

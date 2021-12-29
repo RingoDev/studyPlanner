@@ -4,7 +4,6 @@ import ListItemText from "@mui/material/ListItemText";
 import KusssLink from "./kusssLink";
 import Course from "../../../types/types";
 import ConstraintIndicator from "./constraintIndicator";
-import CourseStateOption from "./courseStateOption";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import HighlightSearchText from "../HighlightSearch";
@@ -38,12 +37,7 @@ const CourseItem = ({ course, isInStorage }: Props) => {
             course.sign + " - " + course.title
           )}
         </ListItemText>
-        {isInStorage ? null : (
-          <>
-            <ConstraintIndicator course={course} />
-            <CourseStateOption course={course} />
-          </>
-        )}
+        {isInStorage ? null : <ConstraintIndicator course={course} />}
       </StyledListItem>
     </Box>
   );

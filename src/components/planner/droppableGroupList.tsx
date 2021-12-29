@@ -6,13 +6,14 @@ import { Droppable } from "react-beautiful-dnd";
 import { STORAGE } from "../../types/dndTypes";
 import { styled } from "@mui/material/styles";
 import { useAppSelector } from "../../redux/hooks";
+import { groupMatchesSearch } from "../../redux/data/data.reducer";
 
 interface Props {
   id: string;
   groups: Group[];
 }
 
-const StyledList = styled(List)(({ theme }) => ({
+const StyledList = styled(List)(() => ({
   padding: "0 0rem",
   height: "100%",
   overflowY: "auto",
@@ -22,7 +23,7 @@ const StyledList = styled(List)(({ theme }) => ({
     borderRadius: "1em",
   },
   "&::-webkit-scrollbar-thumb": {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: "#aaaaaa",
     borderRadius: "1em",
   },
 }));
@@ -38,9 +39,9 @@ const DroppableGroupList = ({ groups, id }: Props) => {
           disablePadding
           {...provided.droppableProps}
         >
-          {groups.map((g, index) => (
-            <>
-              {g.matches(searchText) ? (
+          {groups.map((g, index) => {
+            if (groupMatchesSearch(g, searchText))
+              return (
                 <DraggableGroupItem
                   containerId={STORAGE}
                   key={g.id}
@@ -48,9 +49,9 @@ const DroppableGroupList = ({ groups, id }: Props) => {
                   index={index}
                   level={0}
                 />
-              ) : null}
-            </>
-          ))}
+              );
+            return null;
+          })}
           {provided.placeholder}
         </StyledList>
       )}

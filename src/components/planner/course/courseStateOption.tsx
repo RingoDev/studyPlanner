@@ -9,7 +9,7 @@ const CourseStateOption = ({ course }: { course: Course }) => {
   const GradeBox = styled("div")(({ theme }) => ({
     width: "24px",
     height: "24px",
-    border: "2px solid " + theme.palette.primary.main,
+    border: "2px solid " + theme.palette.secondary.main,
     borderRadius: "4px",
     display: "flex",
     justifyContent: "center",
@@ -19,7 +19,7 @@ const CourseStateOption = ({ course }: { course: Course }) => {
     backgroundColor:
       course.grade === 0 || course.grade === undefined
         ? "#ffffff00"
-        : theme.palette.primary.main,
+        : theme.palette.secondary.main,
   }));
 
   const dispatch = useAppDispatch();
@@ -67,12 +67,12 @@ const CourseStateOption = ({ course }: { course: Course }) => {
             alignItems: "center",
             backgroundColor:
               course.grade === n || (course.grade === undefined && n === 0)
-                ? theme.palette.primary.light
+                ? theme.palette.secondary.light
                 : "none",
             ":hover": {
               backgroundColor:
                 course.grade === n || (course.grade === undefined && n === 0)
-                  ? theme.palette.primary.main
+                  ? theme.palette.secondary.main
                   : "rgba(0, 0, 0, 0.04)",
             },
           }));

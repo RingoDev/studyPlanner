@@ -1,5 +1,11 @@
 import { AnyAction, createReducer } from "@reduxjs/toolkit";
-import Course, { CurriculumType, Group, SemesterType } from "../../types/types";
+import Course, {
+  CompositeGroup,
+  CourseGroup,
+  CurriculumType,
+  Group,
+  SemesterType,
+} from "../../types/types";
 import {
   addSemester,
   hideConstraintIndicators,
@@ -697,16 +703,11 @@ function configGroupsToGroups(groups: InitialGroupType[]): Group[] {
 
   for (let group of groups) {
     if ("courses" in group) {
-      const courses = getCoursesFromGroups([group]);
       allGroups.push({
         ...group,
         type: COURSE_GROUP,
-        courses: courses,
+        courses: getCoursesFromGroups([group]),
         color: group.color,
-        matches: (search) => {
-          if (group.title.search(search) !== -1) return true;
-          return courses.some((c) => c.matches(search));
-        },
       });
     } else if ("groups" in group) {
       const myGroups = configGroupsToGroups(group.groups);
@@ -715,14 +716,38 @@ function configGroupsToGroups(groups: InitialGroupType[]): Group[] {
         type: COMPOSITE_GROUP,
         groups: myGroups,
         color: group.color,
-        matches: (search) => {
-          if (group.title.search(search) !== -1) return true;
-          return myGroups.some((g) => g.matches(search));
-        },
       });
     }
   }
   return allGroups;
+}
+
+export function courseMatchesSearch(course: Course, search: string) {
+  if (search.trim().length === 0) return true;
+  if (course.sign.search(search) !== -1) return true;
+  return course.title.search(search) !== -1;
+}
+
+export function groupMatchesSearch(group: Group, search: string) {
+  if (search.trim().length === 0) return true;
+  if (group.type === COURSE_GROUP)
+    return courseGroupMatchesSearch(group, search);
+  else return compositeGroupMatchesSearch(group, search);
+}
+
+function courseGroupMatchesSearch(group: CourseGroup, search: string) {
+  if (group.title.search(search) !== -1) return true;
+  return getCoursesFromGroups([group]).some((c) =>
+    courseMatchesSearch(c, search)
+  );
+}
+
+function compositeGroupMatchesSearch(
+  group: CompositeGroup,
+  search: string
+): boolean {
+  if (group.title.search(search) !== -1) return true;
+  return group.groups.some((g) => groupMatchesSearch(g, search));
 }
 
 function allowedBeforeSteopFinished(courseId: string): boolean {

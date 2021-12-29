@@ -33,6 +33,7 @@ const SemesterWrapper = styled("div")(() => ({
 const StyledButton = styled(Button)(() => ({
   flexBasis: "50%",
   height: "100%",
+  borderRadius: "1rem",
 }));
 
 const Curriculum = () => {
@@ -47,10 +48,7 @@ const Curriculum = () => {
         </SemesterWrapper>
       ))}
       <SemesterWrapper>
-        <StyledButton
-          sx={{ borderRadius: "1rem" }}
-          onClick={() => dispatch(addSemester({}))}
-        >
+        <StyledButton onClick={() => dispatch(addSemester({}))}>
           Semester hinzufügen
         </StyledButton>
       </SemesterWrapper>

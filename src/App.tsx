@@ -7,6 +7,7 @@ import Settings from "./components/general/settings";
 import { styled } from "@mui/material/styles";
 
 const StyledApp = styled("div")(({ theme }) => ({
+  overflowY: "auto",
   height: "100%",
   background: theme.palette.secondary.dark,
 }));
