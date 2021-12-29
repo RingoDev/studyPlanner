@@ -4,7 +4,6 @@ import { useAppSelector } from "../../redux/hooks";
 import ProgressSemester from "./progressSemester";
 import { Box, Tab, Tabs } from "@mui/material";
 import { getSemesterName } from "../../redux/data/data.reducer";
-import { Link } from "react-router-dom";
 
 const SemesterWrapper = styled("div")(() => ({
   flexBasis: "50%",
@@ -76,7 +75,7 @@ const ProgressPage = () => {
         centered
         scrollButtons="auto"
       >
-        <Tab component={Link} to={"#tab-0"} label={"Übersicht"} />
+        <Tab component={"a"} href={"#tab-0"} label={"Übersicht"} />
         {curriculum.semesters.map((s, index) => {
           return (
             <Tab
@@ -94,7 +93,7 @@ const ProgressPage = () => {
           <ProgressSemester />
         </SemesterWrapper>
         {curriculum.semesters.map((s, index) => (
-          <SemesterWrapper id={`tab-${index + 1}`} key={index}>
+          <SemesterWrapper id={`tab-${index + 1}`} key={index + 1}>
             <ProgressSemester index={index} />
           </SemesterWrapper>
         ))}
