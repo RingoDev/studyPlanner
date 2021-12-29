@@ -62,7 +62,6 @@ export interface DataGroup {
 
 export interface SemesterType {
   courses: Course[];
-  dropColor?: string;
   customEcts: number;
 }
 

@@ -6,7 +6,7 @@ import { Droppable } from "react-beautiful-dnd";
 import { STORAGE } from "../../types/dndTypes";
 import { styled } from "@mui/material/styles";
 import { useAppSelector } from "../../redux/hooks";
-import { groupMatchesSearch } from "../../redux/data/data.reducer";
+import { groupMatchesSearch } from "../../lib/search";
 
 interface Props {
   id: string;

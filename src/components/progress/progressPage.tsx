@@ -4,6 +4,7 @@ import { useAppSelector } from "../../redux/hooks";
 import ProgressSemester from "./progressSemester";
 import { Box, Tab, Tabs } from "@mui/material";
 import { getSemesterName } from "../../redux/data/data.reducer";
+import { Link } from "react-router-dom";
 
 const SemesterWrapper = styled("div")(() => ({
   flexBasis: "50%",
@@ -14,7 +15,9 @@ const SemesterWrapper = styled("div")(() => ({
   justifyContent: "center",
   alignItems: "center",
   flexGrow: 1,
-  // overflow: "auto",
+  scrollSnapAlign: "start",
+  overflowY: "auto",
+  overscrollBehaviorY: "contain",
   "> *": {
     flexGrow: 1,
   },
@@ -28,8 +31,36 @@ const StyledTabs = styled(Tabs)(() => ({
   },
 }));
 
+const StyledSection = styled("section")(() => ({
+  overflow: "auto hidden",
+  overscrollBehaviorX: "contain",
+  scrollSnapType: "x mandatory",
+  blockSize: "100%",
+  display: "grid",
+  gridAutoFlow: "column",
+  gridAutoColumns: "100%",
+  height: "calc(100% - 48px)",
+
+  "@media (prefers-reduced-motion: no-preference)": {
+    scrollBehavior: "smooth",
+  },
+
+  "@media (hover: none)": {
+    scrollbarWidth: "none",
+  },
+
+  "&::-webkit-scrollbar": {
+    width: 0,
+    height: 0,
+  },
+}));
+
 const ProgressPage = () => {
   const curriculum = useAppSelector((state) => state.data.curriculum);
+
+  const startSemesterIndex = useAppSelector(
+    (state) => state.data.startSemesterIndex
+  );
 
   const [value, setValue] = React.useState<number>(0);
 
@@ -37,40 +68,37 @@ const ProgressPage = () => {
     setValue(newValue);
   };
 
-  const startSemesterIndex = useAppSelector(
-    (state) => state.data.startSemesterIndex
-  );
-
   return (
     <Box sx={{ height: "100%" }}>
       <StyledTabs
-        centered
-        value={value}
         onChange={handleChange}
-        variant="scrollable"
+        value={value}
+        centered
         scrollButtons="auto"
       >
-        <Tab label={"Übersicht"} />
+        <Tab component={Link} to={"#tab-0"} label={"Übersicht"} />
         {curriculum.semesters.map((s, index) => {
-          return <Tab label={getSemesterName(index, startSemesterIndex)} />;
+          return (
+            <Tab
+              component={"a"}
+              href={`#tab-${index + 1}`}
+              key={index}
+              label={getSemesterName(index, startSemesterIndex)}
+            />
+          );
         })}
       </StyledTabs>
 
-      {value === 0 ? (
-        <SemesterWrapper>
+      <StyledSection>
+        <SemesterWrapper id={"tab-0"}>
           <ProgressSemester />
         </SemesterWrapper>
-      ) : (
-        curriculum.semesters.map((s, index) => {
-          if (index + 1 === value)
-            return (
-              <SemesterWrapper key={index}>
-                <ProgressSemester index={index} />
-              </SemesterWrapper>
-            );
-          else return null;
-        })
-      )}
+        {curriculum.semesters.map((s, index) => (
+          <SemesterWrapper id={`tab-${index + 1}`} key={index}>
+            <ProgressSemester index={index} />
+          </SemesterWrapper>
+        ))}
+      </StyledSection>
     </Box>
   );
 };

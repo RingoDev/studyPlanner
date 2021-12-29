@@ -1,7 +1,6 @@
 import React from "react";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import KusssLink from "./kusssLink";
 import Course from "../../../types/types";
 import ConstraintIndicator from "./constraintIndicator";
 import { Box } from "@mui/material";
@@ -26,16 +25,10 @@ const CourseItem = ({ course, isInStorage }: Props) => {
     <Box sx={{ padding: "0 0.5rem 0.375rem 0.5rem" }}>
       <StyledListItem>
         <ListItemText>
-          {course.kusssId !== "" ? (
-            <KusssLink id={course.kusssId}>
-              <HighlightSearchText
-                searchText={searchText}
-                text={course.sign + " - " + course.title}
-              />
-            </KusssLink>
-          ) : (
-            course.sign + " - " + course.title
-          )}
+          <HighlightSearchText
+            searchText={searchText}
+            text={course.sign + " - " + course.title}
+          />
         </ListItemText>
         {isInStorage ? null : <ConstraintIndicator course={course} />}
       </StyledListItem>
