@@ -58,7 +58,7 @@ const GroupItem = ({ group, level }: Props) => {
   const maxEcts =
     xOutOfYConstraints.find((c) => c.group === group.id)?.maxEcts || allEcts;
 
-  // console.log("all ects: " + allEcts + " for group: " + groupWithSameId?.title)
+  // console.log(`all ects: ${allEcts} for group: ${groupWithSameId?.title}`)
   // console.log("max ects: " + maxEcts + " for group: " + groupWithSameId?.title)
   // console.log("unbooked ects: " + unbookedEcts + " for group: " + groupWithSameId?.title)
 

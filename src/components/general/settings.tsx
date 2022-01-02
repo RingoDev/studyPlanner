@@ -104,7 +104,7 @@ const Settings = () => {
             >
               {examples.map((e, index) => (
                 <MenuItem key={index} value={index}>
-                  {e.name + " - " + e.startsWith}
+                  {`${e.name} - ${e.startsWith}`}
                 </MenuItem>
               ))}
               <MenuItem value={-1}>Selbst zusammenstellen</MenuItem>

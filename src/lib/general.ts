@@ -23,7 +23,7 @@ export function getCourseById(
       }
     }
   }
-  console.warn("Could not find course with id: " + id);
+  console.warn(`Could not find course with id: ${id}`);
 }
 
 export function configGroupsToGroups(groups: InitialGroupType[]): Group[] {

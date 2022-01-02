@@ -44,7 +44,7 @@ export function checkDependencyConstraints(
         severity: "LOW",
         reason: [
           "Es wird empfohlen folgende Kurse im selben oder einem früheren Semester zu belegen:",
-          ...violatingDependencies.map((c) => c.sign + " - " + c.title),
+          ...violatingDependencies.map((c) => `${c.sign} -  ${c.title}`),
         ],
       });
     }
@@ -117,13 +117,20 @@ export function checkSteopConstraints(
         severity: "HIGH",
         reason: [
           "Kann nicht belegt werden, da folgende StEOP Kurse nicht vor diesem Semester abgeschlossen sind:",
-          ...violatingSteopCourses.map((c) => c.sign + " - " + c.title),
+          ...violatingSteopCourses.map((c) => `${c.sign} -  ${c.title}`),
         ],
       });
     }
   }
 }
 
+/**
+ * Returns true if the semesterSign at the specified index is possible with the start semester configuration
+ *
+ * @param startSemester
+ * @param semesterSign
+ * @param index
+ */
 function checkSemesterConstraint(
   startSemester: "WS" | "SS",
   semesterSign: "WS" | "SS",
@@ -141,21 +148,14 @@ function checkSemesterConstraint(
     );
 }
 
-function getSemesterConstraint(courseId: string): "SS" | "WS" | undefined {
-  // todo don't use global variables like initialConfig
-  let courseSemesterSign: "SS" | "WS" | undefined =
-    initialConfig.constraints.semesterConstraints.WS.find(
-      (id) => id === courseId
-    )
-      ? "WS"
-      : undefined;
-  if (!courseSemesterSign)
-    courseSemesterSign = initialConfig.constraints.semesterConstraints.SS.find(
-      (id) => id === courseId
-    )
-      ? "SS"
-      : undefined;
-  return courseSemesterSign;
+function getSemesterConstraint(
+  courseId: string,
+  config: typeof initialConfig
+): "SS" | "WS" | undefined {
+  if (config.constraints.semesterConstraints.WS.find((id) => id === courseId))
+    return "WS";
+  if (config.constraints.semesterConstraints.SS.find((id) => id === courseId))
+    return "SS";
 }
 
 export function checkSemesterConstraints(
@@ -163,20 +163,22 @@ export function checkSemesterConstraints(
   course: Course,
   semesterIndex: number
 ) {
-  const courseSemesterSign = getSemesterConstraint(course.id);
-  if (courseSemesterSign) {
-    if (
-      !checkSemesterConstraint(
-        state.startSemester,
-        courseSemesterSign,
-        semesterIndex
-      )
-    ) {
-      course.violations.push({
-        severity: "HIGH",
-        reason: "Wird nur im " + courseSemesterSign + " angeboten",
-      });
-    }
+  const courseSemesterSign = getSemesterConstraint(
+    course.id,
+    state.initialConfig
+  );
+  if (
+    courseSemesterSign &&
+    !checkSemesterConstraint(
+      state.startSemester,
+      courseSemesterSign,
+      semesterIndex
+    )
+  ) {
+    course.violations.push({
+      severity: "HIGH",
+      reason: `Wird nur im ${courseSemesterSign} angeboten`,
+    });
   }
 }
 
@@ -213,13 +215,7 @@ export function checkXOutOfYConstraints(state: INITIAL_STATE_TYPE) {
           indices[1]
         ].violations.push({
           severity: "HIGH",
-          reason:
-            "Es können nur " +
-            maxEcts +
-            " ECTs " +
-            " der Gruppe " +
-            group.title +
-            " belegt werden.",
+          reason: `Es können nur ${maxEcts} ECTs der Gruppe ${group.title} belegt werden.`,
         });
       }
     }

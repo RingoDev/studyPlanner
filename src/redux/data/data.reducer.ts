@@ -60,15 +60,14 @@ const selectSemesterList: string[] = Array.from(
   Array(selectOptions).keys()
 ).map((n) =>
   n % 2 === 0
-    ? "WS" + (startYear + n / 2) + "/" + (startYear - 1999 + n / 2)
-    : "SS" + (startYear + 1 + Math.floor(n / 2))
+    ? `WS${startYear + n / 2}/${startYear - 1999 + n / 2}`
+    : `SS${startYear + 1 + Math.floor(n / 2)}`
 );
 
 export function getSemesterName(index: number, startSemesterIndex: number) {
   const n = index + startSemesterIndex;
-  if (n % 2 === 0) return "WS" + (startYear + n / 2);
-  //+ "/" + (startYear - 1999 + n / 2)
-  else return "SS" + (startYear + 1 + Math.floor(n / 2));
+  if (n % 2 === 0) return `WS${startYear + n / 2}`;
+  else return `SS${startYear + 1 + Math.floor(n / 2)}`;
 }
 
 const getCurrentSemester = () => {
@@ -89,12 +88,6 @@ const initialState: INITIAL_STATE_TYPE = {
   storage: configGroupsToGroups(initialConfig.groups),
   curriculum: {
     semesters: [],
-    //     Array.from([0, 1, 2, 3, 4, 5]).map((a) => ({
-    //   number: a,
-    //   id: "00" + a,
-    //   courses: [],
-    //   customEcts: 0,
-    // })),
   },
   lastChosenExample: -1,
   searchText: "",
@@ -119,14 +112,7 @@ const courseReducer = createReducer(initialState, (builder) => {
         // remove whole curriculum and put all into storage
         // todo load saved custom configuration
         state.storage = configGroupsToGroups(state.initialConfig.groups);
-        state.curriculum = {
-          semesters: Array.from([0, 1, 2, 3, 4, 5]).map((a) => ({
-            number: a,
-            id: "00" + a,
-            courses: [],
-            customEcts: 0,
-          })),
-        };
+        state.curriculum.semesters = [];
         return;
       }
 
@@ -195,24 +181,9 @@ const courseReducer = createReducer(initialState, (builder) => {
           );
         }
       }
-
-      // move all courses to their correct place
-
-      // state.storage = removeCoursesFromGroupList(state.storage, state.initialConfig.examples[payload.exampleIndex].curriculum.flatMap(s => s.courses))
-      // state.curriculum = {
-      //     semesters: state.initialConfig.examples[payload.exampleIndex].curriculum.map(item => {
-      //         const courses: Course[] = []
-      //         for (let course of item.courses.map(id => getCourseById(id, state.initialConfig.groups))) {
-      //             if (course !== undefined) courses.push(course)
-      //         }
-      //         return {
-      //             courses: courses,
-      //             customEcts: item.customECTs
-      //         }
-      //     })
-      // }
     })
     .addCase(moveCourse, (state, { payload }) => {
+      // todo if a constraint is violated we should display a toast
       if (isGroupId(payload.sourceId) && isStorageId(payload.destinationId)) {
         // moving Course from storage to storage
         // do nothing
@@ -263,12 +234,7 @@ const courseReducer = createReducer(initialState, (builder) => {
         );
       }
       console.debug(
-        "Successfully moved curse with id " +
-          payload.courseId +
-          " from list " +
-          payload.sourceId +
-          " to " +
-          payload.destinationId
+        `Successfully moved curse with id ${payload.courseId} from list ${payload.sourceId} to ${payload.destinationId}`
       );
     })
     .addCase(moveGroup, (state, { payload }) => {
@@ -301,11 +267,18 @@ const courseReducer = createReducer(initialState, (builder) => {
       }
 
       // we found a xOutOfYConstraint
+
       // move only courses to the curriculum until constraint is at its limit or violated
-      // todo added courses ects should not start at 0 but rather at the current ectscount f courses of this gruop in the curriculum
+
+      // todo if no course was moved we should display a toast why no course ws moved
+      const currentlyBookedEctsForGroup = state.curriculum.semesters
+        .flatMap((s) => s.courses)
+        .filter((c) => c.id.startsWith(constraint.group))
+        .map((c) => c.ects)
+        .reduce((e1, e2) => e1 + e2, 0);
       const maxEcts = constraint.maxEcts;
       for (
-        let i = 0, addedCoursesEcts = 0;
+        let i = 0, addedCoursesEcts = currentlyBookedEctsForGroup;
         i < courses.length && addedCoursesEcts < maxEcts;
         i++, addedCoursesEcts += courses[i].ects
       ) {

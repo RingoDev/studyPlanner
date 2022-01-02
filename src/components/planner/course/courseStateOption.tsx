@@ -9,7 +9,7 @@ const CourseStateOption = ({ course }: { course: Course }) => {
   const GradeBox = styled("div")(({ theme }) => ({
     width: "24px",
     height: "24px",
-    border: "2px solid " + theme.palette.secondary.main,
+    border: `2px solid ${theme.palette.secondary.main}`,
     borderRadius: "4px",
     display: "flex",
     justifyContent: "center",
