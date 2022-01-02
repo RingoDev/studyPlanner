@@ -1,21 +1,21 @@
 import {
   ADD_SEMESTER,
   CHECK_COURSE_CONSTRAINTS,
-  HIDE_CONSTRAINT_INDICATORS,
+  LOAD_SAVED_CURRICULUM,
   MOVE_COURSE,
   MOVE_GROUP,
   REMOVE_SEMESTER,
   SET_APPLICATION_STATE,
-  SET_COURSE_FINISHED,
   SET_COURSE_GRADE,
-  SET_COURSE_UNFINISHED,
   SET_CUSTOM_STUDIES,
   SET_EXAMPLE_CURRICULUM,
   SET_SEARCH_TEXT,
   SET_START_SEMESTER,
-  SHOW_CONSTRAINT_INDICATORS,
+  SET_UPLOADED_CURRICULUM,
 } from "./data.types";
-import { createAction } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { get } from "idb-keyval";
+import { SavedCurriculum } from "../../lib/storeAndLoad";
 import initialConfig from "../../data";
 import { CurriculumType } from "../../types/types";
 
@@ -35,15 +35,6 @@ export const addSemester = createAction<{}>(ADD_SEMESTER);
 export const removeSemester =
   createAction<{ semesterIndex: number }>(REMOVE_SEMESTER);
 
-export const showConstraintIndicators = createAction<{
-  sourceId: string;
-  courseId: string;
-  sourceIndex: number;
-}>(SHOW_CONSTRAINT_INDICATORS);
-export const hideConstraintIndicators = createAction<{}>(
-  HIDE_CONSTRAINT_INDICATORS
-);
-
 export const setCustomStudies =
   createAction<{ semesterIndex: number; ects: number }>(SET_CUSTOM_STUDIES);
 export const checkCourseConstraints = createAction<{}>(
@@ -52,11 +43,6 @@ export const checkCourseConstraints = createAction<{}>(
 export const setStartSemester =
   createAction<{ startSemesterIndex: number }>(SET_START_SEMESTER);
 
-export const setCourseFinished =
-  createAction<{ courseId: string }>(SET_COURSE_FINISHED);
-export const setCourseUnfinished = createAction<{ courseId: string }>(
-  SET_COURSE_UNFINISHED
-);
 export const setCourseGrade =
   createAction<{ courseId: string; grade: 0 | 1 | 2 | 3 | 4 }>(
     SET_COURSE_GRADE
@@ -71,6 +57,21 @@ export const setApplicationState = createAction<{
   curriculum: CurriculumType;
 }>(SET_APPLICATION_STATE);
 
+export const setUploadedCurriculum = createAction<{
+  curriculum: SavedCurriculum;
+}>(SET_UPLOADED_CURRICULUM);
+
 export const setSearchText = createAction<{
   text: string;
 }>(SET_SEARCH_TEXT);
+
+export const loadSavedCurriculum = createAsyncThunk(
+  LOAD_SAVED_CURRICULUM,
+  async () => {
+    return await new Promise<SavedCurriculum>((res, rej) => {
+      get<string>("curriculum").then((c) =>
+        c === undefined ? rej() : res(JSON.parse(c) as SavedCurriculum)
+      );
+    });
+  }
+);

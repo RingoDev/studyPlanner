@@ -21,9 +21,7 @@ const StorageContainer = styled("div")(() => ({
 }));
 
 const PseudoStorage = styled("div")(() => ({
-  border: "outline 4px dashed #cccccc",
   position: "absolute",
-  // top: "-1.5rem",
   top: 0,
   left: 0,
   height: "100%",

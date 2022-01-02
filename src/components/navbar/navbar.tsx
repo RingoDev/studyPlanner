@@ -11,7 +11,7 @@ import UploadButton from "../general/uploadButton";
 import React from "react";
 import { styled } from "@mui/material/styles";
 import DownloadPDFLink from "./downloadPDFLink";
-import DownloadLink from "./downloadLink";
+import DownloadButton from "./downloadButton";
 import MobileNavbar from "./mobileNavbar";
 import Search from "./search";
 import PlanningProgress from "./planningProgress";
@@ -41,7 +41,7 @@ const ActionContainer = styled("div")(({ theme }) => ({
   },
 }));
 
-const StyledSearchContainer = styled(ActionContainer)(({ theme }) => ({
+const StyledSearchContainer = styled(ActionContainer)(({}) => ({
   minWidth: "30rem",
 }));
 
@@ -72,11 +72,11 @@ const Navbar = () => {
           <PlanningProgress />
         </ActionContainer>
         <ActionContainer>
-          <DownloadLink>
+          <DownloadButton>
             <Button>
               <Download />
             </Button>
-          </DownloadLink>
+          </DownloadButton>
           <UploadButton>
             <Upload />
           </UploadButton>

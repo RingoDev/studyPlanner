@@ -20,7 +20,7 @@ const CurriculumContainer = styled("div")(() => ({
 const SemesterWrapper = styled("div")(() => ({
   flexBasis: "50%",
   minHeight: "20rem",
-  padding: "1rem",
+  padding: "0 1rem 2rem 1rem",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",

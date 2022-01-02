@@ -9,7 +9,7 @@ interface Props {
 const FinishedDoughnut = ({ semesterIndex }: Props) => {
   const curriculum = useAppSelector((state) => state.data.curriculum);
   const generateData = (): ChartData<"doughnut", number[], string> => {
-    const labels: string[] = [];
+    const labels: string[] = ["Abgeschlossen", "Offen"];
     const data: number[] = [];
     const backgroundColor: string[] = [];
     // const borderColor: string[] = [];
@@ -45,7 +45,6 @@ const FinishedDoughnut = ({ semesterIndex }: Props) => {
     }
 
     if (data.every((n) => n === 0)) {
-      console.log("all are 0");
       return {
         labels: [],
         datasets: [
@@ -75,6 +74,9 @@ const FinishedDoughnut = ({ semesterIndex }: Props) => {
 
   const chartOptions: ChartOptions<"doughnut"> = {
     // maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { boxWidth: 20, color: "#dddddd" } },
+    },
   };
 
   return <Doughnut options={chartOptions} data={generateData} />;

@@ -11,11 +11,11 @@ const MainContainer = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
-  height: "90vh",
+  height: "100%",
   maxWidth: "1636px",
   margin: "auto",
   [theme.breakpoints.up("md")]: {
-    padding: "5vh 2rem",
+    padding: "2rem",
   },
 }));
 
@@ -24,7 +24,7 @@ const StorageWrapper = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
     display: "block",
     flex: "1 1 20%",
-    padding: "1rem",
+    padding: "0 1r",
   },
 }));
 

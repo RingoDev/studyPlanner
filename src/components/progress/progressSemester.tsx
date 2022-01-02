@@ -10,9 +10,6 @@ const SemesterContainer = styled("div")(({ theme }) => ({
   flexDirection: "column",
   background: theme.palette.secondary.light,
   borderRadius: "1rem",
-  [theme.breakpoints.up("md")]: {
-    padding: "3rem 1rem 1rem 1rem",
-  },
 }));
 
 const ListContainer = styled("div")(({ theme }) => ({
@@ -25,7 +22,7 @@ const ListContainer = styled("div")(({ theme }) => ({
 }));
 
 const CurriculumWrapper = styled("div")(({ theme }) => ({
-  padding: "2rem",
+  padding: "0 2rem",
   height: "100%",
   flex: "1 1 100%",
 

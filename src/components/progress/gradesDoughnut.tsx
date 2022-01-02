@@ -14,7 +14,7 @@ const GradesDoughnut = ({ semesterIndex }: Props) => {
     number[],
     string
   > => {
-    const labels: string[] = [];
+    const labels: string[] = ["Sehr gut", "Gut", "Befriedigend", "Genügend"];
     const data: number[] = [0, 0, 0, 0];
     const backgroundColor: string[] = [];
 
@@ -59,6 +59,9 @@ const GradesDoughnut = ({ semesterIndex }: Props) => {
 
   const chartOptions: ChartOptions<"doughnut"> = {
     // maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { boxWidth: 20, color: "#dddddd" } },
+    },
   };
 
   return <Doughnut options={chartOptions} data={gradesWeightedByEctsData} />;

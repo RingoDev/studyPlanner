@@ -16,7 +16,7 @@ const CourseList = ({ semesterIndex }: Props) => {
   );
 
   return (
-    <Box sx={{ border: "2px solid #cccccc" }}>
+    <Box>
       <List disablePadding sx={{ paddingTop: "0.5rem" }}>
         {courses.map((c) => (
           <ProgressCourseItem key={c.id} course={c} />

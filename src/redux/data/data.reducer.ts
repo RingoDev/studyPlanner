@@ -2,6 +2,7 @@ import { AnyAction, createReducer } from "@reduxjs/toolkit";
 import { CurriculumType, Group } from "../../types/types";
 import {
   addSemester,
+  loadSavedCurriculum,
   moveCourse,
   moveGroup,
   removeSemester,
@@ -11,20 +12,15 @@ import {
   setExampleCurriculum,
   setSearchText,
   setStartSemester,
-  showConstraintIndicators,
+  setUploadedCurriculum,
 } from "./data.actions";
 import initialConfig, {
   getCoursesFromGroups,
   getGroupWithIdFromGroups,
 } from "../../data";
 import {
-  createSaveObject,
-  loadSaveObject,
-  SavedCurriculum,
-} from "../../lib/saving";
-import {
   moveCourseFromCurriculumToStorage,
-  moveCourseFromStorageToCurriculum,
+  moveCourseFromGroupListToSemesterList,
 } from "../../lib/moveCourses";
 import {
   checkDependencyConstraints,
@@ -41,6 +37,8 @@ import {
   isStorageId,
   removeCoursesFromGroupList,
 } from "../../lib/general";
+import { set } from "idb-keyval";
+import { createSaveObject, setSavedCurriculum } from "../../lib/storeAndLoad";
 
 export interface INITIAL_STATE_TYPE {
   initialConfig: typeof initialConfig;
@@ -90,49 +88,27 @@ const initialState: INITIAL_STATE_TYPE = {
   currentSemesterIndex: getCurrentSemester(),
   storage: configGroupsToGroups(initialConfig.groups),
   curriculum: {
-    semesters: Array.from([0, 1, 2, 3, 4, 5]).map((a) => ({
-      number: a,
-      id: "00" + a,
-      courses: [],
-      customEcts: 0,
-    })),
+    semesters: [],
+    //     Array.from([0, 1, 2, 3, 4, 5]).map((a) => ({
+    //   number: a,
+    //   id: "00" + a,
+    //   courses: [],
+    //   customEcts: 0,
+    // })),
   },
   lastChosenExample: -1,
   searchText: "",
 };
-const storedData = localStorage.getItem("plan-temp");
-if (storedData !== null) {
-  console.log("Loading stored data");
-  const loadedData: SavedCurriculum = loadSaveObject(storedData);
-
-  for (let i = 0; i < loadedData.semester.length; i++) {
-    loop: for (let j = 0; j < loadedData.semester[i].courses.length; j++) {
-      // move course
-      const courseId = loadedData.semester[i].courses[j].id;
-      moveCourseFromStorageToCurriculum(
-        initialState.curriculum,
-        initialState.storage,
-        getGroupIdOfCourseId(courseId),
-        courseId,
-        i,
-        j
-      );
-      // set grade
-      for (let semester of initialState.curriculum.semesters) {
-        for (let course of semester.courses) {
-          if (course.id === courseId) {
-            course.grade = loadedData.semester[i].courses[j].grade;
-            continue loop;
-          }
-        }
-      }
-    }
-  }
-}
-
 // checking Course Constraints after most actions
 const checkCourseConstraintsMatcher = (action: AnyAction) =>
-  !setCustomStudies.match(action) && !showConstraintIndicators.match(action);
+  !setCustomStudies.match(action);
+
+const saveCurriculumMatcher = (action: AnyAction) =>
+  setCourseGrade.match(action) ||
+  moveCourse.match(action) ||
+  moveGroup.match(action) ||
+  removeSemester.match(action) ||
+  setCustomStudies.match(action);
 
 const courseReducer = createReducer(initialState, (builder) => {
   builder
@@ -209,8 +185,8 @@ const courseReducer = createReducer(initialState, (builder) => {
           const courseId =
             state.initialConfig.examples[payload.exampleIndex].curriculum[i]
               .courses[j];
-          moveCourseFromStorageToCurriculum(
-            state.curriculum,
+          moveCourseFromGroupListToSemesterList(
+            state.curriculum.semesters,
             state.storage,
             getGroupIdOfCourseId(courseId),
             courseId,
@@ -269,8 +245,8 @@ const courseReducer = createReducer(initialState, (builder) => {
         isGroupId(payload.sourceId) &&
         isSemesterId(payload.destinationId)
       ) {
-        moveCourseFromStorageToCurriculum(
-          state.curriculum,
+        moveCourseFromGroupListToSemesterList(
+          state.curriculum.semesters,
           state.storage,
           payload.sourceId,
           payload.courseId,
@@ -312,8 +288,8 @@ const courseReducer = createReducer(initialState, (builder) => {
 
       if (constraint === undefined) {
         for (let id of courses.map((c) => c.id)) {
-          moveCourseFromStorageToCurriculum(
-            state.curriculum,
+          moveCourseFromGroupListToSemesterList(
+            state.curriculum.semesters,
             state.storage,
             getGroupIdOfCourseId(id),
             id,
@@ -333,8 +309,8 @@ const courseReducer = createReducer(initialState, (builder) => {
         i < courses.length && addedCoursesEcts < maxEcts;
         i++, addedCoursesEcts += courses[i].ects
       ) {
-        moveCourseFromStorageToCurriculum(
-          state.curriculum,
+        moveCourseFromGroupListToSemesterList(
+          state.curriculum.semesters,
           state.storage,
           getGroupIdOfCourseId(courses[i].id),
           courses[i].id,
@@ -392,16 +368,26 @@ const courseReducer = createReducer(initialState, (builder) => {
       );
       state.curriculum = payload.curriculum;
     })
+    .addCase(setUploadedCurriculum, (state, { payload }) => {
+      setSavedCurriculum(state, payload.curriculum);
+    })
+    .addCase(loadSavedCurriculum.fulfilled, (state, { payload }) => {
+      setSavedCurriculum(state, payload);
+    })
     .addMatcher(
       () => true,
       (state, action) => {
         console.log(action);
-        localStorage.setItem("plan-temp", createSaveObject(state.curriculum));
       }
     )
-    .addMatcher(checkCourseConstraintsMatcher, (state, { payload }) => {
-      // TODO save to localstorage
+    .addMatcher(saveCurriculumMatcher, (state, { payload }) => {
+      const stringToSave = createSaveObject(state.curriculum);
 
+      set("curriculum", stringToSave).catch((err) =>
+        console.error("Saving to IndexedDB storage failed", err)
+      );
+    })
+    .addMatcher(checkCourseConstraintsMatcher, (state, { payload }) => {
       for (let i = 0; i < state.curriculum.semesters.length; i++) {
         for (let course of state.curriculum.semesters[i].courses) {
           course.violations = [];

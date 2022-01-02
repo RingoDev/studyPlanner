@@ -1,12 +1,4 @@
-import {
-  BarChart2,
-  Calendar,
-  Download,
-  FileText,
-  Menu,
-  Settings,
-  Upload,
-} from "lucide-react";
+import { BarChart2, Calendar, FileText, Menu, Settings } from "lucide-react";
 import {
   Box,
   Button,
@@ -20,15 +12,12 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
-import { NavLink, Redirect } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { useFilePicker } from "use-file-picker";
-import { CurriculumType } from "../../types/types";
-import { setApplicationState } from "../../redux/data/data.actions";
+import { NavLink } from "react-router-dom";
 import DownloadPDFLink from "./downloadPDFLink";
-import DownloadLink from "./downloadLink";
+import DownloadButton from "./downloadButton";
+import UploadButton from "../general/uploadButton";
 
-const MyNavLink = styled(NavLink)(({ theme }) => ({
+const StyledNavLink = styled(NavLink)(({ theme }) => ({
   textDecoration: "none",
   "&.active > *": {
     backgroundColor: theme.palette.secondary.light,
@@ -47,39 +36,19 @@ const MobileMenuButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const StyledLinkWrapper = styled("a")(({ theme }) => ({
+const StyledActionWrapper = styled("div")(({ theme }) => ({
   textDecoration: "none",
-  "&.active > *": {
-    backgroundColor: theme.palette.secondary.light,
-  },
   "*": {
     textDecoration: "none",
     color: theme.palette.primary.main,
-    textTransform: "uppercase",
+    textTransform: "upperse",
   },
 }));
 
 const MobileNavbar = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
-  const initialConfig = useAppSelector((state) => state.data.initialConfig);
-  const dispatch = useAppDispatch();
-
-  const [openFileSelector, { filesContent, clear }] = useFilePicker({
-    accept: ".jku",
-  });
-
-  if (filesContent !== undefined) {
-    filesContent.forEach((file) => {
-      clear();
-      const upload = JSON.parse(file.content) as {
-        config: typeof initialConfig;
-        curriculum: CurriculumType;
-      };
-      dispatch(setApplicationState(upload));
-      return <Redirect to={"/plan"} />;
-    });
-  }
+  // todo this needs refactoring, very confusing -> go from links to buttons that activate links
 
   return (
     <>
@@ -98,52 +67,40 @@ const MobileNavbar = () => {
           onKeyDown={() => setMenuOpen(false)}
         >
           <List>
-            <MyNavLink to={"/plan"}>
+            <StyledNavLink to={"/plan"}>
               <ListItem button color={"primary"}>
                 <ListItemIcon>
                   <Calendar />
                 </ListItemIcon>
                 <ListItemText>Planung</ListItemText>
               </ListItem>
-            </MyNavLink>
-            <MyNavLink to={"/progress"}>
+            </StyledNavLink>
+            <StyledNavLink to={"/progress"}>
               <ListItem button>
                 <ListItemIcon>
                   <BarChart2 />
                 </ListItemIcon>
                 <ListItemText>Übersicht</ListItemText>
               </ListItem>
-            </MyNavLink>
-            <MyNavLink to={"/settings"}>
+            </StyledNavLink>
+            <StyledNavLink to={"/settings"}>
               <ListItem button>
                 <ListItemIcon>
                   <Settings />
                 </ListItemIcon>
                 <ListItemText>Einstellungen</ListItemText>
               </ListItem>
-            </MyNavLink>
+            </StyledNavLink>
           </List>
           <Divider />
           <List>
-            <StyledLinkWrapper>
-              <DownloadLink>
-                <ListItem button>
-                  <ListItemIcon>
-                    <Download />
-                  </ListItemIcon>
-                  <ListItemText>Export</ListItemText>
-                </ListItem>
-              </DownloadLink>
-            </StyledLinkWrapper>
-            <StyledLinkWrapper>
-              <ListItem button onClick={openFileSelector}>
-                <ListItemIcon>
-                  <Upload />
-                </ListItemIcon>
-                <ListItemText>Import</ListItemText>
-              </ListItem>
-            </StyledLinkWrapper>
-            <StyledLinkWrapper>
+            <StyledActionWrapper>
+              <DownloadButton isMobile />
+            </StyledActionWrapper>
+            <StyledActionWrapper>
+              <UploadButton isMobile />
+            </StyledActionWrapper>
+            <StyledActionWrapper>
               <DownloadPDFLink
                 loadingComponent={
                   <ListItem button>
@@ -161,7 +118,7 @@ const MobileNavbar = () => {
                   <ListItemText>Download PDF</ListItemText>
                 </ListItem>
               </DownloadPDFLink>
-            </StyledLinkWrapper>
+            </StyledActionWrapper>
           </List>
         </Box>
       </Drawer>
