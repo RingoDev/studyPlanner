@@ -3,6 +3,7 @@ export const MOVE_GROUP = "MOVE_GROUP";
 
 export const ADD_SEMESTER = "ADD_SEMESTER";
 export const REMOVE_SEMESTER = "REMOVE_SEMESTER";
+export const RESET_CURRICULUM = "RESET_CURRICULUM";
 
 export const SET_START_SEMESTER = "SET_START_SEMESTER";
 

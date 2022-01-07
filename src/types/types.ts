@@ -61,6 +61,7 @@ export interface DataGroup {
 }
 
 export interface SemesterType {
+  name: string;
   courses: Course[];
   customEcts: number;
 }

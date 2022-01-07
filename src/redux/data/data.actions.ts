@@ -5,6 +5,7 @@ import {
   MOVE_COURSE,
   MOVE_GROUP,
   REMOVE_SEMESTER,
+  RESET_CURRICULUM,
   SET_APPLICATION_STATE,
   SET_COURSE_GRADE,
   SET_CUSTOM_STUDIES,
@@ -34,6 +35,8 @@ export const moveGroup = createAction<{
 export const addSemester = createAction<{}>(ADD_SEMESTER);
 export const removeSemester =
   createAction<{ semesterIndex: number }>(REMOVE_SEMESTER);
+
+export const resetCurriculum = createAction<{}>(RESET_CURRICULUM);
 
 export const setCustomStudies =
   createAction<{ semesterIndex: number; ects: number }>(SET_CUSTOM_STUDIES);

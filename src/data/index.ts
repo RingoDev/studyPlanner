@@ -102,22 +102,22 @@ const initialConfig: InitialConfig = {
   examples: [
     {
       startsWith: "WS",
-      name: "Studienplan Vollzeit",
+      name: "Studienplan Vollzeit WS",
       curriculum: WS6S,
     },
     {
       startsWith: "SS",
-      name: "Studienplan Vollzeit",
+      name: "Studienplan Vollzeit SS",
       curriculum: SS6S,
     },
     {
       startsWith: "WS",
-      name: "Studienplan Berufsbegleitend",
+      name: "Studienplan Berufsbegleitend WS",
       curriculum: WS9S,
     },
     {
       startsWith: "SS",
-      name: "Studienplan Berufsbegleitend",
+      name: "Studienplan Berufsbegleitend SS",
       curriculum: SS9S,
     },
   ],

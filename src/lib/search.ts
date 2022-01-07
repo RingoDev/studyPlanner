@@ -1,11 +1,11 @@
 import Course, { CompositeGroup, CourseGroup, Group } from "../types/types";
 import { COURSE_GROUP } from "../types/dndTypes";
 import { getCoursesFromGroups } from "../data";
+import { getCourseDisplayTitle } from "./general";
 
 export function courseMatchesSearch(course: Course, search: string) {
   if (search.trim().length === 0) return true;
-  if (course.sign.search(search) !== -1) return true;
-  return course.title.search(search) !== -1;
+  if (getCourseDisplayTitle(course).search(search) !== -1) return true;
 }
 
 export function groupMatchesSearch(group: Group, search: string) {

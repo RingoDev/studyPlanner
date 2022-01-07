@@ -6,6 +6,7 @@ import {
   moveCourse,
   moveGroup,
   removeSemester,
+  resetCurriculum,
   setApplicationState,
   setCourseGrade,
   setCustomStudies,
@@ -38,7 +39,11 @@ import {
   removeCoursesFromGroupList,
 } from "../../lib/general";
 import { set } from "idb-keyval";
-import { createSaveObject, setSavedCurriculum } from "../../lib/storeAndLoad";
+import {
+  createSaveObject,
+  SavedCurriculum,
+  setSavedCurriculum,
+} from "../../lib/storeAndLoad";
 
 export interface INITIAL_STATE_TYPE {
   initialConfig: typeof initialConfig;
@@ -101,7 +106,8 @@ const saveCurriculumMatcher = (action: AnyAction) =>
   moveCourse.match(action) ||
   moveGroup.match(action) ||
   removeSemester.match(action) ||
-  setCustomStudies.match(action);
+  setCustomStudies.match(action) ||
+  resetCurriculum.match(action);
 
 const courseReducer = createReducer(initialState, (builder) => {
   builder
@@ -131,56 +137,20 @@ const courseReducer = createReducer(initialState, (builder) => {
           state.startSemester = "WS";
         }
       }
-      // move all courses to storage
-      for (let i = 0; i < state.curriculum.semesters.length; i++) {
-        for (let course of state.curriculum.semesters[i].courses) {
-          moveCourseFromCurriculumToStorage(
-            state.curriculum,
-            state.storage,
-            getGroupIdOfCourseId(course.id),
-            course.id,
-            i
-          );
-        }
-      }
 
-      // initialize semesters to right length and custom ects
-      state.curriculum.semesters = state.initialConfig.examples[
-        payload.exampleIndex
-      ].curriculum.map((sem) => ({
-        customEcts: sem.customECTs,
-        courses: [],
-      }));
+      const transformedCurriculum: SavedCurriculum = {
+        version: "0.0.2",
+        semester: state.initialConfig.examples[
+          payload.exampleIndex
+        ].curriculum.map((s) => ({
+          customEcts: s.customEcts,
+          courses: s.courses.map((c) => ({
+            id: c,
+          })),
+        })),
+      };
 
-      // state.curriculum.semesters =
-      // state.initialConfig.examples[payload.exampleIndex].curriculum.length
-
-      for (
-        let i = 0;
-        i <
-        state.initialConfig.examples[payload.exampleIndex].curriculum.length;
-        i++
-      ) {
-        for (
-          let j = 0;
-          j <
-          state.initialConfig.examples[payload.exampleIndex].curriculum[i]
-            .courses.length;
-          j++
-        ) {
-          const courseId =
-            state.initialConfig.examples[payload.exampleIndex].curriculum[i]
-              .courses[j];
-          moveCourseFromGroupListToSemesterList(
-            state.curriculum.semesters,
-            state.storage,
-            getGroupIdOfCourseId(courseId),
-            courseId,
-            i,
-            j
-          );
-        }
-      }
+      setSavedCurriculum(state, transformedCurriculum);
     })
     .addCase(moveCourse, (state, { payload }) => {
       // todo if a constraint is violated we should display a toast
@@ -293,7 +263,14 @@ const courseReducer = createReducer(initialState, (builder) => {
       }
     })
     .addCase(addSemester, (state) => {
-      state.curriculum.semesters.push({ courses: [], customEcts: 0 });
+      state.curriculum.semesters.push({
+        name: getSemesterName(
+          state.curriculum.semesters.length,
+          state.startSemesterIndex
+        ),
+        courses: [],
+        customEcts: 0,
+      });
     })
 
     .addCase(setSearchText, (state, { payload }) => {
@@ -313,10 +290,25 @@ const courseReducer = createReducer(initialState, (builder) => {
         );
       }
       state.curriculum.semesters.splice(payload.semesterIndex, 1);
+
+      // reset semester names
+      for (let i = 0; i < state.curriculum.semesters.length; i++) {
+        state.curriculum.semesters[i].name = getSemesterName(
+          i,
+          state.startSemesterIndex
+        );
+      }
     })
     .addCase(setStartSemester, (state, { payload }) => {
       state.startSemesterIndex = payload.startSemesterIndex;
       state.startSemester = payload.startSemesterIndex % 2 === 0 ? "WS" : "SS";
+
+      for (let i = 0; i < state.curriculum.semesters.length; i++) {
+        state.curriculum.semesters[i].name = getSemesterName(
+          i,
+          payload.startSemesterIndex
+        );
+      }
     })
 
     .addCase(setCustomStudies, (state, { payload }) => {
@@ -346,6 +338,10 @@ const courseReducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadSavedCurriculum.fulfilled, (state, { payload }) => {
       setSavedCurriculum(state, payload);
+    })
+    .addCase(resetCurriculum, (state) => {
+      state.storage = configGroupsToGroups(state.initialConfig.groups);
+      state.curriculum.semesters = [];
     })
     .addMatcher(
       () => true,

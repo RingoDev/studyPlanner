@@ -1,7 +1,10 @@
 import { CurriculumType, Grade } from "../types/types";
 import { configGroupsToGroups, getGroupIdOfCourseId } from "./general";
 import { moveCourseFromGroupListToSemesterList } from "./moveCourses";
-import { INITIAL_STATE_TYPE } from "../redux/data/data.reducer";
+import {
+  getSemesterName,
+  INITIAL_STATE_TYPE,
+} from "../redux/data/data.reducer";
 
 export interface SavedCurriculum {
   version: string;
@@ -43,6 +46,7 @@ export function setSavedCurriculum(
   // move all the specified courses from storage to curriculum
   for (let i = 0; i < curriculum.semester.length; i++) {
     state.curriculum.semesters.push({
+      name: getSemesterName(i, state.startSemesterIndex),
       courses: [],
       customEcts: curriculum.semester[i].customEcts,
     });

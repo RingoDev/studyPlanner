@@ -1,6 +1,6 @@
 [
   {
-    "customECTs": 0,
+    "customEcts": 0,
     "courses": [
       "001-001",
       "001-002",
@@ -12,7 +12,7 @@
     ]
   },
   {
-    "customECTs": 0,
+    "customEcts": 0,
     "courses": [
       "012-001",
       "012-002",
@@ -24,7 +24,7 @@
     ]
   },
   {
-    "customECTs": 0,
+    "customEcts": 0,
     "courses": [
       "005-001",
       "005-002",
@@ -36,7 +36,7 @@
     ]
   },
   {
-    "customECTs": 3,
+    "customEcts": 3,
     "courses": [
       "015-001",
       "015-002",
@@ -47,7 +47,7 @@
     ]
   },
   {
-    "customECTs": 3,
+    "customEcts": 3,
     "courses": [
       "017-001",
       "017-002",
@@ -58,19 +58,19 @@
     ]
   },
   {
-    "customECTs": 3,
+    "customEcts": 3,
     "courses": ["018-001", "018-002", "021-001", "023-001", "023-002"]
   },
   {
-    "customECTs": 0,
+    "customEcts": 0,
     "courses": ["024-001", "024-002", "022-003", "013-002", "027-001"]
   },
   {
-    "customECTs": 0,
+    "customEcts": 0,
     "courses": ["007-001", "025-002", "025-001", "022-001", "019-001"]
   },
   {
-    "customECTs": 0,
+    "customEcts": 0,
     "courses": ["028-001-003", "026-001"]
   }
 ]

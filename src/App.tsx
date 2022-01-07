@@ -1,9 +1,9 @@
 import { Redirect, Route, Switch } from "react-router-dom";
 import Planner from "./components/planner/planner";
-import ProgressPage from "./components/progress/progressPage";
+import Progress from "./components/progress/progress";
 import React, { useEffect } from "react";
-import Navbar from "./components/navbar/navbar";
-import Settings from "./components/general/settings";
+import Navbar from "./components/navigation/navbar";
+import Settings from "./components/settings/settings";
 import { styled } from "@mui/material/styles";
 import { useAppDispatch } from "./redux/hooks";
 import { loadSavedCurriculum } from "./redux/data/data.actions";
@@ -28,7 +28,7 @@ const App = () => {
             <Redirect to="/plan" />
           </Route>
           <Route path={"/progress"}>
-            <ProgressPage />
+            <Progress />
           </Route>
           <Route path={"/plan"}>
             <Planner />

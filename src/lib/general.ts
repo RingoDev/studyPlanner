@@ -91,6 +91,12 @@ export function getGroupIdOfCourseId(id: string) {
   return id.slice(0, id.length - 4);
 }
 
+export function getCourseDisplayTitle(course: Course) {
+  return course.sign.trim().length === 0
+    ? course.title
+    : `${course.sign} - ${course.title}`;
+}
+
 export function isSemesterId(id: string) {
   return id.startsWith("sem") && !isNaN(Number(id.slice(3)));
 }
