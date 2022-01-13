@@ -1,4 +1,4 @@
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route } from "react-router-dom";
 import Planner from "./components/planner/planner";
 import Progress from "./components/progress/progress";
 import React, { useEffect } from "react";
@@ -7,36 +7,37 @@ import Settings from "./components/settings/settings";
 import { styled } from "@mui/material/styles";
 import { useAppDispatch } from "./redux/hooks";
 import { loadSavedCurriculum } from "./redux/data/data.actions";
+import Page from "./page";
 
 const StyledApp = styled("div")(({ theme }) => ({
   overflowY: "auto",
   height: "100%",
-  background: theme.palette.secondary.dark,
+  position: "relative",
+  background: theme.palette.secondary.dark
 }));
+
+const routes = [
+  { path: "/plan", name: "Plan", Component: Planner },
+  { path: "/progress", name: "Progress", Component: Progress },
+  { path: "/settings", name: "Settings", Component: Settings }
+];
 
 const App = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(loadSavedCurriculum());
   });
+
   return (
     <>
       <Navbar />
       <StyledApp>
-        <Switch>
-          <Route exact path="/">
-            <Redirect to="/plan" />
-          </Route>
-          <Route path={"/progress"}>
-            <Progress />
-          </Route>
-          <Route path={"/plan"}>
-            <Planner />
-          </Route>
-          <Route path={"/settings"}>
-            <Settings />
-          </Route>
-        </Switch>
+        {routes.map(({ path, Component }) => (
+          <Route key={path} exact path={path}>
+            {({ match }) => {
+              return <Page match={match} Component={Component} />;
+            }}</Route>
+        ))}
       </StyledApp>
     </>
   );

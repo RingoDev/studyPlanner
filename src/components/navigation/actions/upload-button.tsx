@@ -5,7 +5,7 @@ import { CurriculumType } from "../../../types/types";
 import initialConfig from "../../../data";
 import {
   setApplicationState,
-  setUploadedCurriculum,
+  setUploadedCurriculum
 } from "../../../redux/data/data.actions";
 import { SavedCurriculum } from "../../../lib/storeAndLoad";
 import { Upload } from "lucide-react";
@@ -19,16 +19,10 @@ const UploadButton = ({ onClose }: Props) => {
   const ref = useRef<HTMLInputElement>(null);
 
   const openFileSelector = () => {
-    console.log(ref.current);
     ref.current?.click();
-    console.log("clicked ref");
-    if (onClose) {
-      onClose();
-    }
   };
 
   const handleChange = (ev: ChangeEvent<HTMLInputElement>) => {
-    console.log("input was clicked", ev);
     if (ev.target.files === null || ev.target.files.length < 1) return;
     ev.target.files[0]
       .text()
@@ -36,6 +30,9 @@ const UploadButton = ({ onClose }: Props) => {
         parseCurriculum(file);
         //  reset file input
         ev.target.value = "";
+        if (onClose) {
+          onClose();
+        }
       })
       .catch((reason) =>
         console.error(`Couldn't upload file due to ${reason}`)
@@ -47,7 +44,7 @@ const UploadButton = ({ onClose }: Props) => {
     console.log(filesContent);
     const upload = JSON.parse(filesContent);
     if ("version" in upload) {
-      console.log(`setting curriculum with version: ${upload.version}`);
+      // console.log(`setting curriculum with version: ${upload.version}`);
       switch (upload.version) {
         case "0.0.1": {
           dispatch(
@@ -80,6 +77,7 @@ const UploadButton = ({ onClose }: Props) => {
         ref={ref}
         type={"file"}
         accept={".jku"}
+        onClick={console.log}
         onChange={handleChange}
         style={{ display: "none" }}
       />

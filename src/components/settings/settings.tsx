@@ -29,7 +29,7 @@ const SettingsContainer = styled("div")(({ theme }) => ({
       alignItems: "center",
       padding: 0,
     },
-    borderRadius: "2rem",
+    borderRadius: "1rem",
     "> div > *": {
       padding: "0.5rem",
     },

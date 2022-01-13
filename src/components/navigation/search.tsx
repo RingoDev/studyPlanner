@@ -1,45 +1,36 @@
 import { TextField } from "@mui/material";
-import React, { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import React, { useEffect, useState } from "react";
+import { useAppDispatch } from "../../redux/hooks";
 import { setSearchText } from "../../redux/data/data.actions";
 
-const useBetterPerformanceSearch = false;
-
 const Search = () => {
-  const dispatch = useAppDispatch();
-  const searchText = useAppSelector((state) => state.data.searchText);
+    const dispatch = useAppDispatch();
 
-  const [internSearchText, setInternSearchText] = useState<string>("");
-  const handleChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
-    setInternSearchText(e.target.value as string);
+    const [internalText, setInternalText] = useState<string>("");
 
-    if (useBetterPerformanceSearch) {
-      if ((e.target.value as string).trim().length >= 3) {
-        dispatch(setSearchText({ text: e.target.value as string }));
-      } else if (searchText.length !== 0) {
-        // if global search text is already empty -> don't set
-        dispatch(setSearchText({ text: "" }));
-      }
-    } else dispatch(setSearchText({ text: e.target.value as string }));
-  };
+    // sets the global search text if the user is not typing for 250ms
+    useEffect(() => {
+      const timeoutId = setTimeout(() => {
+        console.log(`I can see you're not typing. I can set the global search text now!`);
+        dispatch(setSearchText({ text: internalText }));
+      }, 250);
+      return () => clearTimeout(timeoutId);
+    });
 
-  // const StyledSearch = styled(TextField)(({ theme }) => ({
-  //   backgroundColor: theme.palette.secondary.light,
-  // }));
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setInternalText(e.target.value as string);
 
-  return (
-    <TextField
-      color={"secondary"}
-      size={"small"}
-      fullWidth
-      onChange={handleChange}
-      value={internSearchText}
-      label="Suche"
-      variant="filled"
-    />
-  );
-};
+    return (
+      <TextField
+        color={"secondary"}
+        size={"small"}
+        fullWidth
+        onChange={handleChange}
+        value={internalText}
+        label="Suche"
+        variant="filled"
+      />
+    );
+  }
+;
 
 export default Search;
