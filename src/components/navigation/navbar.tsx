@@ -6,6 +6,10 @@ import Search from "./search";
 import ActionMenu from "./action-menu";
 import NavLink from "./nav-link";
 import { BarChart2, Calendar, Settings } from "lucide-react";
+import DeleteButton from "./actions/delete-button";
+import DownloadButton from "./actions/download-button";
+import UploadButton from "./actions/upload-button";
+import PdfDownloadButton from "./actions/pdf-download-button";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: "space-between",
@@ -37,10 +41,12 @@ const StyledAppbar = styled(AppBar)(({ theme }) => ({
 }));
 
 const links = [
-  { to: "/", text: "Planung", Icon: Calendar },
+  { to: "/plan", text: "Planung", Icon: Calendar },
   { to: "/progress", text: "Übersicht", Icon: BarChart2 },
   { to: "/settings", text: "Optionen", Icon: Settings },
 ];
+
+const actions = [DeleteButton, DownloadButton, UploadButton, PdfDownloadButton];
 
 const Navbar = () => {
   return (
@@ -56,9 +62,9 @@ const Navbar = () => {
           <StyledSearchContainer>
             <Search />
           </StyledSearchContainer>
-          <ActionMenu />
+          <ActionMenu actions={actions} />
         </ActionContainer>
-        <NavbarMobile links={links} />
+        <NavbarMobile actions={actions} links={links} />
       </StyledToolbar>
     </StyledAppbar>
   );

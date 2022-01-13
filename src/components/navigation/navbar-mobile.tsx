@@ -2,10 +2,6 @@ import { LucideProps, Menu } from "lucide-react";
 import { Button, Divider, Drawer, List } from "@mui/material";
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
-import DownloadButton from "./actions/download-button";
-import UploadButton from "./actions/upload-button";
-import PdfDownloadButton from "./actions/pdf-download-button";
-import DeleteButton from "./actions/delete-button";
 import NavLinkMobile from "./nav-link-mobile";
 
 const MobileMenuButton = styled(Button)(({ theme }) => ({
@@ -35,9 +31,14 @@ interface Props {
     text: string;
     Icon: (props: LucideProps) => JSX.Element;
   }[];
+  actions: ((props: ButtonProps) => JSX.Element)[];
 }
 
-const NavbarMobile = ({ links }: Props) => {
+interface ButtonProps {
+  onClose?: () => void;
+}
+
+const NavbarMobile = ({ links, actions }: Props) => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   return (
@@ -57,24 +58,14 @@ const NavbarMobile = ({ links }: Props) => {
           onKeyDown={() => setMenuOpen(false)}
         >
           {links.map(({ to, text, Icon }) => (
-            <NavLinkMobile to={to} text={text} icon={<Icon />} />
+            <NavLinkMobile key={to} to={to} text={text} icon={<Icon />} />
           ))}
           <Divider />
-          <StyledActionWrapper>
-            <DeleteButton />
-          </StyledActionWrapper>
-
-          <StyledActionWrapper>
-            <DownloadButton />
-          </StyledActionWrapper>
-
-          <StyledActionWrapper>
-            <UploadButton />
-          </StyledActionWrapper>
-
-          <StyledActionWrapper>
-            <PdfDownloadButton />
-          </StyledActionWrapper>
+          {actions.map((Action, index) => (
+            <StyledActionWrapper key={index}>
+              <Action />
+            </StyledActionWrapper>
+          ))}
         </List>
       </Drawer>
     </>

@@ -11,6 +11,7 @@ const MarkedSearchText: React.FC<Props> = ({ text, searchText }) => {
   }
   const regex = new RegExp(`(${searchText})`, "gi");
   const parts = text.split(regex);
+
   return (
     <span>
       {parts

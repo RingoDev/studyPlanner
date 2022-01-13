@@ -5,7 +5,10 @@ import { getCourseDisplayTitle } from "./general";
 
 export function courseMatchesSearch(course: Course, search: string) {
   if (search.trim().length === 0) return true;
-  if (getCourseDisplayTitle(course).search(search) !== -1) return true;
+  if (
+    getCourseDisplayTitle(course).search(new RegExp(`(${search})`, "gi")) !== -1
+  )
+    return true;
 }
 
 export function groupMatchesSearch(group: Group, search: string) {
@@ -16,7 +19,7 @@ export function groupMatchesSearch(group: Group, search: string) {
 }
 
 function courseGroupMatchesSearch(group: CourseGroup, search: string) {
-  if (group.title.search(search) !== -1) return true;
+  if (group.title.search(new RegExp(`(${search})`, "gi")) !== -1) return true;
   return getCoursesFromGroups([group]).some((c) =>
     courseMatchesSearch(c, search)
   );
@@ -26,6 +29,6 @@ function compositeGroupMatchesSearch(
   group: CompositeGroup,
   search: string
 ): boolean {
-  if (group.title.search(search) !== -1) return true;
+  if (group.title.search(new RegExp(`(${search})`, "gi")) !== -1) return true;
   return group.groups.some((g) => groupMatchesSearch(g, search));
 }

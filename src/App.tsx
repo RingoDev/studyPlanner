@@ -1,4 +1,4 @@
-import { Route } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import Planner from "./components/planner/planner";
 import Progress from "./components/progress/progress";
 import React, { useEffect } from "react";
@@ -17,7 +17,7 @@ const StyledApp = styled("div")(({ theme }) => ({
 }));
 
 const routes = [
-  { path: "/", name: "Plan", Component: Planner },
+  { path: "/plan", name: "Plan", Component: Planner },
   { path: "/progress", name: "Progress", Component: Progress },
   { path: "/settings", name: "Settings", Component: Settings },
 ];
@@ -39,6 +39,9 @@ const App = () => {
             }}
           </Route>
         ))}
+        <Route exact path={"/"}>
+          <Redirect to={"/progress"} />
+        </Route>
       </StyledApp>
     </>
   );

@@ -1,10 +1,6 @@
 import { MoreVertical } from "lucide-react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import React, { useRef, useState } from "react";
-import DeleteButton from "./actions/delete-button";
-import DownloadButton from "./actions/download-button";
-import UploadButton from "./actions/upload-button";
-import PdfDownloadButton from "./actions/pdf-download-button";
 import { styled } from "@mui/material/styles";
 
 const ActionItem = styled(MenuItem)(() => ({
@@ -20,7 +16,15 @@ const ActionItem = styled(MenuItem)(() => ({
   },
 }));
 
-const ActionMenu = () => {
+interface ButtonProps {
+  onClose?: () => void;
+}
+
+interface Props {
+  actions: ((props: ButtonProps) => JSX.Element)[];
+}
+
+const ActionMenu = ({ actions }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const ref = useRef(null);
 
@@ -31,13 +35,6 @@ const ActionMenu = () => {
   const handleClick = () => {
     setOpen(!open);
   };
-
-  const actions = [
-    <DeleteButton onClose={handleClose} />,
-    <DownloadButton onClose={handleClose} />,
-    <UploadButton onClose={handleClose} />,
-    <PdfDownloadButton onClose={handleClose} />,
-  ];
 
   return (
     <>
@@ -50,8 +47,10 @@ const ActionMenu = () => {
         <MoreVertical />
       </IconButton>
       <Menu anchorEl={ref.current} open={open} onClose={handleClose}>
-        {actions.map((action, index) => (
-          <ActionItem key={index}>{action}</ActionItem>
+        {actions.map((Action, index) => (
+          <ActionItem key={index}>
+            <Action onClose={handleClose} />
+          </ActionItem>
         ))}
       </Menu>
     </>
