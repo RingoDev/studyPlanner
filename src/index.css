@@ -1,50 +1,55 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html,
 body,
 #root {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
+mark {
+    background-color: unset;
+    font-weight: bolder;
+    text-decoration: underline;
+}
 
 .page-enter {
-  opacity: 0;
-  transform: scale(0.95);
+    opacity: 0;
+    transform: scale(0.95);
 }
 
 .page-enter-active {
-  opacity: 1;
-  transform: scale(1);
-  transition: opacity 200ms, transform 200ms;
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 200ms, transform 200ms;
 }
 
 .page-exit {
-  opacity: 1;
-  transform: scale(1);
+    opacity: 1;
+    transform: scale(1);
 }
 
 .page-exit-active {
-  opacity: 0;
-  transform: scale(0.95);
-  transition: opacity 200ms, transform 200ms;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 200ms, transform 200ms;
 }

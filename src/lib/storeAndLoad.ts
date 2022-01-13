@@ -19,7 +19,7 @@ export interface SavedCurriculum {
 
 export function createSaveObject(
   curriculum: CurriculumType,
-  version: string = "0.0.1"
+  version: string = "0.0.2"
 ): string {
   const toSave: SavedCurriculum = {
     version: version,

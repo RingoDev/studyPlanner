@@ -5,6 +5,7 @@ import NavbarMobile from "./navbar-mobile";
 import Search from "./search";
 import ActionMenu from "./action-menu";
 import NavLink from "./nav-link";
+import { BarChart2, Calendar, Settings } from "lucide-react";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: "space-between",
@@ -35,14 +36,20 @@ const StyledAppbar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
 }));
 
+const links = [
+  { to: "/", text: "Planung", Icon: Calendar },
+  { to: "/progress", text: "Übersicht", Icon: BarChart2 },
+  { to: "/settings", text: "Optionen", Icon: Settings },
+];
+
 const Navbar = () => {
   return (
     <StyledAppbar position={"static"}>
       <StyledToolbar>
         <ActionContainer>
-          <NavLink to={"/plan"} text={"Planung"} />
-          <NavLink to={"/progress"} text={"Übersicht"} />
-          <NavLink to={"/settings"} text={"Optionen"} />
+          {links.map((l) => (
+            <NavLink key={l.to} to={l.to} text={l.text} />
+          ))}
         </ActionContainer>
 
         <ActionContainer>
@@ -51,8 +58,7 @@ const Navbar = () => {
           </StyledSearchContainer>
           <ActionMenu />
         </ActionContainer>
-
-        <NavbarMobile />
+        <NavbarMobile links={links} />
       </StyledToolbar>
     </StyledAppbar>
   );

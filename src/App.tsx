@@ -13,13 +13,13 @@ const StyledApp = styled("div")(({ theme }) => ({
   overflowY: "auto",
   height: "100%",
   position: "relative",
-  background: theme.palette.secondary.dark
+  background: theme.palette.secondary.dark,
 }));
 
 const routes = [
-  { path: "/plan", name: "Plan", Component: Planner },
+  { path: "/", name: "Plan", Component: Planner },
   { path: "/progress", name: "Progress", Component: Progress },
-  { path: "/settings", name: "Settings", Component: Settings }
+  { path: "/settings", name: "Settings", Component: Settings },
 ];
 
 const App = () => {
@@ -36,7 +36,8 @@ const App = () => {
           <Route key={path} exact path={path}>
             {({ match }) => {
               return <Page match={match} Component={Component} />;
-            }}</Route>
+            }}
+          </Route>
         ))}
       </StyledApp>
     </>

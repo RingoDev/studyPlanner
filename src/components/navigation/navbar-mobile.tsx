@@ -1,4 +1,4 @@
-import { BarChart2, Calendar, Menu, Settings } from "lucide-react";
+import { LucideProps, Menu } from "lucide-react";
 import { Button, Divider, Drawer, List } from "@mui/material";
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
@@ -29,7 +29,15 @@ const StyledActionWrapper = styled("div")(({ theme }) => ({
   },
 }));
 
-const NavbarMobile = () => {
+interface Props {
+  links: {
+    to: string;
+    text: string;
+    Icon: (props: LucideProps) => JSX.Element;
+  }[];
+}
+
+const NavbarMobile = ({ links }: Props) => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   return (
@@ -48,17 +56,9 @@ const NavbarMobile = () => {
           onClick={() => setMenuOpen(false)}
           onKeyDown={() => setMenuOpen(false)}
         >
-          <NavLinkMobile to={"/plan"} text={"Planung"} icon={<Calendar />} />
-          <NavLinkMobile
-            to={"/progress"}
-            text={"Übersicht"}
-            icon={<BarChart2 />}
-          />
-          <NavLinkMobile
-            to={"/settings"}
-            text={"Einstellungen"}
-            icon={<Settings />}
-          />
+          {links.map(({ to, text, Icon }) => (
+            <NavLinkMobile to={to} text={text} icon={<Icon />} />
+          ))}
           <Divider />
           <StyledActionWrapper>
             <DeleteButton />
