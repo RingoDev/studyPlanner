@@ -1,11 +1,24 @@
 import React from "react";
 import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
-import { CurriculumType } from "../../types/types";
-import { getCourseDisplayTitle } from "../../lib/general";
+import Course, { CurriculumType } from "../../types/types";
+import { PdfTableRow } from "./pdf-table-row";
 
 interface Props {
   curriculum: CurriculumType;
 }
+
+const getCustomEctsCourse = (ects: number): Course => {
+  return {
+    type: "course",
+    id: "",
+    title: "Freie Studienleistungen",
+    ects: ects,
+    sign: "",
+    violations: [],
+    color: "#cccccc",
+    kusssId: "",
+  };
+};
 
 // Create Document Component
 const PdfDocument = ({ curriculum }: Props) => {
@@ -36,47 +49,11 @@ const PdfDocument = ({ curriculum }: Props) => {
                   </View>
                 </View>
                 {semester.courses.map((course) => (
-                  <View key={course.id} style={tableStyles.tableRow}>
-                    <View
-                      style={{
-                        ...tableStyles.tableCell,
-                        ...tableStyles.description,
-                      }}
-                    >
-                      <Text style={tableStyles.text}>
-                        {getCourseDisplayTitle(course)}
-                      </Text>
-                    </View>
-                    <View style={{ ...tableStyles.tableCell }}>
-                      <Text style={tableStyles.text}>{course.ects}</Text>
-                    </View>
-                    <View style={tableStyles.tableCell}>
-                      <Text style={tableStyles.text}> </Text>
-                    </View>
-                  </View>
+                  <PdfTableRow key={course.id} course={course} />
                 ))}
-                {semester.customEcts !== 0 ? (
-                  <View key={semester.name} style={tableStyles.tableRow}>
-                    <View
-                      style={{
-                        ...tableStyles.tableCell,
-                        ...tableStyles.description,
-                      }}
-                    >
-                      <Text style={tableStyles.text}>
-                        Freie Studienleistungen
-                      </Text>
-                    </View>
-                    <View style={{ ...tableStyles.tableCell }}>
-                      <Text style={tableStyles.text}>
-                        {semester.customEcts}
-                      </Text>
-                    </View>
-                    <View style={tableStyles.tableCell}>
-                      <Text style={tableStyles.text}> </Text>
-                    </View>
-                  </View>
-                ) : null}
+                <PdfTableRow
+                  course={getCustomEctsCourse(semester.customEcts)}
+                />
               </View>
             </View>
           ))}
