@@ -47,6 +47,7 @@ import {
 
 export interface INITIAL_STATE_TYPE {
   initialConfig: typeof initialConfig;
+  dataLoaded: boolean;
   selectSemesterList: string[];
   startSemester: "WS" | "SS";
   startSemesterIndex: number;
@@ -86,6 +87,7 @@ const getCurrentSemester = () => {
 
 const initialState: INITIAL_STATE_TYPE = {
   initialConfig: initialConfig,
+  dataLoaded: false,
   selectSemesterList: selectSemesterList,
   startSemester: "WS",
   startSemesterIndex: monthOffset,
@@ -338,6 +340,10 @@ const courseReducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadSavedCurriculum.fulfilled, (state, { payload }) => {
       setSavedCurriculum(state, payload);
+      state.dataLoaded = true;
+    })
+    .addCase(loadSavedCurriculum.rejected, (state) => {
+      state.dataLoaded = true;
     })
     .addCase(resetCurriculum, (state) => {
       state.storage = configGroupsToGroups(state.initialConfig.groups);

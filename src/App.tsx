@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import Navbar from "./components/navigation/navbar";
 import Settings from "./components/settings/settings";
 import { styled } from "@mui/material/styles";
-import { useAppDispatch } from "./redux/hooks";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { loadSavedCurriculum } from "./redux/data/data.actions";
 import Page from "./page";
 
@@ -23,26 +23,37 @@ const routes = [
 ];
 
 const App = () => {
+  const dataLoaded = useAppSelector((state) => state.data.dataLoaded);
+
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(loadSavedCurriculum());
   });
 
+  if (dataLoaded) {
+    return (
+      <>
+        <Navbar />
+        <StyledApp>
+          {routes.map(({ path, Component }) => (
+            <Route key={path} exact path={path}>
+              {({ match }) => {
+                return <Page match={match} Component={Component} />;
+              }}
+            </Route>
+          ))}
+          <Route exact path={"/"}>
+            <Redirect to={"/progress"} />
+          </Route>
+        </StyledApp>
+      </>
+    );
+  }
+
   return (
     <>
       <Navbar />
-      <StyledApp>
-        {routes.map(({ path, Component }) => (
-          <Route key={path} exact path={path}>
-            {({ match }) => {
-              return <Page match={match} Component={Component} />;
-            }}
-          </Route>
-        ))}
-        <Route exact path={"/"}>
-          <Redirect to={"/progress"} />
-        </Route>
-      </StyledApp>
+      <StyledApp />
     </>
   );
 };

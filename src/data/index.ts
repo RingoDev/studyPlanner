@@ -2,8 +2,7 @@ import semesterConstraints from "./semesterConstraints.json";
 import steopConstraints from "./steopConstraints.json";
 import dependencyConstraints from "./dependencyConstraints.json";
 import xOutOfYConstraints from "./xOutOfYConstraints.json";
-import groups from "./groups.json";
-import competencies from "./competencies.json";
+import groups from "./curriculum.json";
 import WS6S from "./examples/WS6S.json";
 import WS9S from "./examples/WS9S.json";
 import SS6S from "./examples/SS6S.json";
@@ -73,7 +72,6 @@ export function getCoursesFromGroups(
 }
 
 interface InitialConfig {
-  competencies: typeof competencies;
   groups: InitialGroupType[];
   courses: Course[];
   constraints: {
@@ -90,7 +88,6 @@ interface InitialConfig {
 }
 
 const initialConfig: InitialConfig = {
-  competencies: competencies,
   groups: groups,
   courses: getCoursesFromGroups(groups),
   constraints: {
