@@ -170,7 +170,7 @@ export function checkSemesterConstraints(
   if (
     courseSemesterSign &&
     !checkSemesterConstraint(
-      state.startSemester,
+      state.startSemester.isWS ? "WS" : "SS",
       courseSemesterSign,
       semesterIndex
     )

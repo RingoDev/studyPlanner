@@ -1,5 +1,5 @@
 import { AnyAction, createReducer } from "@reduxjs/toolkit";
-import { CurriculumType, Group } from "../../types/types";
+import { CurriculumType, Group, SemesterInfo } from "../../types/types";
 import {
   addSemester,
   loadSavedCurriculum,
@@ -41,57 +41,63 @@ import {
 import { set } from "idb-keyval";
 import {
   createSaveObject,
-  SavedCurriculum,
+  SavedCurriculumV3,
   setSavedCurriculum,
 } from "../../lib/storeAndLoad";
 
 export interface INITIAL_STATE_TYPE {
   initialConfig: typeof initialConfig;
   dataLoaded: boolean;
-  selectSemesterList: string[];
-  startSemester: "WS" | "SS";
-  startSemesterIndex: number;
-  currentSemesterIndex: number;
+  selectSemesterList: SemesterInfo[];
+  startSemester: SemesterInfo;
   storage: Group[];
   curriculum: CurriculumType;
   lastChosenExample: number;
   searchText: string;
 }
 
-const yearOffset = 4;
-const monthOffset = yearOffset * 2;
-export const startYear = new Date().getFullYear() - yearOffset;
-const selectOptions = monthOffset + 12;
-const selectSemesterList: string[] = Array.from(
-  Array(selectOptions).keys()
-).map((n) =>
-  n % 2 === 0
-    ? `WS${startYear + n / 2}/${startYear - 1999 + n / 2}`
-    : `SS${startYear + 1 + Math.floor(n / 2)}`
-);
-
-export function getSemesterName(index: number, startSemesterIndex: number) {
-  const n = index + startSemesterIndex;
-  if (n % 2 === 0) return `WS${startYear + n / 2}`;
-  else return `SS${startYear + 1 + Math.floor(n / 2)}`;
-}
-
-const getCurrentSemester = () => {
-  if (new Date().getMonth() < 4) {
-    return monthOffset - 1;
-  } else if (new Date().getMonth() < 10) {
-    return monthOffset;
-  }
-  return monthOffset + 1;
+const getStartYear = () => {
+  const yearOffset = 4;
+  return new Date().getFullYear() - yearOffset;
 };
+
+const createSemesterList = () => {
+  const selectOptions = 16;
+  const startYear = getStartYear();
+
+  return Array.from(Array(selectOptions).keys()).map((n, index) => {
+    if (index % 2 === 0) {
+      return { isWS: true, year: startYear + index / 2 };
+    } else {
+      return { isWS: false, year: startYear + Math.floor(index / 2) };
+    }
+  });
+};
+
+export function getSemesterName(
+  index: number,
+  startSemesterInfo: SemesterInfo
+) {
+  if (index % 2 === 0) {
+    if (startSemesterInfo.isWS) {
+      return `WS${startSemesterInfo.year + index / 2}`;
+    } else {
+      return `SS${startSemesterInfo.year + index / 2}`;
+    }
+  } else {
+    if (startSemesterInfo.isWS) {
+      return `SS${startSemesterInfo.year + Math.floor(index / 2)}`;
+    } else {
+      return `WS${startSemesterInfo.year + Math.ceil(index / 2)}`;
+    }
+  }
+}
 
 const initialState: INITIAL_STATE_TYPE = {
   initialConfig: initialConfig,
   dataLoaded: false,
-  selectSemesterList: selectSemesterList,
-  startSemester: "WS",
-  startSemesterIndex: monthOffset,
-  currentSemesterIndex: getCurrentSemester(),
+  selectSemesterList: createSemesterList(),
+  startSemester: { isWS: true, year: getStartYear() },
   storage: configGroupsToGroups(initialConfig.groups),
   curriculum: {
     semesters: [],
@@ -124,24 +130,12 @@ const courseReducer = createReducer(initialState, (builder) => {
         return;
       }
 
-      // set start semester to correct semester type
-      if (
-        state.startSemester !==
-        state.initialConfig.examples[payload.exampleIndex].startsWith
-      ) {
-        if (state.startSemester === "WS") {
-          // shift higher
-          state.startSemesterIndex = state.startSemesterIndex + 1;
-          state.startSemester = "SS";
-        } else {
-          // shift lower
-          state.startSemesterIndex = state.startSemesterIndex - 1;
-          state.startSemester = "WS";
-        }
-      }
-
-      const transformedCurriculum: SavedCurriculum = {
-        version: "0.0.2",
+      const transformedCurriculum: SavedCurriculumV3 = {
+        version: "0.0.3",
+        startSemester: {
+          isWS: state.initialConfig.examples[payload.exampleIndex].startsWithWS,
+          year: state.startSemester.year,
+        },
         semester: state.initialConfig.examples[
           payload.exampleIndex
         ].curriculum.map((s) => ({
@@ -268,7 +262,7 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.curriculum.semesters.push({
         name: getSemesterName(
           state.curriculum.semesters.length,
-          state.startSemesterIndex
+          state.startSemester
         ),
         courses: [],
         customEcts: 0,
@@ -297,18 +291,16 @@ const courseReducer = createReducer(initialState, (builder) => {
       for (let i = 0; i < state.curriculum.semesters.length; i++) {
         state.curriculum.semesters[i].name = getSemesterName(
           i,
-          state.startSemesterIndex
+          state.startSemester
         );
       }
     })
     .addCase(setStartSemester, (state, { payload }) => {
-      state.startSemesterIndex = payload.startSemesterIndex;
-      state.startSemester = payload.startSemesterIndex % 2 === 0 ? "WS" : "SS";
-
+      state.startSemester = payload.startSemesterInfo;
       for (let i = 0; i < state.curriculum.semesters.length; i++) {
         state.curriculum.semesters[i].name = getSemesterName(
           i,
-          payload.startSemesterIndex
+          payload.startSemesterInfo
         );
       }
     })
@@ -356,7 +348,10 @@ const courseReducer = createReducer(initialState, (builder) => {
       }
     )
     .addMatcher(saveCurriculumMatcher, (state, { payload }) => {
-      const stringToSave = createSaveObject(state.curriculum);
+      const stringToSave = createSaveObject(
+        state.curriculum,
+        state.startSemester
+      );
 
       set("curriculum", stringToSave).catch((err) =>
         console.error("Saving to IndexedDB storage failed", err)

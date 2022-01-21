@@ -5,9 +5,9 @@ import { CurriculumType } from "../../../types/types";
 import initialConfig from "../../../data";
 import {
   setApplicationState,
-  setUploadedCurriculum
+  setUploadedCurriculum,
 } from "../../../redux/data/data.actions";
-import { SavedCurriculum } from "../../../lib/storeAndLoad";
+import { SavedCurriculum, SavedCurriculumV3 } from "../../../lib/storeAndLoad";
 import { Upload } from "lucide-react";
 
 interface Props {
@@ -59,7 +59,19 @@ const UploadButton = ({ onClose }: Props) => {
         }
         case "0.0.2": {
           dispatch(
-            setUploadedCurriculum({ curriculum: upload as SavedCurriculum })
+            setUploadedCurriculum({
+              curriculum: {
+                ...(upload as SavedCurriculum),
+                version: "0.0.3",
+                startSemester: { isWS: true, year: 2020 },
+              },
+            })
+          );
+          break;
+        }
+        case "0.0.3": {
+          dispatch(
+            setUploadedCurriculum({ curriculum: upload as SavedCurriculumV3 })
           );
           break;
         }

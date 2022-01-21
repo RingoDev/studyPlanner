@@ -10,12 +10,13 @@ interface Props {
 
 const DownloadButton = ({ onClose }: Props) => {
   const curriculum = useAppSelector((state) => state.data.curriculum);
+  const startSemester = useAppSelector((state) => state.data.startSemester);
 
   const clickDownloadLink = () => {
     const anchorElement = document.createElement("a");
     anchorElement.download = "curriculum.jku";
     const url = URL.createObjectURL(
-      new Blob([createSaveObject(curriculum, "0.0.2")])
+      new Blob([createSaveObject(curriculum, startSemester)])
     );
     anchorElement.href = url;
     anchorElement.click();

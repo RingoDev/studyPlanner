@@ -26,8 +26,11 @@ const SelectExamplePlan = () => {
           }}
         >
           {examples.map((e, index) => (
-            <MenuItem key={e.startsWith + "-" + e.name} value={index}>
-              {`${e.name} - ${e.startsWith}`}
+            <MenuItem
+              key={(e.startsWithWS ? "WS" : "SS") + "-" + e.name}
+              value={index}
+            >
+              {`${e.name} - ${e.startsWithWS ? "WS" : "SS"}`}
             </MenuItem>
           ))}
           <MenuItem value={-1}>Selbst zusammenstellen</MenuItem>

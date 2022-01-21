@@ -17,6 +17,11 @@ export default interface Course {
   grade?: Grade;
 }
 
+export interface SemesterInfo {
+  isWS: boolean;
+  year: number;
+}
+
 export interface Violation {
   severity: "HIGH" | "MEDIUM" | "LOW";
   reason: string[] | string;

@@ -5,29 +5,35 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 const SelectStartSemester = () => {
   const semesterList = useAppSelector((state) => state.data.selectSemesterList);
-  const startSemesterIndex = useAppSelector(
-    (state) => state.data.startSemesterIndex
-  );
+  const startSemester = useAppSelector((state) => state.data.startSemester);
 
   const dispatch = useAppDispatch();
+
+  const getIndexOfStartInList = () => {
+    const index = semesterList.findIndex(
+      (s) => s.year === startSemester.year && s.isWS === startSemester.isWS
+    );
+    if (index === -1) return 0;
+    return index;
+  };
 
   return (
     <Box>
       <Typography align={"center"}>Start des Studiums:</Typography>
       <FormControl>
         <Select
-          value={startSemesterIndex}
+          value={getIndexOfStartInList()}
           onChange={(e) =>
             dispatch(
               setStartSemester({
-                startSemesterIndex: e.target.value as number,
+                startSemesterInfo: semesterList[e.target.value as number],
               })
             )
           }
         >
           {semesterList.map((n, index) => (
-            <MenuItem key={n} value={index}>
-              {n}
+            <MenuItem key={(n.isWS ? "WS" : "SS") + n.year} value={index}>
+              {(n.isWS ? "WS" : "SS") + n.year}
             </MenuItem>
           ))}
         </Select>

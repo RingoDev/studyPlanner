@@ -1,10 +1,23 @@
-import { CurriculumType, Grade } from "../types/types";
+import { CurriculumType, Grade, SemesterInfo } from "../types/types";
 import { configGroupsToGroups, getGroupIdOfCourseId } from "./general";
 import { moveCourseFromGroupListToSemesterList } from "./moveCourses";
 import {
   getSemesterName,
   INITIAL_STATE_TYPE,
 } from "../redux/data/data.reducer";
+
+export interface SavedCurriculumV3 extends SavedCurriculum {
+  version: "0.0.3";
+
+  startSemester: SemesterInfo;
+  semester: {
+    customEcts: number;
+    courses: {
+      id: string;
+      grade?: Grade;
+    }[];
+  }[];
+}
 
 export interface SavedCurriculum {
   version: string;
@@ -19,10 +32,11 @@ export interface SavedCurriculum {
 
 export function createSaveObject(
   curriculum: CurriculumType,
-  version: string = "0.0.2"
+  startSemester: SemesterInfo
 ): string {
-  const toSave: SavedCurriculum = {
-    version: version,
+  const toSave: SavedCurriculumV3 = {
+    version: "0.0.3",
+    startSemester: startSemester,
     semester: curriculum.semesters.map((s) => ({
       customEcts: s.customEcts,
       courses: s.courses.map((c) => ({ id: c.id, grade: c.grade })),
@@ -31,22 +45,20 @@ export function createSaveObject(
   return JSON.stringify(toSave);
 }
 
-export function loadSaveObject(saved: string): SavedCurriculum {
-  return JSON.parse(saved) as SavedCurriculum;
-}
-
 export function setSavedCurriculum(
   state: INITIAL_STATE_TYPE,
-  curriculum: SavedCurriculum
+  curriculum: SavedCurriculumV3
 ) {
   // reset storage and curriculum
   state.storage = configGroupsToGroups(state.initialConfig.groups);
   state.curriculum.semesters = [];
 
+  state.startSemester = curriculum.startSemester;
+
   // move all the specified courses from storage to curriculum
   for (let i = 0; i < curriculum.semester.length; i++) {
     state.curriculum.semesters.push({
-      name: getSemesterName(i, state.startSemesterIndex),
+      name: getSemesterName(i, state.startSemester),
       courses: [],
       customEcts: curriculum.semester[i].customEcts,
     });

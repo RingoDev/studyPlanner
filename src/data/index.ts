@@ -81,7 +81,7 @@ interface InitialConfig {
     xOutOfYConstraints: typeof xOutOfYConstraints;
   };
   examples: {
-    startsWith: "WS" | "SS";
+    startsWithWS: boolean;
     name: string;
     curriculum: typeof SS6S;
   }[];
@@ -98,22 +98,22 @@ const initialConfig: InitialConfig = {
   },
   examples: [
     {
-      startsWith: "WS",
+      startsWithWS: true,
       name: "Studienplan Vollzeit WS",
       curriculum: WS6S,
     },
     {
-      startsWith: "SS",
+      startsWithWS: false,
       name: "Studienplan Vollzeit SS",
       curriculum: SS6S,
     },
     {
-      startsWith: "WS",
+      startsWithWS: true,
       name: "Studienplan Berufsbegleitend WS",
       curriculum: WS9S,
     },
     {
-      startsWith: "SS",
+      startsWithWS: false,
       name: "Studienplan Berufsbegleitend SS",
       curriculum: SS9S,
     },

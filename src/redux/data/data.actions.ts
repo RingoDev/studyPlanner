@@ -16,9 +16,9 @@ import {
 } from "./data.types";
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { get } from "idb-keyval";
-import { SavedCurriculum } from "../../lib/storeAndLoad";
+import { SavedCurriculumV3 } from "../../lib/storeAndLoad";
 import initialConfig from "../../data";
-import { CurriculumType } from "../../types/types";
+import { CurriculumType, SemesterInfo } from "../../types/types";
 
 export const moveCourse = createAction<{
   sourceId: string;
@@ -44,7 +44,7 @@ export const checkCourseConstraints = createAction<{}>(
   CHECK_COURSE_CONSTRAINTS
 );
 export const setStartSemester =
-  createAction<{ startSemesterIndex: number }>(SET_START_SEMESTER);
+  createAction<{ startSemesterInfo: SemesterInfo }>(SET_START_SEMESTER);
 
 export const setCourseGrade =
   createAction<{ courseId: string; grade: 0 | 1 | 2 | 3 | 4 }>(
@@ -61,7 +61,7 @@ export const setApplicationState = createAction<{
 }>(SET_APPLICATION_STATE);
 
 export const setUploadedCurriculum = createAction<{
-  curriculum: SavedCurriculum;
+  curriculum: SavedCurriculumV3;
 }>(SET_UPLOADED_CURRICULUM);
 
 export const setSearchText = createAction<{
@@ -71,9 +71,9 @@ export const setSearchText = createAction<{
 export const loadSavedCurriculum = createAsyncThunk(
   LOAD_SAVED_CURRICULUM,
   async () => {
-    return await new Promise<SavedCurriculum>((res, rej) => {
+    return await new Promise<SavedCurriculumV3>((res, rej) => {
       get<string>("curriculum").then((c) =>
-        c === undefined ? rej() : res(JSON.parse(c) as SavedCurriculum)
+        c === undefined ? rej() : res(JSON.parse(c) as SavedCurriculumV3)
       );
     });
   }
