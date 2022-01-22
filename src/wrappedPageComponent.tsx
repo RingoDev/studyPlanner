@@ -6,7 +6,7 @@ interface Props {
 
 // this wrapper component only exists for performance reasons to stop unnecessary re-rendering
 export const WrappedPageComponent = ({ Component }: Props) => {
-  return useMemo(() => <Component />, []);
+  return useMemo(() => <Component />, [Component]);
 };
 
 export default WrappedPageComponent;
