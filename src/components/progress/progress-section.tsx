@@ -2,6 +2,8 @@ import React from "react";
 import { styled } from "@mui/material/styles";
 import ProgressCoursesList from "./courses/progress-courses-list";
 import SemesterCharts from "./charts/semester-charts";
+import { useAppSelector } from "../../redux/hooks";
+import ProgressEmpty from "./progress-empty";
 
 const SemesterContainer = styled("div")(({ theme }) => ({
   position: "relative",
@@ -62,6 +64,20 @@ interface Props {
 }
 
 const ProgressSection = ({ semesterIndex }: Props) => {
+  const courses = useAppSelector((state) =>
+    semesterIndex === undefined
+      ? state.data.curriculum.semesters.flatMap((s) => s.courses)
+      : state.data.curriculum.semesters[semesterIndex].courses
+  );
+
+  if (courses.length === 0) {
+    return (
+      <ProgressWrapper>
+        <ProgressEmpty />
+      </ProgressWrapper>
+    );
+  }
+
   return (
     <ProgressWrapper>
       <CurriculumWrapper>
