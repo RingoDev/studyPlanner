@@ -61,7 +61,7 @@ const NavigationTabs = ({ containerRef }: Props) => {
     <StyledTabs
       onChange={scrollToSection}
       value={value}
-      centered
+      // centered
       scrollButtons="auto"
     >
       <StyledTab label={"Übersicht"} />
