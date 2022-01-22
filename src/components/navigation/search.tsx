@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import { setSearchText } from "../../redux/data/data.actions";
 
@@ -8,8 +8,16 @@ const Search = () => {
 
   const [internalText, setInternalText] = useState<string>("");
 
+  const isFirstLoad = useRef(true);
+
   // sets the global search text if the user is not typing for 250ms
+  // does not fire on first load
   useEffect(() => {
+    if (isFirstLoad.current) {
+      isFirstLoad.current = false;
+      return;
+    }
+
     const timeoutId = setTimeout(() => {
       dispatch(setSearchText({ text: internalText }));
     }, 250);

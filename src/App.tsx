@@ -1,8 +1,7 @@
 import { Redirect, Route } from "react-router-dom";
 import Planner from "./components/planner/planner";
 import Progress from "./components/progress/progress";
-import React, { useEffect } from "react";
-import Navbar from "./components/navigation/navbar";
+import React, { useEffect, useRef } from "react";
 import Settings from "./components/settings/settings";
 import { styled } from "@mui/material/styles";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
@@ -24,38 +23,33 @@ const routes = [
 
 const App = () => {
   const dataLoaded = useAppSelector((state) => state.data.dataLoaded);
+  const isFirstLoad = useRef(true);
 
   const dispatch = useAppDispatch();
+
   useEffect(() => {
-    dispatch(loadSavedCurriculum());
+    if (isFirstLoad.current) dispatch(loadSavedCurriculum());
+    isFirstLoad.current = false;
   });
 
   if (dataLoaded) {
     return (
-      <>
-        <Navbar />
-        <StyledApp>
-          {routes.map(({ path, Component }) => (
-            <Route key={path} exact path={path}>
-              {({ match }) => {
-                return <Page match={match} Component={Component} />;
-              }}
-            </Route>
-          ))}
-          <Route exact path={"/"}>
-            <Redirect to={"/progress"} />
+      <StyledApp>
+        {routes.map(({ path, Component }) => (
+          <Route key={path} exact path={path}>
+            {({ match }) => {
+              return <Page match={match} Component={Component} />;
+            }}
           </Route>
-        </StyledApp>
-      </>
+        ))}
+        <Route exact path={"/"}>
+          <Redirect to={"/progress"} />
+        </Route>
+      </StyledApp>
     );
   }
 
-  return (
-    <>
-      <Navbar />
-      <StyledApp />
-    </>
-  );
+  return <StyledApp />;
 };
 
 export default App;

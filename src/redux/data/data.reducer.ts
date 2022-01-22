@@ -341,13 +341,7 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.storage = configGroupsToGroups(state.initialConfig.groups);
       state.curriculum.semesters = [];
     })
-    .addMatcher(
-      () => true,
-      (state, action) => {
-        console.log(action);
-      }
-    )
-    .addMatcher(saveCurriculumMatcher, (state, { payload }) => {
+    .addMatcher(saveCurriculumMatcher, (state) => {
       const stringToSave = createSaveObject(
         state.curriculum,
         state.startSemester
