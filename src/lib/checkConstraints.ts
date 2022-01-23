@@ -25,29 +25,65 @@ export function checkDependencyConstraints(
   course: Course,
   i: number
 ) {
+  console.log("checking dependency constraints for course: " + course.id);
+
   // checking dependency constraints
-  const constraints =
-    state.initialConfig.constraints.dependencyConstraints.find(
+  const softConstraints =
+    state.initialConfig.constraints.dependencyConstraints.optional.find(
       (c) => c.course === course.id
     );
-  if (constraints !== undefined && constraints.dependsOn.length !== 0) {
-    // check if prior courses are in same semester or before -- check if they are after
-    const violatingDependencies = findCoursesNotBefore(
-      constraints.dependsOn,
-      i + 1,
-      state.curriculum.semesters,
-      state.initialConfig.groups
+  if (softConstraints !== undefined && softConstraints.dependsOn.length !== 0) {
+    console.log("found soft constraints");
+    checkGenericDependencyConstraint(
+      state,
+      course,
+      i,
+      softConstraints,
+      "LOW",
+      "Es wird empfohlen folgende Kurse im selben oder einem früheren Semester zu belegen:"
     );
+  }
+  // checking dependency constraints
+  const hardConstraints =
+    state.initialConfig.constraints.dependencyConstraints.mandatory.find(
+      (c) => c.course === course.id
+    );
+  if (hardConstraints !== undefined && hardConstraints.dependsOn.length !== 0) {
+    console.log("found hard constraints");
+    checkGenericDependencyConstraint(
+      state,
+      course,
+      i,
+      hardConstraints,
+      "HIGH",
+      "Folgende Kurse müssen im selben oder einem früheren Semester belegt werden:"
+    );
+  }
+}
 
-    if (violatingDependencies.length > 0) {
-      course.violations.push({
-        severity: "LOW",
-        reason: [
-          "Es wird empfohlen folgende Kurse im selben oder einem früheren Semester zu belegen:",
-          ...violatingDependencies.map((c) => `${c.sign} -  ${c.title}`),
-        ],
-      });
-    }
+function checkGenericDependencyConstraint(
+  state: INITIAL_STATE_TYPE,
+  course: Course,
+  i: number,
+  constraints: { course: string; dependsOn: string[] },
+  severity: "HIGH" | "LOW",
+  reason: string
+) {
+  // check if prior courses are in same semester or before -- check if they are after
+  const violatingDependencies = findCoursesNotBefore(
+    constraints.dependsOn,
+    i + 1,
+    state.curriculum.semesters,
+    state.initialConfig.groups
+  );
+  if (violatingDependencies.length > 0) {
+    course.violations.push({
+      severity: severity,
+      reason: [
+        reason,
+        ...violatingDependencies.map((c) => `${c.sign} -  ${c.title}`),
+      ],
+    });
   }
 }
 

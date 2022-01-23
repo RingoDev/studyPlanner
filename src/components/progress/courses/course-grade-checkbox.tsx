@@ -9,17 +9,17 @@ const CourseGradeCheckbox = ({ course }: { course: Course }) => {
   const GradeBox = styled("div")(({ theme }) => ({
     width: "24px",
     height: "24px",
-    border: `2px solid ${theme.palette.secondary.main}`,
-    borderRadius: "4px",
+    borderBottom: `1px solid ${theme.palette.secondary.dark}`,
+    // borderRadius: "4px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    color: "#ffffff",
+    color: theme.palette.secondary.dark,
     fontSize: "1rem",
-    backgroundColor:
-      course.grade === 0 || course.grade === undefined
-        ? "#ffffff00"
-        : theme.palette.secondary.main,
+    // backgroundColor:
+    //   course.grade === 0 || course.grade === undefined
+    //     ? "#ffffff00"
+    //     : theme.palette.secondary.main,
   }));
 
   const dispatch = useAppDispatch();

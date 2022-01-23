@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { addSemester } from "../../../redux/data/data.actions";
 import { styled } from "@mui/material/styles";
+import { Droppable } from "react-beautiful-dnd";
 
 const CurriculumContainer = styled("div")(() => ({
   margin: "0",
@@ -12,12 +13,12 @@ const CurriculumContainer = styled("div")(() => ({
   width: "90%",
   display: "flex",
   flexDirection: "row",
-  // flexDirection: "column",
   flexWrap: "wrap",
   justifyContent: "space-evenly",
 }));
 
 const SemesterWrapper = styled("div")(() => ({
+  maxWidth: "50%",
   flexBasis: "50%",
   minHeight: "20rem",
   padding: "0 1rem 2rem 1rem",
@@ -48,9 +49,17 @@ const Curriculum = () => {
         </SemesterWrapper>
       ))}
       <SemesterWrapper>
-        <StyledButton onClick={() => dispatch(addSemester({}))}>
-          Semester hinzufügen
-        </StyledButton>
+        <Droppable droppableId={"sem" + curriculum.semesters.length}>
+          {(provided) => (
+            <StyledButton
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              onClick={() => dispatch(addSemester({}))}
+            >
+              Semester hinzufügen
+            </StyledButton>
+          )}
+        </Droppable>
       </SemesterWrapper>
     </CurriculumContainer>
   );

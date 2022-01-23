@@ -162,6 +162,32 @@ const courseReducer = createReducer(initialState, (builder) => {
         // find semester
         const sourceSemesterIndex = Number(payload.sourceId.slice(3));
         const destinationSemesterIndex = Number(payload.destinationId.slice(3));
+
+        // check if something went wrong
+        if (
+          isNaN(sourceSemesterIndex) ||
+          sourceSemesterIndex >= state.curriculum.semesters.length ||
+          sourceSemesterIndex < 0
+        )
+          return;
+        if (
+          isNaN(destinationSemesterIndex) ||
+          destinationSemesterIndex > state.curriculum.semesters.length ||
+          destinationSemesterIndex < 0
+        )
+          return;
+
+        if (destinationSemesterIndex === state.curriculum.semesters.length) {
+          //  dragged onto addSemester button -> first we need to add a semester
+          state.curriculum.semesters.push({
+            name: getSemesterName(
+              state.curriculum.semesters.length,
+              state.startSemester
+            ),
+            courses: [],
+            customEcts: 0,
+          });
+        }
         const sourceCourseIndex = state.curriculum.semesters[
           sourceSemesterIndex
         ].courses.findIndex((c) => c.id === payload.courseId);
@@ -182,21 +208,50 @@ const courseReducer = createReducer(initialState, (builder) => {
         isGroupId(payload.sourceId) &&
         isSemesterId(payload.destinationId)
       ) {
+        const destinationSemesterIndex = Number(payload.destinationId.slice(3));
+        // check if something went wrong
+        if (
+          isNaN(destinationSemesterIndex) ||
+          destinationSemesterIndex > state.curriculum.semesters.length ||
+          destinationSemesterIndex < 0
+        )
+          return;
+
+        if (destinationSemesterIndex === state.curriculum.semesters.length) {
+          //  dragged onto addSemester button -> first we need to add a semester
+          state.curriculum.semesters.push({
+            name: getSemesterName(
+              state.curriculum.semesters.length,
+              state.startSemester
+            ),
+            courses: [],
+            customEcts: 0,
+          });
+        }
+
         moveCourseFromGroupListToSemesterList(
           state.curriculum.semesters,
           state.storage,
           payload.sourceId,
           payload.courseId,
-          Number(payload.destinationId.slice(3)),
+          destinationSemesterIndex,
           payload.destinationIndex
         );
       } else if (isStorageId(payload.destinationId)) {
+        const sourceSemesterIndex = Number(payload.sourceId.slice(3));
+        // check if something went wrong
+        if (
+          isNaN(sourceSemesterIndex) ||
+          sourceSemesterIndex >= state.curriculum.semesters.length ||
+          sourceSemesterIndex < 0
+        )
+          return;
         moveCourseFromCurriculumToStorage(
           state.curriculum,
           state.storage,
           getGroupIdOfCourseId(payload.courseId),
           payload.courseId,
-          Number(payload.sourceId.slice(3))
+          sourceSemesterIndex
         );
       }
       console.debug(
@@ -207,10 +262,31 @@ const courseReducer = createReducer(initialState, (builder) => {
       if (isStorageId(payload.destinationId)) return;
       // find semester
       const semesterIndex = Number(payload.destinationId.slice(3));
+      // check if something went wrong
+      if (
+        isNaN(semesterIndex) ||
+        semesterIndex > state.curriculum.semesters.length ||
+        semesterIndex < 0
+      )
+        return;
+
+      if (semesterIndex === state.curriculum.semesters.length) {
+        //  dragged onto addSemester button -> first we need to add a semester
+        state.curriculum.semesters.push({
+          name: getSemesterName(
+            state.curriculum.semesters.length,
+            state.startSemester
+          ),
+          courses: [],
+          customEcts: 0,
+        });
+      }
+
       const group = getGroupWithIdFromGroups(state.storage, payload.groupId);
       if (group === undefined) return;
 
       // if x out of y constraint exists on group or top group, only move as many courses to fulfill ects constraint
+      // todo display toast that there is a constraint on the group
       const constraint = getXOutOfYConstraint(
         payload.groupId,
         state.initialConfig.constraints.xOutOfYConstraints

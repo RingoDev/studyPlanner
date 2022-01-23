@@ -47,7 +47,7 @@ const CourseItemDraggable: React.FC<Props> = ({
           style={{
             ...getStyle(provided.draggableProps.style, snapshot),
             // due to rounding errors of the placeholder element messing up flex layout
-            maxWidth: "99.99%",
+            // maxWidth: "99%",
           }}
         >
           <CourseItem
