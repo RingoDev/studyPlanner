@@ -1,6 +1,6 @@
 import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import React, { ChangeEvent, useRef } from "react";
-import { useAppDispatch } from "../../../redux/hooks";
+import { useAppDispatch } from "../../../lib/hooks/redux-hooks";
 import { CurriculumType } from "../../../types/types";
 import initialConfig from "../../../data";
 import {

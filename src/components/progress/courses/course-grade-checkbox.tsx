@@ -1,7 +1,7 @@
 import { Button, ListItemIcon, Menu, MenuItem } from "@mui/material";
 import React, { useRef, useState } from "react";
 import Course, { Grade } from "../../../types/types";
-import { useAppDispatch } from "../../../redux/hooks";
+import { useAppDispatch } from "../../../lib/hooks/redux-hooks";
 import { setCourseGrade } from "../../../redux/data/data.actions";
 import { styled } from "@mui/material/styles";
 

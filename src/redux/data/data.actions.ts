@@ -1,10 +1,13 @@
 import {
   ADD_SEMESTER,
   CHECK_COURSE_CONSTRAINTS,
+  CLOSE_SNACKBAR,
+  ENQUEUE_SNACKBAR,
   LOAD_SAVED_CURRICULUM,
   MOVE_COURSE,
   MOVE_GROUP,
   REMOVE_SEMESTER,
+  REMOVE_SNACKBAR,
   RESET_CURRICULUM,
   SET_APPLICATION_STATE,
   SET_COURSE_GRADE,
@@ -19,6 +22,28 @@ import { get } from "idb-keyval";
 import { SavedCurriculumV3 } from "../../lib/storeAndLoad";
 import initialConfig from "../../data";
 import { CurriculumType, SemesterInfo } from "../../types/types";
+import { OptionsObject, SnackbarMessage } from "notistack";
+
+// export const enqueueSnackbar = (notification) => {
+//   const key = notification.options && notification.options.key;
+//
+//   return {
+//     type: ENQUEUE_SNACKBAR,
+//     notification: {
+//       ...notification,
+//       key: key || new Date().getTime() + Math.random(),
+//     },
+//   };
+// };
+//
+// const key = notification.options && notification.options.key;
+
+export const enqueueSnackbar = createAction<{
+  message: SnackbarMessage;
+  options?: OptionsObject;
+}>(ENQUEUE_SNACKBAR);
+export const closeSnackbar = createAction<{ key: string }>(CLOSE_SNACKBAR);
+export const removeSnackbar = createAction<{ key: string }>(REMOVE_SNACKBAR);
 
 export const moveCourse = createAction<{
   sourceId: string;

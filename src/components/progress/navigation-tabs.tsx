@@ -1,6 +1,6 @@
 import { Tab, Tabs } from "@mui/material";
 import React, { RefObject, useEffect } from "react";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../lib/hooks/redux-hooks";
 import { styled } from "@mui/material/styles";
 
 const StyledTabs = styled(Tabs)(() => ({

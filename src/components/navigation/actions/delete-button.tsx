@@ -1,6 +1,6 @@
 import React from "react";
 import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
-import { useAppDispatch } from "../../../redux/hooks";
+import { useAppDispatch } from "../../../lib/hooks/redux-hooks";
 import { resetCurriculum } from "../../../redux/data/data.actions";
 import { Trash } from "lucide-react";
 

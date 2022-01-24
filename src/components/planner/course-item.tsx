@@ -6,7 +6,7 @@ import ConstraintWarning from "./curriculum/constraint-warning";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MarkedSearchText from "./marked-search-text";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../lib/hooks/redux-hooks";
 import { getCourseDisplayTitle } from "../../lib/general";
 
 interface Props {

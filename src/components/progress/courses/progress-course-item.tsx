@@ -4,7 +4,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Course from "../../../types/types";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppSelector } from "../../../lib/hooks/redux-hooks";
 import KusssLink from "./kusss-link";
 import MarkedSearchText from "../../planner/marked-search-text";
 import CourseGradeCheckbox from "./course-grade-checkbox";

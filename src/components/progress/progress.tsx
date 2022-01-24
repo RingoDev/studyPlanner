@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { styled } from "@mui/material/styles";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../lib/hooks/redux-hooks";
 import ProgressSection from "./progress-section";
 import NavigationTabs from "./navigation-tabs";
 

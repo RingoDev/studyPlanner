@@ -2,7 +2,7 @@ import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import React from "react";
 import { pdf } from "@react-pdf/renderer";
 import PdfDocument from "../../pdf/pdf-document";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppSelector } from "../../../lib/hooks/redux-hooks";
 import { FileText } from "lucide-react";
 
 interface Props {

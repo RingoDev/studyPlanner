@@ -1,11 +1,13 @@
-import { AnyAction, createReducer } from "@reduxjs/toolkit";
+import { AnyAction, bindActionCreators, createReducer } from "@reduxjs/toolkit";
 import { CurriculumType, Group, SemesterInfo } from "../../types/types";
 import {
   addSemester,
+  closeSnackbar,
   loadSavedCurriculum,
   moveCourse,
   moveGroup,
   removeSemester,
+  removeSnackbar,
   resetCurriculum,
   setApplicationState,
   setCourseGrade,
@@ -44,8 +46,19 @@ import {
   SavedCurriculumV3,
   setSavedCurriculum,
 } from "../../lib/storeAndLoad";
+import { SnackbarAction, SnackbarMessage } from "notistack";
+import { type } from "os";
+import { Button } from "@mui/material";
+import React from "react";
+
+interface Notification {
+  message: SnackbarMessage;
+  key: string;
+  action: SnackbarAction;
+}
 
 export interface INITIAL_STATE_TYPE {
+  notifications: Notification[];
   initialConfig: typeof initialConfig;
   dataLoaded: boolean;
   selectSemesterList: SemesterInfo[];
@@ -94,6 +107,7 @@ export function getSemesterName(
 }
 
 const initialState: INITIAL_STATE_TYPE = {
+  notifications: [],
   initialConfig: initialConfig,
   dataLoaded: false,
   selectSemesterList: createSemesterList(),
@@ -107,7 +121,7 @@ const initialState: INITIAL_STATE_TYPE = {
 };
 // checking Course Constraints after most actions
 const checkCourseConstraintsMatcher = (action: AnyAction) =>
-  !setCustomStudies.match(action);
+  !removeSnackbar.match(action) && !setCustomStudies.match(action);
 
 const saveCurriculumMatcher = (action: AnyAction) =>
   setCourseGrade.match(action) ||
@@ -254,6 +268,7 @@ const courseReducer = createReducer(initialState, (builder) => {
           sourceSemesterIndex
         );
       }
+      addSnackbar(state);
       console.debug(
         `Successfully moved curse with id ${payload.courseId} from list ${payload.sourceId} to ${payload.destinationId}`
       );
@@ -417,6 +432,11 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.storage = configGroupsToGroups(state.initialConfig.groups);
       state.curriculum.semesters = [];
     })
+    .addCase(removeSnackbar, (state, { payload }) => {
+      state.notifications = state.notifications.filter(
+        (notification) => notification.key !== payload.key
+      );
+    })
     .addMatcher(saveCurriculumMatcher, (state) => {
       const stringToSave = createSaveObject(
         state.curriculum,
@@ -427,6 +447,10 @@ const courseReducer = createReducer(initialState, (builder) => {
         console.error("Saving to IndexedDB storage failed", err)
       );
     })
+    .addMatcher(
+      (action) => true,
+      (state) => {}
+    )
     .addMatcher(checkCourseConstraintsMatcher, (state, { payload }) => {
       for (let i = 0; i < state.curriculum.semesters.length; i++) {
         for (let course of state.curriculum.semesters[i].courses) {
@@ -439,5 +463,16 @@ const courseReducer = createReducer(initialState, (builder) => {
       checkXOutOfYConstraints(state);
     });
 });
+
+function addSnackbar(state: INITIAL_STATE_TYPE) {
+  state.notifications.push({
+    message: "test",
+    action: (key) =>
+      React.createElement(Button, {
+        onClick: () => closeSnackbar({ key: key.toString() }),
+      }),
+    key: Math.random().toString(),
+  });
+}
 
 export default courseReducer;

@@ -2,7 +2,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { Box, Button } from "@mui/material";
 import React from "react";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../lib/hooks/redux-hooks";
 import { setCustomStudies } from "../../../redux/data/data.actions";
 import { Minus, Plus } from "lucide-react";
 import { styled } from "@mui/material/styles";

@@ -4,9 +4,10 @@ import Progress from "./components/progress/progress";
 import React, { useEffect, useRef } from "react";
 import Settings from "./components/settings/settings";
 import { styled } from "@mui/material/styles";
-import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { useAppDispatch, useAppSelector } from "./lib/hooks/redux-hooks";
 import { loadSavedCurriculum } from "./redux/data/data.actions";
 import Page from "./page";
+import useNotifier from "./lib/hooks/notification-hook";
 
 const StyledApp = styled("div")(({ theme }) => ({
   overflowY: "auto",
@@ -31,6 +32,9 @@ const App = () => {
     if (isFirstLoad.current) dispatch(loadSavedCurriculum());
     isFirstLoad.current = false;
   });
+
+  // triggers rerender on notification
+  useNotifier();
 
   if (dataLoaded) {
     return (

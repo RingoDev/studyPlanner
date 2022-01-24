@@ -1,6 +1,6 @@
 import React from "react";
 import { SemesterType } from "../../../types/types";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../lib/hooks/redux-hooks";
 import { Box, Button, Typography } from "@mui/material";
 import { removeSemester } from "../../../redux/data/data.actions";
 import SemesterName from "./semesterName";

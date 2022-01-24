@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch } from "../../lib/hooks/redux-hooks";
 import { setSearchText } from "../../redux/data/data.actions";
 
 const Search = () => {

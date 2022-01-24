@@ -25,15 +25,12 @@ export function checkDependencyConstraints(
   course: Course,
   i: number
 ) {
-  console.log("checking dependency constraints for course: " + course.id);
-
   // checking dependency constraints
   const softConstraints =
     state.initialConfig.constraints.dependencyConstraints.optional.find(
       (c) => c.course === course.id
     );
   if (softConstraints !== undefined && softConstraints.dependsOn.length !== 0) {
-    console.log("found soft constraints");
     checkGenericDependencyConstraint(
       state,
       course,
@@ -49,7 +46,6 @@ export function checkDependencyConstraints(
       (c) => c.course === course.id
     );
   if (hardConstraints !== undefined && hardConstraints.dependsOn.length !== 0) {
-    console.log("found hard constraints");
     checkGenericDependencyConstraint(
       state,
       course,

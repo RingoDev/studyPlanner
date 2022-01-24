@@ -2,7 +2,7 @@ import React from "react";
 import List from "@mui/material/List";
 import { Box } from "@mui/material";
 import ProgressCourseItem from "./progress-course-item";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppSelector } from "../../../lib/hooks/redux-hooks";
 import { courseMatchesSearch } from "../../../lib/search";
 
 interface Props {
@@ -21,12 +21,11 @@ const ProgressCoursesList = ({ semesterIndex }: Props) => {
     <Box>
       <List disablePadding sx={{ paddingTop: "0.5rem" }}>
         {courses.map((c) => {
-            if (courseMatchesSearch(c, searchText)) {
-              return <ProgressCourseItem key={c.id} course={c} />;
-            }
-            return null;
+          if (courseMatchesSearch(c, searchText)) {
+            return <ProgressCourseItem key={c.id} course={c} />;
           }
-        )}
+          return null;
+        })}
       </List>
     </Box>
   );

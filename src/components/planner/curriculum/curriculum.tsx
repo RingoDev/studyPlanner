@@ -1,7 +1,7 @@
 import React from "react";
 import Semester from "./semester";
 import { Button } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../lib/hooks/redux-hooks";
 import { addSemester } from "../../../redux/data/data.actions";
 import { styled } from "@mui/material/styles";
 import { Droppable } from "react-beautiful-dnd";

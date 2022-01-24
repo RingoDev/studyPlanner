@@ -1,6 +1,6 @@
 import { ChartData, ChartOptions } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppSelector } from "../../../lib/hooks/redux-hooks";
 
 interface Props {
   semesterIndex: number | undefined;

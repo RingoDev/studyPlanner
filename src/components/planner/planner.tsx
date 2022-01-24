@@ -3,7 +3,7 @@ import Curriculum from "./curriculum/curriculum";
 import Storage from "./storage/storage";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { moveCourse, moveGroup } from "../../redux/data/data.actions";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch } from "../../lib/hooks/redux-hooks";
 import { styled } from "@mui/material/styles";
 
 const MainContainer = styled("div")(({ theme }) => ({

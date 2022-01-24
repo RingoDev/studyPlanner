@@ -2,7 +2,7 @@ import React from "react";
 import { styled } from "@mui/material/styles";
 import ProgressCoursesList from "./courses/progress-courses-list";
 import SemesterCharts from "./charts/semester-charts";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../lib/hooks/redux-hooks";
 import ProgressEmpty from "./progress-empty";
 
 const SemesterContainer = styled("div")(({ theme }) => ({

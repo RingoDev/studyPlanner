@@ -5,7 +5,7 @@ import GroupItemDraggable from "./group-item-draggable";
 import { Droppable } from "react-beautiful-dnd";
 import { STORAGE } from "../../../types/dndTypes";
 import { styled } from "@mui/material/styles";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppSelector } from "../../../lib/hooks/redux-hooks";
 import { groupMatchesSearch } from "../../../lib/search";
 
 interface Props {

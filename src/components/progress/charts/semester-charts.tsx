@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import GradesDoughnut from "./grades-doughnut";
 import FinishedDoughnut from "./finished-doughnut";
 import { styled } from "@mui/material/styles";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppSelector } from "../../../lib/hooks/redux-hooks";
 
 interface Props {
   semesterIndex?: number;

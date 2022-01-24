@@ -1,7 +1,7 @@
 import { Box, FormControl, MenuItem, Select, Typography } from "@mui/material";
 import { setExampleCurriculum } from "../../redux/data/data.actions";
 import React from "react";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../lib/hooks/redux-hooks";
 
 const SelectExamplePlan = () => {
   const lastChosenExample = useAppSelector(

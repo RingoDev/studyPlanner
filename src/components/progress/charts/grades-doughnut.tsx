@@ -1,6 +1,6 @@
 import { Doughnut } from "react-chartjs-2";
 import { ChartData, ChartOptions } from "chart.js";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppSelector } from "../../../lib/hooks/redux-hooks";
 import Course from "../../../types/types";
 
 interface Props {

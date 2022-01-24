@@ -6,18 +6,17 @@ import CourseItemDraggable from "../course-item-draggable";
 import CustomStudies from "./custom-studies";
 import { Box } from "@mui/material";
 import { courseMatchesSearch } from "../../../lib/search";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppSelector } from "../../../lib/hooks/redux-hooks";
 
 interface Props {
   semester: SemesterType;
   index: number;
 }
 
-const CourseListDroppable = ({ semester, index }: Props) =>{
-
+const CourseListDroppable = ({ semester, index }: Props) => {
   const searchText = useAppSelector((state) => state.data.searchText);
 
-  return  (
+  return (
     <Droppable droppableId={"sem" + index}>
       {(provided) => (
         <Box
@@ -26,7 +25,7 @@ const CourseListDroppable = ({ semester, index }: Props) =>{
           {...provided.droppableProps}
         >
           <List disablePadding sx={{ paddingTop: "0.5rem" }}>
-            {semester.courses.map((c, index) =>{
+            {semester.courses.map((c, index) => {
               if (courseMatchesSearch(c, searchText)) {
                 return (
                   <CourseItemDraggable
@@ -45,7 +44,7 @@ const CourseListDroppable = ({ semester, index }: Props) =>{
         </Box>
       )}
     </Droppable>
-  )
+  );
 };
 
 export default CourseListDroppable;

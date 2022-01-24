@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { Group } from "../../../types/types";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppSelector } from "../../../lib/hooks/redux-hooks";
 import { getCoursesFromGroups, getGroupWithIdFromGroups } from "../../../data";
 import { COURSE_GROUP } from "../../../types/dndTypes";
 import GroupListCollapsable from "./group-list-collapsable";

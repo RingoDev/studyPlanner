@@ -7,15 +7,18 @@ import { BrowserRouter } from "react-router-dom";
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import AppWrapper from "./AppWrapper";
+import { SnackbarProvider } from "notistack";
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <StyledEngineProvider injectFirst>
         <Provider store={store}>
-          <BrowserRouter>
-            <AppWrapper />
-          </BrowserRouter>
+          <SnackbarProvider maxSnack={3}>
+            <BrowserRouter>
+              <AppWrapper />
+            </BrowserRouter>
+          </SnackbarProvider>
         </Provider>
       </StyledEngineProvider>
     </ThemeProvider>
