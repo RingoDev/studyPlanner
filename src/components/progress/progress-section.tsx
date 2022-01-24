@@ -1,9 +1,9 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
 import ProgressCoursesList from "./courses/progress-courses-list";
-import SemesterCharts from "./charts/semester-charts";
 import { useAppSelector } from "../../redux/hooks";
 import ProgressEmpty from "./progress-empty";
+import Dashboard from "./dashboard/dashboard";
 
 const SemesterContainer = styled("div")(({ theme }) => ({
   position: "relative",
@@ -31,6 +31,27 @@ const CurriculumWrapper = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
     overflowY: "auto",
     flex: "1 1 50%",
+    "&::-webkit-scrollbar": {
+      width: "0.75em",
+      backgroundColor: "#555555",
+      outline: "1px solid #444444",
+      borderRadius: "1em",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#777777",
+      borderRadius: "1em",
+    },
+  },
+}));
+
+const DashboardWrapper = styled("div")(({ theme }) => ({
+  padding: "0 2rem",
+  height: "100%",
+  flex: "1 1 100%",
+
+  [theme.breakpoints.up("md")]: {
+    overflowY: "auto",
+    flex: "1 1 70%",
     "&::-webkit-scrollbar": {
       width: "0.75em",
       backgroundColor: "#555555",
@@ -80,9 +101,10 @@ const ProgressSection = ({ semesterIndex }: Props) => {
 
   return (
     <ProgressWrapper>
-      <CurriculumWrapper>
-        <SemesterCharts semesterIndex={semesterIndex} />
-      </CurriculumWrapper>
+      <DashboardWrapper>
+        {/*<SemesterCharts semesterIndex={semesterIndex} />*/}
+        <Dashboard semesterIndex={semesterIndex} />
+      </DashboardWrapper>
       <CurriculumWrapper>
         <SemesterContainer>
           <ListContainer>

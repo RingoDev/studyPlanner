@@ -1,48 +1,35 @@
 import { ChartData, ChartOptions } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { useAppSelector } from "../../../redux/hooks";
+import { Box } from "@mui/material";
 
 interface Props {
-  semesterIndex: number | undefined;
+  semesterIndex?: number;
 }
 
 const FinishedDoughnut = ({ semesterIndex }: Props) => {
-  const curriculum = useAppSelector((state) => state.data.curriculum);
+  const courses = useAppSelector((state) =>
+    semesterIndex === undefined
+      ? state.data.curriculum.semesters.flatMap((s) => s.courses)
+      : state.data.curriculum.semesters[semesterIndex].courses
+  );
+
   const generateData = (): ChartData<"doughnut", number[], string> => {
     const labels: string[] = ["Abgeschlossen", "Offen"];
     const data: number[] = [];
     const backgroundColor: string[] = [];
-    // const borderColor: string[] = [];
-    // const hoverBackgroundColor: string[] = [];
-    // const hoverBorderColor: string[] = [];
 
-    if (semesterIndex !== undefined) {
-      const finishedEcts = curriculum.semesters[semesterIndex].courses
-        .filter((c) => c.grade !== undefined && c.grade !== 0)
-        .map((c) => c.ects)
-        .reduce((e1, e2) => e1 + e2, 0);
+    const finishedEcts = courses
+      .filter((c) => c.grade !== undefined && c.grade !== 0)
+      .map((c) => c.ects)
+      .reduce((e1, e2) => e1 + e2, 0);
 
-      const unfinishedEcts = curriculum.semesters[semesterIndex].courses
-        .filter((c) => c.grade === undefined || c.grade === 0)
-        .map((c) => c.ects)
-        .reduce((e1, e2) => e1 + e2, 0);
+    const unfinishedEcts = courses
+      .filter((c) => c.grade === undefined || c.grade === 0)
+      .map((c) => c.ects)
+      .reduce((e1, e2) => e1 + e2, 0);
 
-      data.push(finishedEcts, unfinishedEcts);
-    } else {
-      const finishedEcts = curriculum.semesters
-        .flatMap((s) => s.courses)
-        .filter((c) => c.grade !== undefined && c.grade !== 0)
-        .map((c) => c.ects)
-        .reduce((e1, e2) => e1 + e2, 0);
-
-      const unfinishedEcts = curriculum.semesters
-        .flatMap((s) => s.courses)
-        .filter((c) => c.grade === undefined || c.grade === 0)
-        .map((c) => c.ects)
-        .reduce((e1, e2) => e1 + e2, 0);
-
-      data.push(finishedEcts, unfinishedEcts);
-    }
+    data.push(finishedEcts, unfinishedEcts);
 
     if (data.every((n) => n === 0)) {
       return {
@@ -72,10 +59,54 @@ const FinishedDoughnut = ({ semesterIndex }: Props) => {
     };
   };
 
+  // no course has a grade set
+  if (courses.findIndex((c) => c.grade !== 0 && c.grade !== undefined) === -1) {
+    return (
+      <Box
+        sx={{
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+        }}
+      >
+        Trage Noten ein um Statistiken anzuzeigen
+      </Box>
+    );
+  }
+
+  const getAverage = () => {
+    const finishedEcts = courses
+      .filter((c) => c.grade !== undefined && c.grade !== 0)
+      .map((c) => c.ects)
+      .reduce((e1, e2) => e1 + e2, 0);
+
+    const unfinishedEcts = courses
+      .filter((c) => c.grade === undefined || c.grade === 0)
+      .map((c) => c.ects)
+      .reduce((e1, e2) => e1 + e2, 0);
+
+    return `${
+      Math.round((finishedEcts / (finishedEcts + unfinishedEcts)) * 1000) / 10
+    }%`;
+  };
+
   const chartOptions: ChartOptions<"doughnut"> = {
+    elements: {
+      // @ts-ignore
+      center: {
+        text: getAverage(),
+        color: "#000000", // Default is #000000
+        fontStyle: "Arial", // Default is Arial
+        sidePadding: 20, // Default is 20 (as a percentage)
+        minFontSize: 20, // Default is 20 (in px), set to false and text will not wrap.
+        lineHeight: 25, // Default is 25 (in px), used for when text wraps
+      },
+    },
     // maintainAspectRatio: false,
     plugins: {
-      legend: { labels: { boxWidth: 20, color: "#dddddd" } },
+      legend: { labels: { boxWidth: 20, color: "#000000" }, position: "right" },
     },
   };
 

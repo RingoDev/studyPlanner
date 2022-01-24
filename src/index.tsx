@@ -7,6 +7,10 @@ import { BrowserRouter } from "react-router-dom";
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import AppWrapper from "./AppWrapper";
+import { Chart } from "chart.js";
+import { centerPlugin } from "./lib/chartPlugin";
+
+Chart.register([centerPlugin]);
 
 ReactDOM.render(
   <React.StrictMode>
