@@ -2,17 +2,39 @@ import { Doughnut } from "react-chartjs-2";
 import { ChartData, ChartOptions } from "chart.js";
 import { useAppSelector } from "../../../redux/hooks";
 import { Box } from "@mui/material";
+import { courseMatchesSearch } from "../../../lib/search";
+import Color from "color";
 
 interface Props {
   semesterIndex?: number;
 }
 
 const GradesDoughnut = ({ semesterIndex }: Props) => {
-  const courses = useAppSelector((state) =>
+  const unfilteredCourses = useAppSelector((state) =>
     semesterIndex === undefined
       ? state.data.curriculum.semesters.flatMap((s) => s.courses)
       : state.data.curriculum.semesters[semesterIndex].courses
   );
+  const searchText = useAppSelector((state) => state.data.searchText);
+
+  const courses = unfilteredCourses.filter((c) =>
+    courseMatchesSearch(c, searchText)
+  );
+
+  // console.log(Color("#70e899").mix(Color("#abd26d")).hex());
+
+  // number between 1 and 4
+  const getColor = (input: number) => {
+    const colors = ["#70e899", "#abd26d", "#ceb85b", "#e29f62"];
+
+    const scaledInput = (input - 1) % 4;
+    const rest = scaledInput % 1;
+
+    return Color(colors[Math.floor(scaledInput)])
+      .mix(Color(colors[Math.ceil(scaledInput)]), rest)
+      .hex();
+  };
+
   const gradesWeightedByEctsData = (): ChartData<
     "doughnut",
     number[],
@@ -78,15 +100,17 @@ const GradesDoughnut = ({ semesterIndex }: Props) => {
       .filter((grade) => grade !== undefined && grade !== 0) as number[];
     const average = grades.reduce((e1, e2) => e1 + e2, 0) / grades.length;
 
-    return `${Math.round(average * 100) / 100}`;
+    return Math.round(average * 100) / 100;
   };
+
+  const grade = getAverageGrade();
 
   const chartOptions: ChartOptions<"doughnut"> = {
     elements: {
       // @ts-ignore
       center: {
-        text: getAverageGrade(),
-        color: "#000000", // Default is #000000
+        text: grade.toString(),
+        color: getColor(grade), // Default is #000000
         fontStyle: "Arial", // Default is Arial
         sidePadding: 40, // Default is 20 (as a percentage)
         minFontSize: 20, // Default is 20 (in px), set to false and text will not wrap.
@@ -95,7 +119,11 @@ const GradesDoughnut = ({ semesterIndex }: Props) => {
     },
     // maintainAspectRatio: false,
     plugins: {
-      legend: { labels: { boxWidth: 20, color: "#000000" }, position: "right" },
+      legend: {
+        onClick: (e) => e.native?.stopPropagation(),
+        labels: { boxWidth: 20, color: "#000000" },
+        position: "right",
+      },
     },
   };
 

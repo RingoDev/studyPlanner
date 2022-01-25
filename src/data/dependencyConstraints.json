@@ -11,6 +11,18 @@
       "dependsOn": [
         "001-001"
       ]
+    },
+    {
+      "course": "003-001",
+      "dependsOn": [
+        "003-002"
+      ]
+    },
+    {
+      "course": "003-002",
+      "dependsOn": [
+        "003-001"
+      ]
     }
   ],
   "optional": [

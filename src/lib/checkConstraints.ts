@@ -123,7 +123,7 @@ function allowedBeforeSteopFinished(courseId: string): boolean {
 
 function courseIsSteop(courseId: string): boolean {
   return (
-    initialConfig.constraints.steopConstraints.steop.findIndex(
+    [...initialConfig.constraints.steopConstraints.steop.mandatory].findIndex(
       (c) => c === courseId
     ) !== -1
   );
@@ -135,15 +135,49 @@ export function checkSteopConstraints(
   semesterIndex: number
 ) {
   // checking steop constraint
+  // violated if
+
   if (!courseIsSteop(course.id) && !allowedBeforeSteopFinished(course.id)) {
-    // check that all steop courses are booked before this semester
+    // check that all mandatory steop courses are finished before this semester
 
     const violatingSteopCourses = findCoursesNotBefore(
-      state.initialConfig.constraints.steopConstraints.steop,
+      state.initialConfig.constraints.steopConstraints.steop.mandatory,
       semesterIndex,
       state.curriculum.semesters,
       state.initialConfig.groups
     );
+
+    // check that for all of the optional steop courses atleast 1 option is fulfilled
+    for (let optionalSteopObject of state.initialConfig.constraints
+      .steopConstraints.steop.xOrY) {
+      const oneOfOptionalSteopFinished =
+        coursesAreBookedBefore(
+          optionalSteopObject.x,
+          semesterIndex,
+          state.curriculum.semesters
+        ) ||
+        coursesAreBookedBefore(
+          optionalSteopObject.y,
+          semesterIndex,
+          state.curriculum.semesters
+        );
+
+      if (!oneOfOptionalSteopFinished) {
+        course.violations.push({
+          severity: "HIGH",
+          reason: [
+            "Kann nicht belegt werden, da keiner der folgenden Steop Blöcke vollständig abgschlossen ist:",
+            ...optionalSteopObject.x
+              .map((id) => getCourseById(id, state.initialConfig.groups))
+              .map((c) => (c === undefined ? "" : `${c.sign} -  ${c.title}`)),
+            ...optionalSteopObject.y
+              .map((id) => getCourseById(id, state.initialConfig.groups))
+              .map((c) => (c === undefined ? "" : `${c.sign} -  ${c.title}`)),
+          ],
+        });
+      }
+    }
+
     if (violatingSteopCourses.length > 0) {
       course.violations.push({
         severity: "HIGH",
@@ -154,6 +188,36 @@ export function checkSteopConstraints(
       });
     }
   }
+}
+
+/**
+ * Returns true if all of the courses in the specified idList are booked before the specified semester
+ */
+function coursesAreBookedBefore(
+  idList: string[],
+  semesterIndex: number,
+  semesters: SemesterType[]
+) {
+  for (let id of idList) {
+    if (!courseIsBookedBefore(id, semesterIndex, semesters)) return false;
+  }
+  return true;
+}
+
+/**
+ * Returns true if the course with the specified id is booked before the specified semester
+ */
+function courseIsBookedBefore(
+  id: string,
+  semesterIndex: number,
+  semesters: SemesterType[]
+) {
+  for (let i = 0; i < semesterIndex; i++) {
+    if (courseIsInSemester(id, semesters[i])) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /**

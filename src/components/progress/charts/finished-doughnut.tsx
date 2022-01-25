@@ -2,16 +2,22 @@ import { ChartData, ChartOptions } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { useAppSelector } from "../../../redux/hooks";
 import { Box } from "@mui/material";
+import { courseMatchesSearch } from "../../../lib/search";
 
 interface Props {
   semesterIndex?: number;
 }
 
 const FinishedDoughnut = ({ semesterIndex }: Props) => {
-  const courses = useAppSelector((state) =>
+  const unfilteredCourses = useAppSelector((state) =>
     semesterIndex === undefined
       ? state.data.curriculum.semesters.flatMap((s) => s.courses)
       : state.data.curriculum.semesters[semesterIndex].courses
+  );
+  const searchText = useAppSelector((state) => state.data.searchText);
+
+  const courses = unfilteredCourses.filter((c) =>
+    courseMatchesSearch(c, searchText)
   );
 
   const generateData = (): ChartData<"doughnut", number[], string> => {
@@ -106,7 +112,11 @@ const FinishedDoughnut = ({ semesterIndex }: Props) => {
     },
     // maintainAspectRatio: false,
     plugins: {
-      legend: { labels: { boxWidth: 20, color: "#000000" }, position: "right" },
+      legend: {
+        onClick: (e) => e.native?.stopPropagation(),
+        labels: { boxWidth: 20, color: "#000000" },
+        position: "right",
+      },
     },
   };
 
