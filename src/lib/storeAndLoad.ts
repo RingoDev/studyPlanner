@@ -50,7 +50,7 @@ export function setSavedCurriculum(
   curriculum: SavedCurriculumV3
 ) {
   // reset storage and curriculum
-  state.storage = configGroupsToGroups(state.initialConfig.groups);
+  state.storage = configGroupsToGroups(state.initialConfig.storage);
   state.curriculum.semesters = [];
 
   state.startSemester = curriculum.startSemester;

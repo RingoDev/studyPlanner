@@ -17,7 +17,7 @@ export function getCourseById(
         return {
           ...course,
           type: "course",
-          color: group.color,
+          color: group.color === undefined ? "#cccccc" : group.color,
           violations: [],
         };
       }
@@ -26,24 +26,27 @@ export function getCourseById(
   console.warn(`Could not find course with id: ${id}`);
 }
 
-export function configGroupsToGroups(groups: InitialGroupType[]): Group[] {
+export function configGroupsToGroups(
+  groups: InitialGroupType[],
+  color: string = "#cccccc"
+): Group[] {
   const allGroups: Group[] = [];
 
   for (let group of groups) {
+    const groupColor = group.color === undefined ? color : group.color;
     if ("courses" in group) {
       allGroups.push({
         ...group,
         type: COURSE_GROUP,
         courses: getCoursesFromGroups([group]),
-        color: group.color,
+        color: groupColor,
       });
     } else if ("groups" in group) {
-      const myGroups = configGroupsToGroups(group.groups);
       allGroups.push({
         ...group,
         type: COMPOSITE_GROUP,
-        groups: myGroups,
-        color: group.color,
+        groups: configGroupsToGroups(group.groups, groupColor),
+        color: groupColor,
       });
     }
   }

@@ -548,334 +548,417 @@
   {
     "color": "#ffde67",
     "id": "028",
-    "title": "Wahlfach",
+    "title": "Wahlfächer",
     "groups": [
       {
         "id": "028-001",
         "color": "#ffde67",
-        "title": "Wirtschaftsinformatik",
-        "courses": [
+        "title": "Wahlfach Wirtschaftsinformatik",
+        "groups": [
           {
-            "kusssId": "24525",
             "id": "028-001-001",
             "title": "Strategische IT-Planung",
-            "ects": 6,
-            "sign": "KV"
+            "courses": [
+              {
+                "kusssId": "24525",
+                "id": "028-001-001-001",
+                "title": "Strategische IT-Planung",
+                "ects": 6,
+                "sign": "KV"
+              }
+            ]
           },
           {
-            "kusssId": "",
             "id": "028-001-002",
-            "title": "Software Business",
-            "ects": 6,
-            "sign": "KV"
-          },
-          {
-            "kusssId": "24527",
-            "id": "028-001-003",
             "title": "Service Engineering",
-            "ects": 6,
-            "sign": "KV"
+            "courses": [
+              {
+                "kusssId": "24527",
+                "id": "028-001-002-001",
+                "title": "Service Engineering",
+                "ects": 6,
+                "sign": "KV"
+              }
+            ]
           },
           {
-            "kusssId": "24530",
+            "id": "028-001-003",
+            "title": "Data Warehousing",
+            "courses": [
+              {
+                "kusssId": "24529",
+                "id": "028-001-003-001",
+                "title": "Data Warehousing",
+                "ects": 3,
+                "sign": "VL"
+              },
+              {
+                "kusssId": "24530",
+                "id": "028-001-003-002",
+                "title": "Data Warehousing",
+                "ects": 3,
+                "sign": "UE"
+              }
+            ]
+          },
+          {
             "id": "028-001-004",
-            "title": "Data Warehousing",
-            "ects": 3,
-            "sign": "UE"
+            "title": "Data Mining",
+            "courses": [
+              {
+                "kusssId": "24532",
+                "id": "028-001-004-001",
+                "title": "Data Mining",
+                "ects": 3,
+                "sign": "VL"
+              },
+              {
+                "kusssId": "24533",
+                "id": "028-001-004-002",
+                "title": "Data Mining",
+                "ects": 3,
+                "sign": "UE"
+              }
+            ]
           },
           {
-            "kusssId": "24529",
             "id": "028-001-005",
-            "title": "Data Warehousing",
-            "ects": 3,
-            "sign": "VL"
+            "title": "Semantic Artificial Intelligence",
+            "courses": [
+              {
+                "kusssId": "47287",
+                "id": "028-001-005-001",
+                "title": "Semantic Artificial Intelligence",
+                "ects": 3,
+                "sign": "VL"
+              },
+              {
+                "kusssId": "47288",
+                "id": "028-001-005-002",
+                "title": "Semantic Artificial Intelligence",
+                "ects": 3,
+                "sign": "UE"
+              }
+            ]
           },
           {
-            "kusssId": "24533",
             "id": "028-001-006",
-            "title": "Data Mining",
-            "ects": 3,
-            "sign": "UE"
-          },
-          {
-            "kusssId": "24532",
-            "id": "028-001-007",
-            "title": "Data Mining",
-            "ects": 3,
-            "sign": "VL"
-          },
-          {
-            "kusssId": "47287",
-            "id": "028-001-008",
-            "title": "Semantic Artificial Intelligence",
-            "ects": 3,
-            "sign": "VL"
-          },
-          {
-            "kusssId": "47288",
-            "id": "028-001-009",
-            "title": "Semantic Artificial Intelligence",
-            "ects": 3,
-            "sign": "UE"
-          },
-          {
-            "kusssId": "24539",
-            "id": "028-001-010",
             "title": "Business Engineering & Management",
-            "ects": 3,
-            "sign": "UE"
-          },
-          {
-            "kusssId": "24538",
-            "id": "028-001-011",
-            "title": "Business Engineering & Management",
-            "ects": 3,
-            "sign": "VL"
+            "courses": [
+              {
+                "kusssId": "24538",
+                "id": "028-001-006-001",
+                "title": "Business Engineering & Management",
+                "ects": 3,
+                "sign": "VL"
+              },
+              {
+                "kusssId": "24539",
+                "id": "028-001-006-002",
+                "title": "Business Engineering & Management",
+                "ects": 3,
+                "sign": "UE"
+              }
+            ]
           }
         ]
       },
       {
         "color": "#ffde67",
         "id": "028-002",
-        "title": "Wirtschaftswissenschaften",
-        "courses": [
+        "title": "Wahlfach Wirtschaftswissenschaften",
+        "groups": [
           {
-            "kusssId": "24543",
             "id": "028-002-001",
-            "title": "Einführung Unternehmensgründung und Unternehmensentwicklung",
-            "ects": 2,
-            "sign": "KS"
+            "title": "Vertiefung der Kernkompetenzen aus Betriebswirtschaftslehre",
+            "courses": [
+              {
+                "kusssId": "24543",
+                "id": "028-002-001-001",
+                "title": "Einführung Unternehmensgründung und Unternehmensentwicklung",
+                "ects": 2,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "24544",
+                "id": "028-002-001-002",
+                "title": "Geschäftsmodelle und -prozesse",
+                "ects": 2,
+                "sign": "IK"
+              },
+              {
+                "kusssId": "24545",
+                "id": "028-002-001-003",
+                "title": "Kaufverhalten",
+                "ects": 2,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "24546",
+                "id": "028-002-001-004",
+                "title": "Methoden der Betriebswirtschaftlichen Steuerlehre",
+                "ects": 2,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "24547",
+                "id": "028-002-001-005",
+                "title": "Produktion und Logistik",
+                "ects": 2,
+                "sign": "IK"
+              },
+              {
+                "kusssId": "24548",
+                "id": "028-002-001-006",
+                "title": "Sonderfragen des Jahresabschlusses nach UGB",
+                "ects": 2,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "24549",
+                "id": "028-002-001-007",
+                "title": "Strategie",
+                "ects": 2,
+                "sign": "IK"
+              },
+              {
+                "kusssId": "24550",
+                "id": "028-002-001-008",
+                "title": "Umweltmanagement",
+                "ects": 2,
+                "sign": "KS"
+              }
+            ]
           },
           {
-            "kusssId": "24544",
             "id": "028-002-002",
-            "title": "Geschäftsmodelle und -prozesse",
-            "ects": 2,
-            "sign": "IK"
+            "title": "Kernkompetenzen II / Block A aus Betriebswirtschaftslehre",
+            "courses": [
+              {
+                "kusssId": "24552",
+                "id": "028-002-002-001",
+                "title": "Personal- und Unternehmensführung",
+                "ects": 4,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "24553",
+                "id": "028-002-002-002",
+                "title": "Personal- und Unternehmensführung",
+                "ects": 2,
+                "sign": "IK"
+              }
+            ]
           },
           {
-            "kusssId": "24545",
             "id": "028-002-003",
-            "title": "Kaufverhalten",
-            "ects": 2,
-            "sign": "KS"
+            "title": "Kernkompetenzen II / Block B aus Betriebswirtschaftslehre",
+            "courses": [
+              {
+                "kusssId": "24555",
+                "id": "028-002-003-001",
+                "title": "Budgetierung",
+                "ects": 2,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "24556",
+                "id": "028-002-003-002",
+                "title": "Jahresabschlussanalyse",
+                "ects": 2,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "24557",
+                "id": "028-002-003-003",
+                "title": "Unternehmensbesteuerung",
+                "ects": 2,
+                "sign": "KS"
+              }
+            ]
           },
           {
-            "kusssId": "24546",
             "id": "028-002-004",
-            "title": "Methoden der Betriebswirtschaftlichen Steuerlehre",
-            "ects": 2,
-            "sign": "KS"
+            "title": "Kernkompetenzen I aus Volkswirtschaftslehre",
+            "courses": [
+              {
+                "kusssId": "24559",
+                "id": "028-002-004-001",
+                "title": "Ökonomische Entscheidungen und Märkte",
+                "ects": 4,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "24560",
+                "id": "028-002-004-002",
+                "title": "Ökonomische Entscheidungen und Märkte",
+                "ects": 4,
+                "sign": "IK"
+              },
+              {
+                "kusssId": "24561",
+                "id": "028-002-004-003",
+                "title": "Einkommen, Beschäftigung und Finanzmärkte",
+                "ects": 4,
+                "sign": "IK"
+              }
+            ]
           },
           {
-            "kusssId": "24547",
             "id": "028-002-005",
-            "title": "Produktion und Logistik",
-            "ects": 2,
-            "sign": "IK"
+            "title": "Wahlfach Wirtschaftswissenschaften",
+            "courses": [
+              {
+                "kusssId": "",
+                "id": "028-002-005-001",
+                "title": "Produktion",
+                "ects": 3,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "",
+                "id": "028-002-005-001",
+                "title": "Logistik und Supply Chain Management",
+                "ects": 3,
+                "sign": "KS"
+              }
+            ]
           },
           {
-            "kusssId": "",
             "id": "028-002-006",
-            "title": "Sonderfragen des Jahresabschlusses nach UGB",
-            "ects": 2,
-            "sign": "KS"
+            "title": "Finanzierungs- und Steuermanagement",
+            "courses": [
+              {
+                "kusssId": "47290",
+                "id": "028-002-006-001",
+                "title": "Finanzmanagement kompakt",
+                "ects": 3,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "47291",
+                "id": "028-002-006-002",
+                "title": "Steuern",
+                "ects": 3,
+                "sign": "KS"
+              }
+            ]
           },
           {
-            "kusssId": "",
             "id": "028-002-007",
-            "title": "Strategie",
-            "ects": 2,
-            "sign": "IK"
+            "title": "Operations and Supply Chain Management",
+            "courses": [
+              {
+                "kusssId": "",
+                "id": "028-002-007-001",
+                "title": "Operations and Supply Chain Management",
+                "ects": 3,
+                "sign": "IK"
+              },
+              {
+                "kusssId": "",
+                "id": "028-002-007-002",
+                "title": "Operations and Supply Chain Management",
+                "ects": 3,
+                "sign": "KS"
+              }
+            ]
           },
           {
-            "kusssId": "",
             "id": "028-002-008",
-            "title": "Umweltmanagement",
-            "ects": 2,
-            "sign": "KS"
+            "title": "Organisation, Veränderungs- und Innovationsmanagement",
+            "courses": [
+              {
+                "kusssId": "",
+                "id": "028-002-008-001",
+                "title": "Einführung in Organisation",
+                "ects": 3,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "",
+                "id": "028-002-008-002",
+                "title": "Einführung in Veränderungs- und Innovationsmanagement",
+                "ects": 3,
+                "sign": "KS"
+              }
+            ]
           },
           {
-            "kusssId": "",
             "id": "028-002-009",
-            "title": "Personal- und Unternehmensführung",
-            "ects": 4,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-010",
-            "title": "Personal- und Unternehmensführung",
-            "ects": 2,
-            "sign": "IK"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-011",
-            "title": "Budgetierung",
-            "ects": 2,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-012",
-            "title": "Jahresabschlussanalyse",
-            "ects": 2,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-013",
-            "title": "Unternehmensbesteuerung",
-            "ects": 2,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-014",
-            "title": "Ökonomische Entscheidungen und Märkte",
-            "ects": 4,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-015",
-            "title": "Ökonomische Entscheidungen und Märkte",
-            "ects": 4,
-            "sign": "IK"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-016",
-            "title": "Einkommen, Beschäftigung und Finanzmärkte",
-            "ects": 4,
-            "sign": "IK"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-017",
-            "title": "Produktion",
-            "ects": 3,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-018",
-            "title": "Logistik und Supply Chain Management",
-            "ects": 3,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-019",
-            "title": "Finanzmanagement kompakt",
-            "ects": 3,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-020",
-            "title": "Steuern",
-            "ects": 3,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-021",
-            "title": "Operations and Supply Chain Management",
-            "ects": 3,
-            "sign": "IK"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-022",
-            "title": "Operations and Supply Chain Management",
-            "ects": 3,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-023",
-            "title": "Einführung in Organisation",
-            "ects": 3,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-024",
-            "title": "Einführung in Veränderungs- und Innovationsmanagement",
-            "ects": 3,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-025",
-            "title": "Einführung in die Volkswirtschaftslehre",
-            "ects": 3,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-026",
-            "title": "Einführung in die Makroökonomie",
-            "ects": 3,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-027",
-            "title": "Einführung in die Mikroökonomie",
-            "ects": 3,
-            "sign": "IK"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-028",
-            "title": "Einführung in die Mikroökonomie",
-            "ects": 3,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-029",
-            "title": "Daten und Forschungsdesigns in der Ökonomie",
-            "ects": 3,
-            "sign": "IK"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-030",
-            "title": "Daten und Forschungsdesigns in der Ökonomie",
-            "ects": 3,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-031",
-            "title": "Marktwirtschaft und Staat",
-            "ects": 3,
-            "sign": "KS"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-032",
-            "title": "Marktwirtschaft und Staat",
-            "ects": 3,
-            "sign": "IK"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-033",
-            "title": "Einführung in die Makroökonomie",
-            "ects": 3,
-            "sign": "IK"
-          },
-          {
-            "kusssId": "",
-            "id": "028-002-034",
-            "title": "Geschichte des ökonomischen Denkens",
-            "ects": 3,
-            "sign": "KS"
+            "title": "Grundlagen der Volkswirtschaftslehre",
+            "courses": [
+              {
+                "kusssId": "",
+                "id": "028-002-009-001",
+                "title": "Einführung in die Volkswirtschaftslehre",
+                "ects": 3,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "",
+                "id": "028-002-009-002",
+                "title": "Einführung in die Makroökonomie",
+                "ects": 3,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "",
+                "id": "028-002-009-003",
+                "title": "Einführung in die Mikroökonomie",
+                "ects": 3,
+                "sign": "IK"
+              },
+              {
+                "kusssId": "",
+                "id": "028-002-009-004",
+                "title": "Einführung in die Mikroökonomie",
+                "ects": 3,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "",
+                "id": "028-002-009-005",
+                "title": "Daten und Forschungsdesigns in der Ökonomie",
+                "ects": 3,
+                "sign": "IK"
+              },
+              {
+                "kusssId": "",
+                "id": "028-002-009-006",
+                "title": "Daten und Forschungsdesigns in der Ökonomie",
+                "ects": 3,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "",
+                "id": "028-002-009-007",
+                "title": "Marktwirtschaft und Staat",
+                "ects": 3,
+                "sign": "KS"
+              },
+              {
+                "kusssId": "",
+                "id": "028-002-009-008",
+                "title": "Marktwirtschaft und Staat",
+                "ects": 3,
+                "sign": "IK"
+              },
+              {
+                "kusssId": "",
+                "id": "028-002-009-009",
+                "title": "Einführung in die Makroökonomie",
+                "ects": 3,
+                "sign": "IK"
+              },
+              {
+                "kusssId": "",
+                "id": "028-002-009-010",
+                "title": "Geschichte des ökonomischen Denkens",
+                "ects": 3,
+                "sign": "KS"
+              }
+            ]
           }
         ]
       }

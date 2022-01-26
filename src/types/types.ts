@@ -37,7 +37,7 @@ export interface CourseGroup {
   id: string;
   title: string;
   color: string;
-  dropDisabled?: boolean;
+  // dropDisabled?: boolean;
 }
 
 export interface CompositeGroup {
@@ -46,7 +46,7 @@ export interface CompositeGroup {
   id: string;
   title: string;
   color: string;
-  dropDisabled?: boolean;
+  // dropDisabled?: boolean;
 }
 
 export type Group = CourseGroup | CompositeGroup;

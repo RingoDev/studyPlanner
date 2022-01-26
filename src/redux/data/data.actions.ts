@@ -40,9 +40,6 @@ export const resetCurriculum = createAction<{}>(RESET_CURRICULUM);
 
 export const setCustomStudies =
   createAction<{ semesterIndex: number; ects: number }>(SET_CUSTOM_STUDIES);
-export const checkCourseConstraints = createAction<{}>(
-  CHECK_COURSE_CONSTRAINTS
-);
 export const setStartSemester =
   createAction<{ startSemesterInfo: SemesterInfo }>(SET_START_SEMESTER);
 

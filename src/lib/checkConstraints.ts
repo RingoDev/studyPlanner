@@ -20,6 +20,62 @@ export function getXOutOfYConstraint(
   return constraints.reduce((c1, c2) => (c1.maxEcts < c2.maxEcts ? c1 : c2));
 }
 
+export function checkCombinedCoursesConstraints(
+  state: INITIAL_STATE_TYPE,
+  course: Course,
+  i: number
+) {
+  const mandatoryConstraint =
+    state.initialConfig.constraints.combinedCoursesConstraints.mandatory.find(
+      (array) => array.find((id) => id === course.id) !== undefined
+    );
+  if (mandatoryConstraint !== undefined) {
+    const idsOfMissingCoursesInSemester = mandatoryConstraint
+      .filter((id) => id !== course.id)
+      .filter(
+        (id) => !state.curriculum.semesters[i].courses.some((c) => c.id === id)
+      );
+
+    if (idsOfMissingCoursesInSemester.length > 0) {
+      const courses = idsOfMissingCoursesInSemester
+        .map((id) => getCourseById(id, state.initialConfig.storage))
+        .filter((c) => c !== undefined) as Course[];
+      course.violations.push({
+        severity: "HIGH",
+        reason: [
+          "Folgende Kurse müssen im selben Semester belegt werden",
+          ...courses.map((c) => `${c.sign} - ${c.title}`),
+        ],
+      });
+    }
+    const optionalConstraint =
+      state.initialConfig.constraints.combinedCoursesConstraints.mandatory.find(
+        (array) => array.find((id) => id === course.id) !== undefined
+      );
+    if (optionalConstraint !== undefined) {
+      const idsOfMissingCoursesInSemester = optionalConstraint
+        .filter((id) => id !== course.id)
+        .filter(
+          (id) =>
+            !state.curriculum.semesters[i].courses.some((c) => c.id === id)
+        );
+
+      if (idsOfMissingCoursesInSemester.length > 0) {
+        const courses = idsOfMissingCoursesInSemester
+          .map((id) => getCourseById(id, state.initialConfig.storage))
+          .filter((c) => c !== undefined) as Course[];
+        course.violations.push({
+          severity: "HIGH",
+          reason: [
+            "Folgende Kurse müssen im selben Semester belegt werden",
+            ...courses.map((c) => `${c.sign} - ${c.title}`),
+          ],
+        });
+      }
+    }
+  }
+}
+
 export function checkDependencyConstraints(
   state: INITIAL_STATE_TYPE,
   course: Course,
@@ -70,7 +126,7 @@ function checkGenericDependencyConstraint(
     constraints.dependsOn,
     i + 1,
     state.curriculum.semesters,
-    state.initialConfig.groups
+    state.initialConfig.storage
   );
   if (violatingDependencies.length > 0) {
     course.violations.push({
@@ -144,7 +200,7 @@ export function checkSteopConstraints(
       state.initialConfig.constraints.steopConstraints.steop.mandatory,
       semesterIndex,
       state.curriculum.semesters,
-      state.initialConfig.groups
+      state.initialConfig.storage
     );
 
     // check that for all of the optional steop courses atleast 1 option is fulfilled
@@ -168,10 +224,10 @@ export function checkSteopConstraints(
           reason: [
             "Kann nicht belegt werden, da keiner der folgenden Steop Blöcke vollständig abgschlossen ist:",
             ...optionalSteopObject.x
-              .map((id) => getCourseById(id, state.initialConfig.groups))
+              .map((id) => getCourseById(id, state.initialConfig.storage))
               .map((c) => (c === undefined ? "" : `${c.sign} -  ${c.title}`)),
             ...optionalSteopObject.y
-              .map((id) => getCourseById(id, state.initialConfig.groups))
+              .map((id) => getCourseById(id, state.initialConfig.storage))
               .map((c) => (c === undefined ? "" : `${c.sign} -  ${c.title}`)),
           ],
         });
@@ -280,7 +336,7 @@ export function checkSemesterConstraints(
 
 export function checkXOutOfYConstraints(state: INITIAL_STATE_TYPE) {
   for (let constraint of state.initialConfig.constraints.xOutOfYConstraints) {
-    const group = state.initialConfig.groups.find(
+    const group = state.initialConfig.storage.find(
       (g) => g.id === constraint.group
     );
     if (!group) continue;

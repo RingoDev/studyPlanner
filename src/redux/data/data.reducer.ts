@@ -24,6 +24,7 @@ import {
   moveCourseFromGroupListToSemesterList,
 } from "../../lib/moveCourses";
 import {
+  checkCombinedCoursesConstraints,
   checkDependencyConstraints,
   checkSemesterConstraints,
   checkSteopConstraints,
@@ -98,7 +99,8 @@ const initialState: INITIAL_STATE_TYPE = {
   dataLoaded: false,
   selectSemesterList: createSemesterList(),
   startSemester: { isWS: true, year: getStartYear() },
-  storage: configGroupsToGroups(initialConfig.groups),
+  // todo check if this shallow copy makes problems or if we need a deep copy
+  storage: initialConfig.storage.slice(),
   curriculum: {
     semesters: [],
   },
@@ -125,7 +127,7 @@ const courseReducer = createReducer(initialState, (builder) => {
       if (payload.exampleIndex < 0) {
         // remove whole curriculum and put all into storage
         // todo load saved custom configuration
-        state.storage = configGroupsToGroups(state.initialConfig.groups);
+        state.storage = state.initialConfig.storage;
         state.curriculum.semesters = [];
         return;
       }
@@ -398,7 +400,7 @@ const courseReducer = createReducer(initialState, (builder) => {
     })
     .addCase(setApplicationState, (state, { payload }) => {
       state.storage = removeCoursesFromGroupList(
-        configGroupsToGroups(state.initialConfig.groups),
+        state.initialConfig.storage,
         payload.curriculum.semesters.flatMap((s) => s.courses).map((c) => c.id)
       );
       state.curriculum = payload.curriculum;
@@ -414,7 +416,7 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.dataLoaded = true;
     })
     .addCase(resetCurriculum, (state) => {
-      state.storage = configGroupsToGroups(state.initialConfig.groups);
+      state.storage = state.initialConfig.storage;
       state.curriculum.semesters = [];
     })
     .addMatcher(saveCurriculumMatcher, (state) => {
@@ -434,6 +436,7 @@ const courseReducer = createReducer(initialState, (builder) => {
           checkSemesterConstraints(state, course, i);
           checkSteopConstraints(state, course, i);
           checkDependencyConstraints(state, course, i);
+          checkCombinedCoursesConstraints(state, course, i);
         }
       }
       checkXOutOfYConstraints(state);

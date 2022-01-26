@@ -2,26 +2,28 @@ import semesterConstraints from "./semesterConstraints.json";
 import steopConstraints from "./steopConstraints.json";
 import dependencyConstraints from "./dependencyConstraints.json";
 import xOutOfYConstraints from "./xOutOfYConstraints.json";
+import combinedCoursesConstraints from "./combinedCoursesConstraints.json";
 import groups from "./curriculum.json";
 import WS6S from "./examples/WS6S.json";
 import WS9S from "./examples/WS9S.json";
 import SS6S from "./examples/SS6S.json";
 import SS9S from "./examples/SS9S.json";
 import Course, { Group } from "../types/types";
+import { configGroupsToGroups } from "../lib/general";
 
 export type InitialGroupType = CompositeGroupType | StandardGroupType;
 
 interface CompositeGroupType {
   id: string;
   title: string;
-  color: string;
+  color?: string;
   groups: InitialGroupType[];
 }
 
 interface StandardGroupType {
   id: string;
   title: string;
-  color: string;
+  color?: string;
   courses: CourseType[];
 }
 
@@ -61,7 +63,7 @@ export function getCoursesFromGroups(
         courses.push({
           ...course,
           type: "course",
-          color: group.color,
+          color: group.color === undefined ? "#cccccc" : group.color,
           violations: [],
           kusssId: course.kusssId,
         });
@@ -72,13 +74,15 @@ export function getCoursesFromGroups(
 }
 
 interface InitialConfig {
-  groups: InitialGroupType[];
+  readonly storage: Group[];
+  // groups: InitialGroupType[];
   courses: Course[];
   constraints: {
     semesterConstraints: typeof semesterConstraints;
     steopConstraints: typeof steopConstraints;
     dependencyConstraints: typeof dependencyConstraints;
     xOutOfYConstraints: typeof xOutOfYConstraints;
+    combinedCoursesConstraints: typeof combinedCoursesConstraints;
   };
   examples: {
     startsWithWS: boolean;
@@ -88,13 +92,15 @@ interface InitialConfig {
 }
 
 const initialConfig: InitialConfig = {
-  groups: groups,
+  storage: configGroupsToGroups(groups),
+  // groups: groups,
   courses: getCoursesFromGroups(groups),
   constraints: {
-    semesterConstraints: semesterConstraints,
-    steopConstraints: steopConstraints,
-    dependencyConstraints: dependencyConstraints,
-    xOutOfYConstraints: xOutOfYConstraints,
+    semesterConstraints,
+    steopConstraints,
+    dependencyConstraints,
+    xOutOfYConstraints,
+    combinedCoursesConstraints,
   },
   examples: [
     {

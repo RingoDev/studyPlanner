@@ -31,7 +31,7 @@ const StyledListIcon = styled(ListItemIcon)(() => ({
 }));
 
 const GroupItem = ({ group, level }: Props) => {
-  const groups = useAppSelector((state) => state.data.initialConfig.groups);
+  const groups = useAppSelector((state) => state.data.initialConfig.storage);
   const xOutOfYConstraints = useAppSelector(
     (state) => state.data.initialConfig.constraints.xOutOfYConstraints
   );
