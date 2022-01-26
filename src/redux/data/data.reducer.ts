@@ -32,7 +32,6 @@ import {
   getXOutOfYConstraint,
 } from "../../lib/checkConstraints";
 import {
-  configGroupsToGroups,
   getGroupIdOfCourseId,
   isGroupId,
   isSemesterId,

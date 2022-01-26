@@ -1,9 +1,11 @@
 import { styled } from "@mui/material/styles";
 import React from "react";
+import { Typography } from "@mui/material";
 
 interface Props {
   Component: (props: { semesterIndex?: number }) => JSX.Element;
   semesterIndex?: number;
+  title: string;
 }
 
 const CardWrapper = styled("div")(() => ({
@@ -19,11 +21,15 @@ const Card = styled("div")(({ theme }) => ({
 
 const DashboardTile: React.FC<Props> = ({
   semesterIndex,
+  title,
   Component,
 }: Props) => {
   return (
     <CardWrapper>
       <Card>
+        <Typography align={"center"} fontWeight={"bold"}>
+          {title}
+        </Typography>
         <Component semesterIndex={semesterIndex} />
       </Card>
     </CardWrapper>

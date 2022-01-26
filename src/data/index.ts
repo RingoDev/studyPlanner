@@ -98,8 +98,14 @@ const initialConfig: InitialConfig = {
   constraints: {
     semesterConstraints,
     steopConstraints,
+
+    // constraints for courses that need other courses to be finished in the same or an earlier semester
     dependencyConstraints,
+
+    // constraints for groups where only a limited amount of its ects can be booked
     xOutOfYConstraints,
+
+    // constraints for courses that should or have to be booked in the same semester
     combinedCoursesConstraints,
   },
   examples: [

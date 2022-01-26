@@ -49,7 +49,7 @@ export function checkCombinedCoursesConstraints(
       });
     }
     const optionalConstraint =
-      state.initialConfig.constraints.combinedCoursesConstraints.mandatory.find(
+      state.initialConfig.constraints.combinedCoursesConstraints.optional.find(
         (array) => array.find((id) => id === course.id) !== undefined
       );
     if (optionalConstraint !== undefined) {
@@ -65,9 +65,9 @@ export function checkCombinedCoursesConstraints(
           .map((id) => getCourseById(id, state.initialConfig.storage))
           .filter((c) => c !== undefined) as Course[];
         course.violations.push({
-          severity: "HIGH",
+          severity: "LOW",
           reason: [
-            "Folgende Kurse müssen im selben Semester belegt werden",
+            "Es wird empfohlen folgende Kurse im selben Semester zu belegen",
             ...courses.map((c) => `${c.sign} - ${c.title}`),
           ],
         });

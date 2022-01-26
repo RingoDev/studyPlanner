@@ -105,8 +105,9 @@ const FinishedDoughnut = ({ semesterIndex }: Props) => {
         text: getAverage(),
         color: "#000000", // Default is #000000
         fontStyle: "Arial", // Default is Arial
-        sidePadding: 20, // Default is 20 (as a percentage)
-        minFontSize: 20, // Default is 20 (in px), set to false and text will not wrap.
+        sidePadding: 30, // Default is 20 (as a percentage)
+        minFontSize: 0, // Default is 20 (in px), set to false and text will not wrap.
+        maxFontSize: 40,
         lineHeight: 25, // Default is 25 (in px), used for when text wraps
       },
     },

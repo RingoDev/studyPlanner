@@ -21,13 +21,10 @@ const GradesDoughnut = ({ semesterIndex }: Props) => {
     courseMatchesSearch(c, searchText)
   );
 
-  // console.log(Color("#70e899").mix(Color("#abd26d")).hex());
-
-  // number between 1 and 4
   const getColor = (input: number) => {
     const colors = ["#70e899", "#abd26d", "#ceb85b", "#e29f62"];
 
-    const scaledInput = (input - 1) % 4;
+    const scaledInput = (input - 1) % colors.length;
     const rest = scaledInput % 1;
 
     return Color(colors[Math.floor(scaledInput)])
@@ -112,8 +109,9 @@ const GradesDoughnut = ({ semesterIndex }: Props) => {
         text: grade.toString(),
         color: getColor(grade), // Default is #000000
         fontStyle: "Arial", // Default is Arial
-        sidePadding: 40, // Default is 20 (as a percentage)
-        minFontSize: 20, // Default is 20 (in px), set to false and text will not wrap.
+        sidePadding: 30, // Default is 20 (as a percentage)
+        minFontSize: 0, // Default is 20 (in px), set to false and text will not wrap.
+        maxFontSize: 40,
         lineHeight: 25, // Default is 25 (in px), used for when text wraps
       },
     },

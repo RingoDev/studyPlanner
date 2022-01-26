@@ -43,10 +43,15 @@ const Dashboard = ({ semesterIndex }: Props) => {
       {/*  semesterIndex={semesterIndex}*/}
       {/*  Component={FinishedDoughnut}*/}
       {/*/>*/}
-      <DashboardTile semesterIndex={semesterIndex} Component={GradesDoughnut} />
+      <DashboardTile
+        semesterIndex={semesterIndex}
+        Component={GradesDoughnut}
+        title={"Notendurchschnitt"}
+      />
       <DashboardTile
         semesterIndex={semesterIndex}
         Component={FinishedDoughnut}
+        title={"Abgeschlossene Kurse"}
       />
     </StatisticsContainer>
   );
