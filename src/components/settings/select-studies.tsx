@@ -13,6 +13,7 @@ const FormBox = styled("div")(({ theme }) => ({
 }));
 
 const SelectStudies = () => {
+  return <></>;
   return (
     <FormBox>
       <Typography align={"center"}>Studium:</Typography>
