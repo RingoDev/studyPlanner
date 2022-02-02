@@ -61,7 +61,7 @@ const Settings = () => {
     <MainContainer>
       <OuterContainer>
         <SettingsContainer>
-          <SelectStudies />
+          {/*<SelectStudies />*/}
           <SelectStartSemester />
           <SelectExamplePlan />
         </SettingsContainer>
