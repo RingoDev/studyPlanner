@@ -14,17 +14,17 @@ const FormBox = styled("div")(({ theme }) => ({
 
 const SelectStudies = () => {
   return <></>;
-  return (
-    <FormBox>
-      <Typography align={"center"}>Studium:</Typography>
-      <FormControl>
-        <Select value={0}>
-          <MenuItem value={0}>Bachelorstudium Wirtschaftsinformatik</MenuItem>
-          <MenuItem value={1}>Masterstudium Wirtschaftsinformatik</MenuItem>
-        </Select>
-      </FormControl>
-    </FormBox>
-  );
+  // return (
+  //   <FormBox>
+  //     <Typography align={"center"}>Studium:</Typography>
+  //     <FormControl>
+  //       <Select value={0}>
+  //         <MenuItem value={0}>Bachelorstudium Wirtschaftsinformatik</MenuItem>
+  //         <MenuItem value={1}>Masterstudium Wirtschaftsinformatik</MenuItem>
+  //       </Select>
+  //     </FormControl>
+  //   </FormBox>
+  // );
 };
 
 export default SelectStudies;
