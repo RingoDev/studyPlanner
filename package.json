@@ -1,6 +1,6 @@
 {
   "name": "study-planner",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.7.0",
@@ -8,8 +8,9 @@
     "@mui/material": "^5.2.3",
     "@mui/styles": "^5.2.3",
     "@react-pdf/renderer": "^2.0.21",
-    "@reduxjs/toolkit": "^1.6.1",
+    "@reduxjs/toolkit": "^1.7.1",
     "@types/redux-logger": "^3.0.9",
+    "browserify-zlib": "^0.2.0",
     "chart.js": "^3.5.1",
     "color": "^4.0.1",
     "idb-keyval": "^6.0.3",
@@ -35,14 +36,25 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-redux": "^7.1.18",
     "@types/react-router-dom": "^5.3.0",
+    "assert": "^2.0.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
+    "postcss-normalize": "^10.0.1",
     "prettier": "^2.5.1",
-    "react-scripts": "^4.0.3",
-    "typescript": "^4.1.2"
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
+    "react-scripts": "^5.0.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "typescript": "^4.1.2",
+    "url": "^0.11.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

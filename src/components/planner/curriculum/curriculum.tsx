@@ -6,28 +6,37 @@ import { addSemester } from "../../../redux/data/data.actions";
 import { styled } from "@mui/material/styles";
 import { Droppable } from "react-beautiful-dnd";
 
-const CurriculumContainer = styled("div")(() => ({
+const CurriculumContainer = styled("div")(({ theme }) => ({
   margin: "0",
   marginLeft: "auto",
   marginRight: "1rem",
   width: "90%",
   display: "flex",
-  flexDirection: "row",
-  flexWrap: "wrap",
+  flexDirection: "column",
   justifyContent: "space-evenly",
+  alignItems: "flex-start",
+  [theme.breakpoints.up("md")]: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
 }));
 
-const SemesterWrapper = styled("div")(() => ({
-  maxWidth: "50%",
+const SemesterWrapper = styled("div")(({ theme }) => ({
+  maxWidth: "35rem",
   flexBasis: "50%",
   minHeight: "20rem",
+  minWidth: "35rem",
   padding: "0 1rem 2rem 1rem",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   flexGrow: 1,
+  flexShrink:0,
   "> *": {
     flexGrow: 1,
+  },
+  [theme.breakpoints.up("md")]: {
+    minWidth: "26rem",
   },
 }));
 
@@ -35,6 +44,7 @@ const StyledButton = styled(Button)(() => ({
   flexBasis: "50%",
   height: "100%",
   borderRadius: "1rem",
+  minHeight:"18,75rem"
 }));
 
 const Curriculum = () => {

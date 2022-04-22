@@ -5,9 +5,11 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { moveCourse, moveGroup } from "../../redux/data/data.actions";
 import { useAppDispatch } from "../../redux/hooks";
 import { styled } from "@mui/material/styles";
+import { Typography } from "@mui/material";
 
 const MainContainer = styled("div")(({ theme }) => ({
   padding: "0",
+  paddingTop: "2rem",
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
@@ -28,18 +30,36 @@ const StorageWrapper = styled("div")(({ theme }) => ({
   },
 }));
 
-const CurriculumWrapper = styled("div")(() => ({
-  flex: "1 1 75%",
-  overflowY: "auto",
-  "&::-webkit-scrollbar": {
-    width: "0.75em",
-    backgroundColor: "#555555",
-    outline: "1px solid #444444",
-    borderRadius: "1em",
+const CurriculumWrapper = styled("div")(({ theme }) => ({
+  display: "none",
+  [theme.breakpoints.up("md")]: {
+    display: "block",
+    flex: "1 1 75%",
+    overflowY: "auto",
+    "&::-webkit-scrollbar": {
+      width: "0.75em",
+      backgroundColor: "#555555",
+      outline: "1px solid #444444",
+      borderRadius: "1em",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#777777",
+      borderRadius: "1em",
+    },
   },
-  "&::-webkit-scrollbar-thumb": {
-    backgroundColor: "#777777",
-    borderRadius: "1em",
+}));
+
+const MobilePlannerWrapper = styled("div")(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width:"100%",
+  padding:"2rem",
+  "> *": {
+    maxWidth: "30ch",
+  },
+  [theme.breakpoints.up("md")]: {
+    display: "none",
   },
 }));
 
@@ -89,6 +109,11 @@ const Planner = () => {
         <CurriculumWrapper>
           <Curriculum />
         </CurriculumWrapper>
+        <MobilePlannerWrapper>
+          <Typography fontSize={"2rem"} color={"primary"}>
+            Die Planung des Studiums ist derzeit leider nur im Desktopformat möglich.
+          </Typography>
+        </MobilePlannerWrapper>
       </MainContainer>
     </DragDropContext>
   );

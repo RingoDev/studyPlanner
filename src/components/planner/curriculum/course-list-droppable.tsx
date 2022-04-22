@@ -22,10 +22,10 @@ const CourseListDroppable = ({ semester, index }: Props) =>{
       {(provided) => (
         <Box
           ref={provided.innerRef}
-          sx={{ border: "2px solid #cccccc", height: "100%" }}
+          sx={{ border: "2px solid #cccccc",minHeight:"10rem" }}
           {...provided.droppableProps}
         >
-          <List disablePadding sx={{ paddingTop: "0.5rem" }}>
+          <List disablePadding sx={{ paddingTop: "0.5rem"}}>
             {semester.courses.map((c, index) =>{
               if (courseMatchesSearch(c, searchText)) {
                 return (

@@ -29,7 +29,7 @@ const CustomStudies = ({ semesterIndex }: Props) => {
   );
 
   return (
-    <Box sx={{ padding: "0 0.5rem" }}>
+    <Box sx={{ padding: "0 0.5rem", marginTop:"auto" }}>
       <ListItem
         sx={{
           backgroundColor: "#bbbbbb",
