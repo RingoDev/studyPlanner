@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import SelectStartSemester from "./select-start-semester";
 import SelectExamplePlan from "./select-example-plan";
 import SelectStudies from "./select-studies";
+import { About } from "./about";
 
 const SettingsContainer = styled("div")(({ theme }) => ({
   backgroundColor: "#dddddd",
@@ -61,11 +62,14 @@ const Settings = () => {
     <MainContainer>
       <OuterContainer>
         <SettingsContainer>
-          {/*<SelectStudies />*/}
           <SelectStartSemester />
           <SelectExamplePlan />
+
         </SettingsContainer>
+        <About/>
+
       </OuterContainer>
+
     </MainContainer>
   );
 };

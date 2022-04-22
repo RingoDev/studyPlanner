@@ -69,7 +69,7 @@ const createSemesterList = () => {
     if (index % 2 === 0) {
       return { isWS: true, year: startYear + index / 2 };
     } else {
-      return { isWS: false, year: startYear + Math.floor(index / 2) };
+      return { isWS: false, year: startYear + Math.ceil(index / 2) };
     }
   });
 };
@@ -86,9 +86,9 @@ export function getSemesterName(
     }
   } else {
     if (startSemesterInfo.isWS) {
-      return `SS${startSemesterInfo.year + Math.floor(index / 2)}`;
+      return `SS${startSemesterInfo.year + Math.ceil(index / 2)}`;
     } else {
-      return `WS${startSemesterInfo.year + Math.ceil(index / 2)}`;
+      return `WS${startSemesterInfo.year + Math.floor(index / 2)}`;
     }
   }
 }
