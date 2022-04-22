@@ -44,7 +44,7 @@ const StyledButton = styled(Button)(() => ({
   flexBasis: "50%",
   height: "100%",
   borderRadius: "1rem",
-  minHeight:"18,75rem"
+  minHeight:"18.75rem"
 }));
 
 const Curriculum = () => {

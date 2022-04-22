@@ -7,6 +7,7 @@ COPY public/ /app/public/
 COPY yarn.lock/ /app/yarn.lock
 COPY package.json/ /app/package.json
 COPY tsconfig.json/ /app/tsconfig.json
+COPY config-overrides.js/ /app/config-overrides.js
 
 RUN yarn install
 RUN yarn run build
