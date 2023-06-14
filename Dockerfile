@@ -12,6 +12,6 @@ COPY config-overrides.js/ /app/config-overrides.js
 RUN yarn install
 RUN yarn run build
 
-FROM nginx:1.22.1
+FROM nginx:1.24
 COPY --from=build-stage /app/build/ /var/www/study-planner/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
